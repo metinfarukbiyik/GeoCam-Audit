@@ -1,0 +1,415 @@
+# .cursorrules
+
+# ==========================================================
+# PROJE
+# ==========================================================
+
+Bu proje yalnızca iOS platformu için geliştirilecektir.
+
+Amaç:
+Kullanıcının çektiği fotoğrafın üzerine;
+
+- Tarih
+- Saat
+- GPS Koordinatları
+- Açık adres
+- Rakım
+- Pusula yönü
+- GPS doğruluk değeri
+
+bilgilerini otomatik olarak ekleyen profesyonel bir kamera uygulaması geliştirmektir.
+
+Kodlar SwiftUI mimarisine uygun yazılmalıdır.
+
+Minimum iOS sürümü:
+iOS 17
+
+Kod dili:
+Swift 6
+
+UI Framework:
+SwiftUI
+
+Mimari:
+MVVM
+
+Asenkron işlemler:
+Swift Concurrency (async/await)
+
+Combine yalnızca gerekli durumlarda kullanılacaktır.
+
+# ==========================================================
+# KOD KALİTESİ
+# ==========================================================
+
+Her dosyanın tek bir sorumluluğu olmalıdır.
+
+Kod tekrarından kaçınılmalıdır.
+
+SOLID prensiplerine uyulmalıdır.
+
+Magic Number kullanılmamalıdır.
+
+Tüm sabitler Constants dosyasında tutulmalıdır.
+
+Extension'lar amacına göre ayrılmalıdır.
+
+Kod okunabilir olmalıdır.
+
+Fonksiyonlar mümkün olduğunca kısa tutulmalıdır.
+
+Yorum satırı yalnızca gerekli yerlerde yazılmalıdır.
+
+Kod İngilizce yazılacaktır.
+
+Açıklamalar Türkçe olabilir.
+
+# ==========================================================
+# DOSYA YAPISI
+# ==========================================================
+
+Project/
+
+App/
+
+Core/
+
+Features/
+
+Camera/
+
+Views/
+
+ViewModels/
+
+Models/
+
+Services/
+
+Location/
+
+Compass/
+
+Photo/
+
+Settings/
+
+Components/
+
+Resources/
+
+Assets/
+
+Extensions/
+
+Utilities/
+
+Constants/
+
+# ==========================================================
+# KAMERA
+# ==========================================================
+
+AVFoundation kullanılacaktır.
+
+Kamera açılışı hızlı olmalıdır.
+
+Fotoğraf çözünürlüğü maksimum kalite olmalıdır.
+
+HEIF ve JPEG desteği bulunmalıdır.
+
+Flash
+
+Auto
+
+On
+
+Off
+
+modları desteklenmelidir.
+
+Ön ve arka kamera arasında geçiş yapılabilmelidir.
+
+Kamera izinleri eksiksiz yönetilmelidir.
+
+# ==========================================================
+# KONUM
+# ==========================================================
+
+CoreLocation kullanılacaktır.
+
+İstenen bilgiler:
+
+Latitude
+
+Longitude
+
+Altitude
+
+Horizontal Accuracy
+
+Heading
+
+Speed
+
+Timestamp
+
+GPS doğruluğu ekranda metre cinsinden gösterilecektir.
+
+Konum güncellemeleri optimize edilmelidir.
+
+Pil tüketimi minimum tutulmalıdır.
+
+# ==========================================================
+# PUSULA
+# ==========================================================
+
+Manyetik yön alınmalıdır.
+
+Derece
+
+0-360°
+
+gösterilecektir.
+
+Yön bilgisi ayrıca;
+
+N
+
+NE
+
+E
+
+SE
+
+S
+
+SW
+
+W
+
+NW
+
+olarak gösterilecektir.
+
+# ==========================================================
+# ADRES
+# ==========================================================
+
+Reverse Geocoding kullanılacaktır.
+
+Adres şu formatta gösterilecektir.
+
+Mahalle
+
+İlçe
+
+İl
+
+Ülke
+
+Adres alınamadığında koordinatlar gösterilecektir.
+
+# ==========================================================
+# FOTOĞRAF
+# ==========================================================
+
+Fotoğraf çekildiğinde;
+
+orijinal fotoğraf bozulmamalıdır.
+
+Fotoğraf üzerine bilgi katmanı eklenmelidir.
+
+Overlay;
+
+yarı saydam
+
+glass effect
+
+modern
+
+minimal
+
+olmalıdır.
+
+Overlay içerisinde;
+
+📍 Konum
+
+🕒 Tarih
+
+🧭 Yön
+
+🌍 Koordinatlar
+
+📏 Rakım
+
+📡 GPS Hassasiyeti
+
+gösterilecektir.
+
+Fotoğraf yüksek çözünürlükte kaydedilecektir.
+
+EXIF bilgileri korunmalıdır.
+
+# ==========================================================
+# TASARIM
+# ==========================================================
+
+Apple Human Interface Guidelines uygulanmalıdır.
+
+Minimal tasarım tercih edilmelidir.
+
+Glassmorphism kullanılabilir.
+
+Rounded Corner
+
+SF Symbols
+
+Dynamic Type
+
+Dark Mode
+
+Light Mode
+
+tam desteklenmelidir.
+
+Animasyonlar kısa ve akıcı olmalıdır.
+
+# ==========================================================
+# PERFORMANS
+# ==========================================================
+
+Ana Thread bloklanmamalıdır.
+
+Uzun işlemler background thread'de yapılmalıdır.
+
+Bellek sızıntısı olmamalıdır.
+
+Capture Session optimize edilmelidir.
+
+Location sürekli yeniden başlatılmamalıdır.
+
+# ==========================================================
+# HATA YÖNETİMİ
+# ==========================================================
+
+Tüm izinler kontrol edilmelidir.
+
+Kamera izni yoksa kullanıcı yönlendirilmelidir.
+
+GPS kapalıysa bilgi verilmelidir.
+
+Konum alınamazsa hata oluşmamalıdır.
+
+Boş veri gösterilmemelidir.
+
+# ==========================================================
+# GÜVENLİK
+# ==========================================================
+
+Kullanıcı verileri cihaz dışına gönderilmeyecektir.
+
+İlk sürüm tamamen offline çalışacaktır.
+
+Herhangi bir Analytics SDK kullanılmayacaktır.
+
+Reklam bulunmayacaktır.
+
+# ==========================================================
+# GELECEK SÜRÜMLER
+# ==========================================================
+
+Kod yazılırken aşağıdaki modüller kolayca eklenebilir olmalıdır.
+
+Logo ekleme
+
+QR Kod
+
+Filigran
+
+PDF Rapor
+
+Bulut Senkronizasyonu
+
+Şirket Hesapları
+
+Firebase
+
+OCR
+
+Yapay Zeka Analizi
+
+Mini Harita
+
+Video Çekimi
+
+# ==========================================================
+# UI KURALLARI
+# ==========================================================
+
+SwiftUI Preview mutlaka çalışmalıdır.
+
+Her View tek göreve sahip olmalıdır.
+
+Büyük View'lar Component'lere bölünmelidir.
+
+Reusable Component kullanılmalıdır.
+
+NavigationStack kullanılmalıdır.
+
+Sheet ve FullScreenCover doğru yerde tercih edilmelidir.
+
+Alert ve ConfirmationDialog standart Apple tasarımına uygun olmalıdır.
+
+# ==========================================================
+# İSİMLENDİRME
+# ==========================================================
+
+View
+
+CameraView
+
+ViewModel
+
+CameraViewModel
+
+Service
+
+LocationService
+
+Manager
+
+CameraManager
+
+Model
+
+PhotoMetadata
+
+Component
+
+InfoOverlayView
+
+# ==========================================================
+# CURSOR DAVRANIŞI
+# ==========================================================
+
+Kod üretmeden önce mevcut dosya yapısını analiz et.
+
+Yeni dosya oluştururken mevcut mimariye uygun hareket et.
+
+Gereksiz kütüphane ekleme.
+
+Önce native Apple Framework'lerini tercih et.
+
+Kod üretirken açıklayıcı ve temiz kod yaz.
+
+Her yeni özellikte MVVM mimarisini koru.
+
+Kod örnekleri production-ready seviyesinde olmalıdır.
+
+Her çözüm Apple Best Practices'e uygun olmalıdır.
+
+Kodun okunabilirliği performanstan ödün vermeyecek şekilde önceliklidir.
+
+Tüm yeni özellikler test edilebilir ve genişletilebilir olacak şekilde tasarlanmalıdır.
