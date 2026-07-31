@@ -16,11 +16,11 @@ nonisolated enum OverlayTextSize: String, CaseIterable, Identifiable, Codable, S
 
     var id: String { rawValue }
 
-    var title: String {
+    func title(language: AppLanguage) -> String {
         switch self {
-        case .small: "Küçük"
-        case .medium: "Orta"
-        case .large: "Büyük"
+        case .small: language.t(.sizeSmall)
+        case .medium: language.t(.sizeMedium)
+        case .large: language.t(.sizeLarge)
         }
     }
 

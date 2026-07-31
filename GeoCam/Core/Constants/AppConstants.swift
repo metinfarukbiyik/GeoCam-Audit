@@ -14,7 +14,6 @@ nonisolated enum AppConstants {
         static let appName = "GeoCam: Audit"
         static let developerName = "BIYIK.DEV"
         static let developerURL = URL(string: "https://biyik.dev")
-        static let developerCreditSuffix = "tarafından geliştirilmiştir."
         static let supportEmail = "metin@biyik.dev"
     }
 
@@ -23,12 +22,15 @@ nonisolated enum AppConstants {
         static let photosApp = URL(string: "photos-redirect://")
 
         /// Konu satırı hazır gelen destek e-postası.
-        static var supportMail: URL? {
+        static func supportMail(language: AppLanguage) -> URL? {
             var components = URLComponents()
             components.scheme = "mailto"
             components.path = Info.supportEmail
             components.queryItems = [
-                URLQueryItem(name: "subject", value: "\(Info.appName) Geri Bildirim")
+                URLQueryItem(
+                    name: "subject",
+                    value: language.t(.mailFeedbackSubject, Info.appName)
+                )
             ]
 
             return components.url
@@ -40,11 +42,10 @@ nonisolated enum AppConstants {
         static let brandingLogoFileName = "branding-logo.png"
     }
 
-    /// Kurumsal iş bilgisi satır etiketleri (katmanda kısa gösterim).
-    enum JobInfo {
-        static let workOrderPrefix = "İE"
-        static let siteIDPrefix = "Site"
-        static let subjectPrefix = "Not"
+    /// Ücretli özellik kapıları. İlk sürümde filigran kaldırılamaz.
+    enum Features {
+        /// `true` olduğunda kullanıcı (veya Pro) filigranı kapatabilir.
+        static let allowsRemovingAppWatermark = false
     }
 
     enum Animation {

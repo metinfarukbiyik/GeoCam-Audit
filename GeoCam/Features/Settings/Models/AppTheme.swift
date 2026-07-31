@@ -15,11 +15,11 @@ nonisolated enum AppTheme: String, CaseIterable, Identifiable, Codable, Sendable
 
     var id: String { rawValue }
 
-    var title: String {
+    func title(language: AppLanguage) -> String {
         switch self {
-        case .system: "Sistem"
-        case .light: "Açık"
-        case .dark: "Koyu"
+        case .system: language.t(.themeSystem)
+        case .light: language.t(.themeLight)
+        case .dark: language.t(.themeDark)
         }
     }
 

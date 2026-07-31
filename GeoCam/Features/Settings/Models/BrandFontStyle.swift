@@ -17,13 +17,13 @@ nonisolated enum BrandFontStyle: String, CaseIterable, Identifiable, Codable, Se
 
     var id: String { rawValue }
 
-    var title: String {
+    func title(language: AppLanguage) -> String {
         switch self {
-        case .rounded: "Yuvarlak"
-        case .serif: "Serif"
-        case .monospaced: "Eşit Aralıklı"
-        case .standard: "Standart"
-        case .condensed: "Sıkışık"
+        case .rounded: language.t(.brandFontRounded)
+        case .serif: language.t(.brandFontSerif)
+        case .monospaced: language.t(.brandFontMonospaced)
+        case .standard: language.t(.brandFontStandard)
+        case .condensed: language.t(.brandFontCondensed)
         }
     }
 

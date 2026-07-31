@@ -12,14 +12,14 @@ nonisolated enum VideoError: UserPresentableError {
     case unsupportedSource
     case exportFailed
 
-    var errorDescription: String? {
+    func presentableTitle(language: AppLanguage) -> String {
         switch self {
-        case .unsupportedSource: "Video okunamadı."
-        case .exportFailed: "Bilgi katmanı videoya işlenemedi."
+        case .unsupportedSource: language.t(.errorVideoUnsupported)
+        case .exportFailed: language.t(.errorVideoExport)
         }
     }
 
-    var recoverySuggestionText: String? {
-        "Lütfen tekrar deneyin."
+    func presentableRecovery(language: AppLanguage) -> String? {
+        language.t(.errorTryAgain)
     }
 }

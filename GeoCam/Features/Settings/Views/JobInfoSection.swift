@@ -10,6 +10,8 @@ import SwiftUI
 /// Kurumsal iş emri, site kimliği ve konu notu tercihleri.
 struct JobInfoSection: View {
 
+    @Environment(\.appLanguage) private var language
+
     @Binding var enabledFields: Set<OverlayField>
     @Binding var workOrderNumber: String
     @Binding var siteID: String
@@ -20,34 +22,34 @@ struct JobInfoSection: View {
             jobField(
                 field: .workOrder,
                 text: $workOrderNumber,
-                prompt: "Örn. WO-2026-0142"
+                prompt: language.t(.jobWorkOrderPrompt)
             )
 
             jobField(
                 field: .siteID,
                 text: $siteID,
-                prompt: "Örn. TR-TBZ-042"
+                prompt: language.t(.jobSitePrompt)
             )
 
             jobField(
                 field: .jobSubject,
                 text: $jobSubject,
-                prompt: "Örn. Cephe kontrolü",
+                prompt: language.t(.jobSubjectPrompt),
                 axis: .vertical,
                 autocapitalization: .sentences
             )
 
             if hasAnyValue {
-                Button("İş Bilgisini Temizle", role: .destructive) {
+                Button(language.t(.settingsClearJobInfo), role: .destructive) {
                     workOrderNumber = ""
                     siteID = ""
                     jobSubject = ""
                 }
             }
         } header: {
-            Text("İş Bilgisi")
+            Text(language.t(.settingsJobInfo))
         } footer: {
-            Text("İş emri, site kimliği ve not; canlı önizlemede ve kaydedilen fotoğrafta bilgi katmanına eklenir. Aynı işte birden fazla çekim için değerler saklanır.")
+            Text(language.t(.settingsJobInfoFooter))
         }
     }
 
@@ -66,7 +68,7 @@ struct JobInfoSection: View {
     ) -> some View {
         VStack(alignment: .leading, spacing: LayoutConstants.Spacing.small) {
             Toggle(isOn: binding(for: field)) {
-                Label(field.title, systemImage: field.systemImageName)
+                Label(field.title(language: language), systemImage: field.systemImageName)
             }
 
             TextField(prompt, text: text, axis: axis)

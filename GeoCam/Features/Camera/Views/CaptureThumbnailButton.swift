@@ -9,6 +9,7 @@ import SwiftUI
 
 /// Son çekimi gösteren ve Fotoğraflar uygulamasına götüren küçük görsel.
 struct CaptureThumbnailButton: View {
+    @Environment(\.appLanguage) private var language
 
     let image: UIImage?
     let action: () -> Void
@@ -27,7 +28,7 @@ struct CaptureThumbnailButton: View {
                 }
         }
         .buttonStyle(.plain)
-        .accessibilityLabel("Fotoğraflar'ı aç")
+        .accessibilityLabel(language.t(.captureOpenPhotos))
     }
 
     @ViewBuilder

@@ -21,27 +21,31 @@ final class OverlayRenderer: OverlayRendering {
         let baseImage = try await Self.preparedBaseImage(from: photo.originalData, settings: settings)
         let hasOverlayContent = !settings.enabledFields.isEmpty || branding != nil
 
-        guard hasOverlayContent else {
-            return try await Self.encoded(baseImage, preservingMetadataFrom: photo.originalData)
+        let stamped: UIImage
+        if hasOverlayContent {
+            let overlayImage = try OverlayImageFactory.makeImage(
+                metadata: photo.metadata,
+                settings: settings,
+                branding: branding,
+                targetWidth: baseImage.size.width
+            )
+            stamped = try await Self.composedImage(
+                base: baseImage,
+                overlay: overlayImage,
+                position: settings.position
+            )
+        } else {
+            stamped = baseImage
         }
 
-        // ImageRenderer ana aktör gerektirir; yalnızca bu adım ana thread'de kalır.
-        let overlayImage = try OverlayImageFactory.makeImage(
-            metadata: photo.metadata,
-            settings: settings,
-            branding: branding,
-            targetWidth: baseImage.size.width
-        )
+        let output = settings.appliesAppWatermark
+            ? AppWatermarkDrawer.apply(to: stamped, language: settings.appLanguage)
+            : stamped
 
-        return try await Self.composedData(
-            base: baseImage,
-            overlay: overlayImage,
-            position: settings.position,
-            originalData: photo.originalData
-        )
+        return try await Self.encoded(output, preservingMetadataFrom: photo.originalData)
     }
 
-    /// Damgalı sürümle aynı orana kırpılır; bilgi katmanı eklenmez.
+    /// Damgalı sürümle aynı orana kırpılır; bilgi katmanı ve uygulama filigranı eklenmez.
     func renderPlain(
         photo: CapturedPhoto,
         settings: OverlaySettings
@@ -51,7 +55,6 @@ final class OverlayRenderer: OverlayRendering {
     }
 
     // MARK: - Background
-    // nonisolated async fonksiyonlar genel yürütücüde çalışır ve ana thread'i bloklamaz.
 
     private nonisolated static func preparedBaseImage(
         from data: Data,
@@ -64,12 +67,11 @@ final class OverlayRenderer: OverlayRendering {
         return decoded.cropped(toAspectRatio: targetRatio(for: decoded, settings: settings))
     }
 
-    private nonisolated static func composedData(
+    private nonisolated static func composedImage(
         base: UIImage,
         overlay: UIImage,
-        position: OverlayPosition,
-        originalData: Data
-    ) async throws -> Data {
+        position: OverlayPosition
+    ) async throws -> UIImage {
         let photoSize = base.size
         let format = UIGraphicsImageRendererFormat()
         format.scale = 1
@@ -77,15 +79,12 @@ final class OverlayRenderer: OverlayRendering {
 
         let overlayRect = OverlayImageFactory.rect(for: overlay, position: position, in: photoSize)
 
-        let composed = UIGraphicsImageRenderer(size: photoSize, format: format).image { _ in
+        return UIGraphicsImageRenderer(size: photoSize, format: format).image { _ in
             base.draw(in: CGRect(origin: .zero, size: photoSize))
             overlay.draw(in: overlayRect)
         }
-
-        return try await encoded(composed, preservingMetadataFrom: originalData)
     }
 
-    /// Yatay çekimlerde kullanıcı tercihi ters çevrilerek uygulanır.
     private nonisolated static func targetRatio(for image: UIImage, settings: OverlaySettings) -> CGFloat {
         let portraitRatio = settings.aspectRatio.portraitRatio
         let isPortrait = image.size.height >= image.size.width

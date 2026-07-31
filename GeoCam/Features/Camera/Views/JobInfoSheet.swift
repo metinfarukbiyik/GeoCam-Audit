@@ -10,6 +10,8 @@ import SwiftUI
 /// Kamera ekranından iş emri / site / not bilgisini hızlı güncelleme paneli.
 struct JobInfoSheet: View {
 
+    @Environment(\.appLanguage) private var language
+
     @Binding var settings: OverlaySettings
     let onDismiss: () -> Void
 
@@ -18,43 +20,43 @@ struct JobInfoSheet: View {
             Form {
                 Section {
                     labeledField(
-                        title: OverlayField.workOrder.title,
+                        title: OverlayField.workOrder.title(language: language),
                         systemImage: OverlayField.workOrder.systemImageName,
                         text: workOrderBinding,
-                        prompt: "WO-2026-0142"
+                        prompt: language.t(.jobWorkOrderPrompt)
                     )
 
                     labeledField(
-                        title: OverlayField.siteID.title,
+                        title: OverlayField.siteID.title(language: language),
                         systemImage: OverlayField.siteID.systemImageName,
                         text: siteIDBinding,
-                        prompt: "TR-TBZ-042"
+                        prompt: language.t(.jobSitePrompt)
                     )
 
                     labeledField(
-                        title: OverlayField.jobSubject.title,
+                        title: OverlayField.jobSubject.title(language: language),
                         systemImage: OverlayField.jobSubject.systemImageName,
                         text: subjectBinding,
-                        prompt: "Cephe kontrolü",
+                        prompt: language.t(.jobSubjectPrompt),
                         axis: .vertical
                     )
                 } footer: {
-                    Text("Bu bilgiler sonraki çekimlerde katmana basılır. Alanı katmanda gizlemek için Ayarlar’daki ilgili anahtarı kapatın.")
+                    Text(language.t(.jobSheetFooter))
                 }
 
                 if settings.hasJobInfoContent {
                     Section {
-                        Button("İş Bilgisini Temizle", role: .destructive) {
+                        Button(language.t(.settingsClearJobInfo), role: .destructive) {
                             settings.clearJobInfo()
                         }
                     }
                 }
             }
-            .navigationTitle("İş Bilgisi")
+            .navigationTitle(language.t(.settingsJobInfo))
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .confirmationAction) {
-                    Button("Tamam", action: onDismiss)
+                    Button(language.t(.jobSheetDone), action: onDismiss)
                         .fontWeight(.semibold)
                 }
             }

@@ -9,6 +9,8 @@ import SwiftUI
 
 /// Deklanşör düğmesi. Video modunda kayıt durumunu da yansıtır.
 struct CaptureButtonView: View {
+    @Environment(\.appLanguage) private var language
+
     let mode: CaptureMode
     let isBusy: Bool
     let isRecording: Bool
@@ -52,9 +54,9 @@ struct CaptureButtonView: View {
 
     private var accessibilityLabel: String {
         switch (mode, isRecording) {
-        case (.photo, _): "Fotoğraf çek"
-        case (.video, false): "Kaydı başlat"
-        case (.video, true): "Kaydı durdur"
+        case (.photo, _): language.t(.capturePhotoAccessibility)
+        case (.video, false): language.t(.captureRecordStart)
+        case (.video, true): language.t(.captureRecordStop)
         }
     }
 }

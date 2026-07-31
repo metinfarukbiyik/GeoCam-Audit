@@ -16,8 +16,12 @@ nonisolated struct OverlaySettings: Equatable, Codable, Sendable {
     var textSize: OverlayTextSize
     var position: OverlayPosition
     var aspectRatio: CameraAspectRatio
+    /// Arayüz ve katman metinleri dili.
+    var appLanguage: AppLanguage
     /// Açıkken damgalı kopyaya ek olarak işlenmemiş orijinal de Fotoğraflar’a yazılır.
     var savesOriginalPhoto: Bool
+    /// Gelecekte Pro ile kapatılabilir; şimdilik `appliesAppWatermark` her zaman true döner.
+    var showsAppWatermark: Bool
     var showsBranding: Bool
     var brandName: String
     var brandFontStyle: BrandFontStyle
@@ -38,7 +42,9 @@ nonisolated struct OverlaySettings: Equatable, Codable, Sendable {
         textSize: .medium,
         position: .default,
         aspectRatio: .wide,
+        appLanguage: .turkish,
         savesOriginalPhoto: false,
+        showsAppWatermark: true,
         showsBranding: false,
         brandName: "",
         brandFontStyle: .rounded,
@@ -62,6 +68,12 @@ nonisolated struct OverlaySettings: Equatable, Codable, Sendable {
 
     func isEnabled(_ field: OverlayField) -> Bool {
         enabledFields.contains(field)
+    }
+
+    /// Damgalı çıktıya uygulama filigranı uygulanır mı?
+    /// Ücretsiz sürümde her zaman açık; Pro kapısı açılınca kullanıcı tercihine düşer.
+    var appliesAppWatermark: Bool {
+        AppConstants.Features.allowsRemovingAppWatermark ? showsAppWatermark : true
     }
 
     /// Canlı konum kartında en az bir alan açık mı?
@@ -118,8 +130,12 @@ nonisolated extension OverlaySettings {
         }
         aspectRatio = try container.decodeIfPresent(CameraAspectRatio.self, forKey: .aspectRatio)
             ?? fallback.aspectRatio
+        appLanguage = try container.decodeIfPresent(AppLanguage.self, forKey: .appLanguage)
+            ?? fallback.appLanguage
         savesOriginalPhoto = try container.decodeIfPresent(Bool.self, forKey: .savesOriginalPhoto)
             ?? fallback.savesOriginalPhoto
+        showsAppWatermark = try container.decodeIfPresent(Bool.self, forKey: .showsAppWatermark)
+            ?? fallback.showsAppWatermark
         showsBranding = try container.decodeIfPresent(Bool.self, forKey: .showsBranding) ?? fallback.showsBranding
         brandName = try container.decodeIfPresent(String.self, forKey: .brandName) ?? fallback.brandName
         brandFontStyle = try container.decodeIfPresent(BrandFontStyle.self, forKey: .brandFontStyle)

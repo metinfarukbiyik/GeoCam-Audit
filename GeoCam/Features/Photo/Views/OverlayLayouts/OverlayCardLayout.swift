@@ -57,7 +57,7 @@ struct OverlayCardLayout: View {
                         .imageScale(.medium)
                         .accessibilityHidden(true)
 
-                    Text("Konum")
+                    Text(model.addressTitle)
                         .foregroundStyle(.white.opacity(0.75))
                 }
 

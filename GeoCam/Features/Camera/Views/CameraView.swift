@@ -12,6 +12,7 @@ struct CameraView: View {
 
     @Environment(\.scenePhase) private var scenePhase
     @Environment(\.openURL) private var openURL
+    @Environment(\.appLanguage) private var language
     @Environment(AppDependencies.self) private var dependencies
 
     @State private var viewModel: CameraViewModel
@@ -77,7 +78,7 @@ struct CameraView: View {
             floatingControls
 
             if viewModel.isProcessingVideo {
-                ProcessingOverlayView(message: "Video işleniyor…")
+                ProcessingOverlayView(message: language.t(.captureVideoProcessing))
                     .transition(.opacity)
             }
         }
@@ -212,9 +213,9 @@ struct CameraView: View {
     private var cameraPermissionPlaceholder: some View {
         PermissionRequestView(
             systemImage: "camera.fill",
-            title: "Kamera Erişimi Gerekli",
-            message: "Fotoğraf çekebilmek için Ayarlar'dan kamera erişimine izin verin.",
-            actionTitle: "Ayarları Aç",
+            title: language.t(.captureCameraPermissionTitle),
+            message: language.t(.captureCameraPermissionMessage),
+            actionTitle: language.t(.captureOpenSettings),
             action: openAppSettings
         )
     }
@@ -231,7 +232,7 @@ struct CameraView: View {
             Button(action: onOpenMenu) {
                 Image(systemName: "line.3.horizontal")
             }
-            .accessibilityLabel("Ayarlar menüsü")
+            .accessibilityLabel(language.t(.captureSettingsMenu))
         }
 
         ToolbarItem(placement: .topBarTrailing) {
@@ -249,11 +250,11 @@ struct CameraView: View {
                     }
                 }
             }
-            .accessibilityLabel("İş bilgisi")
+            .accessibilityLabel(language.t(.captureJobInfo))
             .accessibilityHint(
                 dependencies.settingsStore.settings.hasJobInfoContent
-                    ? "İş bilgisi dolu; düzenlemek için dokunun"
-                    : "İş emri veya site kimliği ekle"
+                    ? language.t(.captureJobInfoHintFilled)
+                    : language.t(.captureJobInfoHintEmpty)
             )
         }
     }

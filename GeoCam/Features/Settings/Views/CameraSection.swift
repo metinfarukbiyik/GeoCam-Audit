@@ -10,12 +10,14 @@ import SwiftUI
 /// Çekim çerçevesi ve kayıt tercihlerini sunan bölüm.
 struct CameraSection: View {
 
+    @Environment(\.appLanguage) private var language
+
     @Binding var aspectRatio: CameraAspectRatio
     @Binding var savesOriginalPhoto: Bool
 
     var body: some View {
         Section {
-            Picker("Çerçeve Oranı", selection: $aspectRatio) {
+            Picker(language.t(.settingsFrameRatio), selection: $aspectRatio) {
                 ForEach(CameraAspectRatio.allCases) { ratio in
                     Text(ratio.title).tag(ratio)
                 }
@@ -23,12 +25,12 @@ struct CameraSection: View {
             .pickerStyle(.segmented)
 
             Toggle(isOn: $savesOriginalPhoto) {
-                Label("Orijinali de Kaydet", systemImage: "square.on.square")
+                Label(language.t(.settingsSaveOriginal), systemImage: "square.on.square")
             }
         } header: {
-            Text("Kamera")
+            Text(language.t(.settingsCamera))
         } footer: {
-            Text("9:16 tam ekran önizleme sunar; 4:3 seçildiğinde çekim alanı küçültülerek çerçeve net görünür. Orijinali de kaydet açıkken damgasız kopya aynı çerçeve oranında Fotoğraflar’a yazılır.")
+            Text(language.t(.settingsCameraFooter))
         }
     }
 }

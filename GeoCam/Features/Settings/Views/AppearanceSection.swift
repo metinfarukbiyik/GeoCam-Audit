@@ -9,6 +9,8 @@ import SwiftUI
 
 /// Tema, yazı tipi ve metin boyutu tercihlerini sunan bölüm.
 struct AppearanceSection: View {
+    @Environment(\.appLanguage) private var language
+
     @Binding var layoutStyle: OverlayLayoutStyle
     @Binding var theme: AppTheme
     @Binding var fontStyle: OverlayFontStyle
@@ -16,36 +18,36 @@ struct AppearanceSection: View {
 
     var body: some View {
         Section {
-            Picker("Katman Tasarımı", selection: $layoutStyle) {
+            Picker(language.t(.settingsLayout), selection: $layoutStyle) {
                 ForEach(OverlayLayoutStyle.allCases) { style in
-                    Text(style.title).tag(style)
+                    Text(style.title(language: language)).tag(style)
                 }
             }
 
-            Picker("Tema", selection: $theme) {
+            Picker(language.t(.settingsTheme), selection: $theme) {
                 ForEach(AppTheme.allCases) { theme in
-                    Text(theme.title).tag(theme)
+                    Text(theme.title(language: language)).tag(theme)
                 }
             }
 
-            Picker("Yazı Tipi", selection: $fontStyle) {
+            Picker(language.t(.settingsFont), selection: $fontStyle) {
                 ForEach(OverlayFontStyle.allCases) { style in
-                    Text(style.title)
+                    Text(style.title(language: language))
                         .fontDesign(style.design)
                         .tag(style)
                 }
             }
 
-            Picker("Metin Boyutu", selection: $textSize) {
+            Picker(language.t(.settingsTextSize), selection: $textSize) {
                 ForEach(OverlayTextSize.allCases) { size in
-                    Text(size.title).tag(size)
+                    Text(size.title(language: language)).tag(size)
                 }
             }
             .pickerStyle(.segmented)
         } header: {
-            Text("Görünüm")
+            Text(language.t(.settingsAppearance))
         } footer: {
-            Text("Tasarım seçimi kamera önizlemesine anında yansır. Bilgi katmanını parmağınızla sürükleyerek fotoğraftaki yerini değiştirebilirsiniz.")
+            Text(language.t(.settingsAppearanceFooter))
         }
     }
 }

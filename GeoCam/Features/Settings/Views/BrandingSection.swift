@@ -11,6 +11,8 @@ import SwiftUI
 /// Şirket logosu, marka adı, font, renk ve ikon tercihlerini sunan bölüm.
 struct BrandingSection: View {
 
+    @Environment(\.appLanguage) private var language
+
     @Binding var showsBranding: Bool
     @Binding var brandName: String
     @Binding var brandFontStyle: BrandFontStyle
@@ -28,10 +30,10 @@ struct BrandingSection: View {
     var body: some View {
         Section {
             Toggle(isOn: $showsBranding) {
-                Label("Fotoğrafa Marka Ekle", systemImage: "signature")
+                Label(language.t(.settingsBrandingToggle), systemImage: "signature")
             }
 
-            TextField("Şirket / Marka Adı", text: $brandName)
+            TextField(language.t(.settingsBrandNamePlaceholder), text: $brandName)
                 .textInputAutocapitalization(.words)
 
             if showsBranding {
@@ -40,15 +42,15 @@ struct BrandingSection: View {
                 logoRow
 
                 if logo != nil {
-                    Button("Logoyu Kaldır", role: .destructive) {
+                    Button(language.t(.settingsRemoveLogo), role: .destructive) {
                         onLogoChange(nil)
                     }
                 }
             }
         } header: {
-            Text("Marka")
+            Text(language.t(.settingsBranding))
         } footer: {
-            Text("Logo veya ikon ile marka adı, canlı önizlemede ve kaydedilen fotoğrafta bilgi katmanının en üstünde görünür. Özel logo seçildiğinde ikon yerine logo kullanılır.")
+            Text(language.t(.settingsBrandFooter))
         }
         .onChange(of: pickerSelection) { _, item in
             Task { await loadLogo(from: item) }
@@ -63,9 +65,9 @@ struct BrandingSection: View {
 
     @ViewBuilder
     private var styleControls: some View {
-        Picker("Marka Yazı Tipi", selection: $brandFontStyle) {
+        Picker(language.t(.settingsBrandFont), selection: $brandFontStyle) {
             ForEach(BrandFontStyle.allCases) { style in
-                Text(style.title)
+                Text(style.title(language: language))
                     .font(.body.weight(style.weight).width(style.width))
                     .fontDesign(style.design)
                     .tag(style)
@@ -73,7 +75,7 @@ struct BrandingSection: View {
         }
 
         VStack(alignment: .leading, spacing: LayoutConstants.Spacing.small) {
-            Text("Marka Rengi")
+            Text(language.t(.settingsBrandColor))
                 .font(.subheadline)
                 .foregroundStyle(.secondary)
 
@@ -106,7 +108,7 @@ struct BrandingSection: View {
                             }
                     }
                     .buttonStyle(.plain)
-                    .accessibilityLabel(accent.title)
+                    .accessibilityLabel(accent.title(language: language))
                     .accessibilityAddTraits(brandAccentColor == accent ? .isSelected : [])
                 }
             }
@@ -121,7 +123,7 @@ struct BrandingSection: View {
             }
 
             Text(brandName.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
-                 ? "Marka Önizleme"
+                 ? language.t(.settingsBrandPreview)
                  : brandName)
                 .lineLimit(1)
         }
@@ -142,7 +144,7 @@ struct BrandingSection: View {
 
     private var iconPicker: some View {
         VStack(alignment: .leading, spacing: LayoutConstants.Spacing.small) {
-            Text("Marka İkonu")
+            Text(language.t(.settingsBrandIcon))
                 .font(.subheadline)
                 .foregroundStyle(.secondary)
 
@@ -177,13 +179,13 @@ struct BrandingSection: View {
                     }
                     .buttonStyle(.plain)
                     .foregroundStyle(brandAccentColor.color)
-                    .accessibilityLabel(icon.title)
+                    .accessibilityLabel(icon.title(language: language))
                     .accessibilityAddTraits(brandIcon == icon ? .isSelected : [])
                 }
             }
 
             if logo != nil {
-                Text("Özel logo seçiliyken ikon gizlenir.")
+                Text(language.t(.brandLogoHint))
                     .font(.caption)
                     .foregroundStyle(.secondary)
             }
@@ -195,7 +197,7 @@ struct BrandingSection: View {
             logoPreview
 
             PhotosPicker(
-                logo == nil ? "Logo Seç" : "Logoyu Değiştir",
+                logo == nil ? language.t(.settingsChooseLogo) : language.t(.settingsChangeLogo),
                 selection: $pickerSelection,
                 matching: .images,
                 photoLibrary: .shared()

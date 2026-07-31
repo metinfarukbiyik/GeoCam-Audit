@@ -1,6 +1,8 @@
 # GeoCam: Audit
 
-iOS için profesyonel saha / denetim kamerası. Çekilen fotoğraf ve videoya konum, adres, pusula, iş emri ve marka bilgilerini damgalar. Tamamen cihaz içi çalışır; analitik ve reklam yoktur.
+Profesyonel saha / denetim kamerası. Çekilen fotoğraf ve videoya konum, adres, pusula, iş bilgisi ve markayı damgalar; sağ altta zorunlu GeoCam filigranı ile kaydın orijinalliğini vurgular.
+
+Tamamen cihaz içi çalışır. Analitik, reklam ve bulut senkronizasyonu yoktur.
 
 | | |
 |---|---|
@@ -10,6 +12,7 @@ iOS için profesyonel saha / denetim kamerası. Çekilen fotoğraf ve videoya ko
 | Mimari | MVVM + protocol servisler |
 | Durum | Observation (`@Observable`) |
 | Asenkron | async/await, actor kuyruk |
+| Yerelleştirme | tr / en / es / de (`L10n`, anında geçiş) |
 
 ---
 
@@ -18,129 +21,114 @@ iOS için profesyonel saha / denetim kamerası. Çekilen fotoğraf ve videoya ko
 ```text
 GeoCam/
 ├── App/                 # GeoCamApp, RootView, Splash, DI
-├── Core/                # Constants, Extensions, Utilities
+├── Core/                # Constants, Extensions, Utilities (L10n)
 ├── Features/
 │   ├── Camera/          # AVFoundation, çekim kuyruğu, UI
 │   ├── Location/        # GPS, pusula, reverse geocode
-│   ├── Photo/           # Overlay, EXIF, galeri kaydı
-│   ├── Video/           # Video damga
-│   └── Settings/        # Tercihler, marka, iş bilgisi
+│   ├── Photo/           # Overlay, filigran, EXIF, galeri
+│   ├── Video/           # Video damga + filigran
+│   └── Settings/        # Dil, kamera, marka, iş bilgisi
 ├── Shared/              # Ortak bileşenler
 └── Resources/           # Assets, Info.plist
 ```
 
 ---
 
-## Neler var (mevcut özellikler)
+## Özellikler
 
 ### Kamera
 - AVFoundation oturumu, hızlı açılış
 - Fotoğraf / video modu
 - Flaş: Auto / On / Off
 - Ön / arka kamera
-- Zoom (0.5 / 1× / 2 + pinch)
-- Çerçeve oranı: **4:3** ve **9:16** (canlı önizleme + kayıt kırpma)
-- Seri çekim kuyruğu (`CaptureProcessingQueue`) — deklanşör sensör sonrası açılır
-- İsteğe bağlı **orijinali de kaydet** (aynı oranda, damgasız)
+- Zoom (0.5× / 1× / 2× + pinch)
+- Çerçeve oranı: **4:3** (çerçeveli önizleme) ve **9:16** (tam ekran)
+- Seri çekim kuyruğu (`CaptureProcessingQueue`)
+- İsteğe bağlı **orijinali de kaydet** (aynı oran, damgasız)
+
+### Filigran
+- Damgalı fotoğraf/videoya **zorunlu** sağ alt filigran
+- Satır 1: `GeoCam: Audit`
+- Satır 2: orijinallik metni (ör. “Orijinal saha kaydı”) — dile göre
+- Ücretsiz sürümde kapatılamaz (`AppConstants.Features.allowsRemovingAppWatermark = false`)
+- İleride ücretli planda kaldırılabilir hale getirilebilir
 
 ### Konum & pusula
-- Latitude, longitude, rakım, yatay doğruluk (metre)
-- Hız ve GPS timestamp modelde tutulur (overlay’de gösterilmez — bkz. eksikler)
+- Enlem, boylam, rakım, yatay GPS doğruluğu (metre)
 - Manyetik yön: derece + N / NE / E / SE / S / SW / W / NW
-- Reverse geocode: mahalle, ilçe, il, ülke (yoksa koordinat yedeği)
-- İzin yoksa / aranıyorsa bilgilendirme UI
+- Reverse geocode: mahalle, ilçe, il, ülke (yoksa koordinat)
+- İzin kapalı / aranıyor durumları için bilgilendirme UI
+- Hız ve GPS timestamp modelde tutulur (katmanda gösterilmez)
 
-### Bilgi katmanı (overlay)
-- Canlı önizleme + foto/video damgası (WYSIWYG’e yakın)
-- Alan seçimi: tarih, saat, adres, koordinat, rakım, yön, GPS hassasiyeti
-- Birden fazla layout (kompakt, kart, şerit, sade, poster, ikili, kapsül)
+### Bilgi katmanı
+- Canlı önizleme ≈ kayda basılan çıktı
+- Alanlar: tarih, saat, adres, koordinat, rakım, yön, GPS hassasiyeti
+- 7 layout: kompakt, kart, şerit, sade, poster, ikili, kapsül
 - Sürüklenebilir konum, pinch ile metin boyutu
-- Glass / material (canlı); damgada yarı saydam koyu arka plan
-- EXIF: orijinal capture metadata’sı JPEG çıktısına aktarılır
+- Canlıda glass / material; damgada yarı saydam koyu arka plan
+- EXIF: kaynak capture metadata JPEG’e aktarılır
 
-### Kurumsal / marka
-- Marka adı, logo, SF Symbol ikon, font ve renk
-- İş Emri, Site ID, Konu/Not (ayarlar + kamera hızlı sheet)
-- Geliştirici kredisi (biyik.dev)
+### Kurumsal
+- Marka: ad, logo, SF Symbol, font, renk
+- İş Emri, Site ID, Konu/Not (ayarlar + kamera sheet)
+- Geliştirici kredisi ([biyik.dev](https://biyik.dev))
 
-### Diğer
-- Splash + App Icon
+### Uygulama
+- Dil: Türkçe, English, Español, Deutsch
 - Tema: sistem / açık / koyu
+- Splash + App Icon
+- Fotoğraflar’a kayıt + thumbnail kısayolu
 - Offline; Analytics / reklam / Firebase yok
-- Fotoğraflar uygulamasına kayıt + thumbnail kısayolu
 
 ---
 
-## `.cursorrules` ile karşılaştırma — eksikler / kısmi
+## Bilinen boşluklar
 
-### Çekirdek kurallara göre boşluklar
+`.cursorrules` ve ürün hedefiyle karşılaştırma:
 
 | Madde | Durum |
 |--------|--------|
-| HEIF **ve** JPEG desteği | Capture HEVC tercih edebilir; **kayıt her zaman JPEG**. Kullanıcıya HEIF seçeneği yok. |
-| GPS **Speed** overlay’de | Modelde var, katmanda gösterilmiyor. |
-| GPS **Timestamp** overlay’de | Ayrı alan yok (çekim tarihi/saati var). |
-| EXIF’e uygulama GPS’inin yazılması | Kaynak EXIF korunuyor; CoreLocation verisi GPS etiketlerine yeniden enjekte edilmiyor. |
-| Damgada gerçek glass material | ImageRenderer sınırından damga yarı saydam siyah; canlıda material var. |
-| Dynamic Type | Overlay sabit punto (`OverlayTextSize`); sistem Dynamic Type yok. |
-| SwiftUI Preview “her View” | Çoğunda var; bazı layout / düşük seviye View’larda eksik. |
-| Birim testleri | `GeoCamTests` iskelet; anlamlı coverage yok. |
-| Klasör: ayrı `Compass/` | Pusula `Location` özelliği altında (işlevsel olarak tamam). |
-
-### Karşılanan başlıklar (özet)
-Flash Auto/On/Off, ön/arka kamera, pusula yönleri, adres formatı, izin yönetimi, offline / no ads / no analytics, video çekimi + damga, MVVM / SwiftUI / iOS 17 / Swift 6.
-
-### `.cursorrules` “gelecek sürümler” listesi
-
-| Modül | Durum |
-|--------|--------|
-| Logo ekleme | **Var** (marka / branding) |
-| Video çekimi | **Var** |
-| QR Kod | Yok |
-| Filigran (ayrı watermark) | Yok (marka/logo kısmen karşılar) |
-| PDF Rapor | Yok |
-| Bulut senkronizasyonu | Yok |
-| Şirket hesapları | Yok |
-| Firebase | Yok (bilinçli; offline kuralı) |
-| OCR | Yok |
-| Yapay zeka analizi | Yok |
-| Mini harita | Yok |
+| HEIF **ve** JPEG | Kayıt şu an **yalnızca JPEG** |
+| GPS Speed / Timestamp overlay | Modelde var; katmanda yok |
+| EXIF’e uygulama GPS yazma | Kaynak EXIF korunur; CL yeniden enjekte edilmez |
+| Damgada gerçek glass | Damga yarı saydam siyah; canlıda material var |
+| Dynamic Type | Overlay sabit punto (`OverlayTextSize`) |
+| Birim testleri | `GeoCamTests` iskelet |
+| Ayrı `Compass/` klasörü | Pusula `Location` altında (işlevsel tamam) |
 
 ---
 
-## Pro sürüme eklenebilecekler (not)
+## Yol haritası
 
-Ücretsiz sürümde damga ve temel iş akışı kalsın; Pro’da **rapor, hız, kontrol ve ekip** satsın.
+### Ücretsiz sürümde var
+Logo/marka, video + damga, zorunlu filigran, çoklu dil, iş bilgisi, 4:3 / 9:16
 
-### Öncelikli Pro adayları
-1. **PDF saha raporu** — gün / iş emri / site bazlı kapak + foto ızgarası + meta tablo  
-2. **İş geçmişi** — son N iş emri / site tek dokunuşla geri yükleme  
-3. **QR / barkod** ile iş emri veya site okutma  
-4. **Zorunlu alan politikası** — iş emri boşken çekimi engelle / uyar (yönetici PIN)  
-5. **Çoklu marka profili** — proje başına logo / renk seti  
-6. **CSV / JSON indeks** — foto + koordinat + İE + site eşlemesi (ERP / Excel)  
-7. **HEIF çıktı seçeneği** + kalite / seri çekim preset’leri  
-8. **EXIF/IPTC UserComment** — iş emri + notu metadata’ya yazma  
-9. **Albüm adı kuralı** — `SiteID_İşEmri_Tarih`  
-10. **Gelişmiş watermark / filigran** — tekrarlayan desen, opaklık, konum kilitleri  
+### Henüz yok
+| Modül | Not |
+|--------|-----|
+| QR / barkod | İş emri veya site okutma |
+| PDF rapor | Saha özeti |
+| Filigranı kaldırma | Pro kapısı hazır, UI yok |
+| Bulut / şirket hesabı | Offline kuralı gereği bilinçli yok |
+| Firebase / OCR / AI | Planlı değil veya sonraki dalga |
+| Mini harita | Damga eki |
 
-### Ekip / kurumsal Pro+
-- Çoklu kullanıcı / şirket hesabı  
-- Merkezi şablon ve marka kilidi  
-- İsteğe bağlı bulut yedek / paylaşım (ayrı gizlilik onayı)  
-- Yönetici paneli (basit): zorunlu alanlar, layout kilidi  
-- MDM / faturalı kurumsal lisans  
+### Pro adayları (öncelik)
+1. Filigranı kaldırma (ücretli)
+2. PDF saha raporu
+3. İş geçmişi (son İE / site)
+4. QR ile iş emri / site
+5. Zorunlu alan politikası
+6. Çoklu marka profili
+7. CSV / JSON indeks
+8. HEIF çıktı seçeneği
+9. EXIF/IPTC’ye iş emri yazma
+10. Albüm adı kuralı (`SiteID_İşEmri_Tarih`)
 
-### İleri (sonraki dalga)
-- Mini harita damgası  
-- OCR (tabela / iş emri görselinden metin)  
-- AI hasar / etiket önerisi  
-- Zaman + konum doğrulama özeti (rapor eki)  
-
-### Önerilen paketleme
-- **Free:** Temel damga, 1 marka, iş emri/site/not, 4:3 & 9:16, video  
-- **Pro (bireysel):** PDF, geçmiş, QR, HEIF, zorunlu alanlar, CSV, çoklu marka  
-- **Pro Ekip:** kullanıcı başı / cihaz paketi + şablon kilidi + (opsiyonel) sync  
+### Paketleme önerisi
+- **Free:** Damga, zorunlu filigran, 1 marka, iş bilgisi, dil, video, 4:3 & 9:16  
+- **Pro:** Filigransız çıktı, PDF, geçmiş, QR, HEIF, CSV, çoklu marka  
+- **Pro Ekip:** Şablon kilidi, çoklu kullanıcı, isteğe bağlı sync  
 
 ---
 
@@ -151,15 +139,15 @@ open GeoCam.xcodeproj
 # Xcode 16+, iOS 17+ simülatör veya cihaz
 ```
 
-Gerekli izinler (`Info.plist` / build settings):
-- Kamera  
-- Konum (When In Use)  
-- Fotoğraflar (Add)  
+Gerekli izinler:
+- Kamera
+- Konum (When In Use)
+- Fotoğraflar (Add)
 - Mikrofon (video)
 
 ---
 
-## Lisans / iletişim
+## İletişim
 
 Geliştirici: [Metin Faruk Bıyık](https://biyik.dev)  
 Destek: metin@biyik.dev

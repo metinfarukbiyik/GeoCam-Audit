@@ -14,10 +14,10 @@ nonisolated enum CaptureMode: String, CaseIterable, Identifiable, Codable, Senda
 
     var id: String { rawValue }
 
-    var title: String {
+    func title(language: AppLanguage) -> String {
         switch self {
-        case .photo: "Fotoğraf"
-        case .video: "Video"
+        case .photo: language.t(.capturePhoto)
+        case .video: language.t(.captureVideo)
         }
     }
 

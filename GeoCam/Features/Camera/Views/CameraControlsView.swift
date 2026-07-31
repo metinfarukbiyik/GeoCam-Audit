@@ -9,6 +9,8 @@ import SwiftUI
 
 /// Mod seçici, deklanşör, flaş ve kamera değiştirme kontrollerini barındıran alt bar.
 struct CameraControlsView: View {
+    @Environment(\.appLanguage) private var language
+
     let captureMode: CaptureMode
     let flashMode: CameraFlashMode
     let isShutterLocked: Bool
@@ -74,14 +76,16 @@ struct CameraControlsView: View {
                         .padding(.vertical, 2)
                         .background(.yellow, in: Capsule())
                         .offset(x: 6, y: -6)
-                        .accessibilityLabel("\(pendingProcessingCount) fotoğraf işleniyor")
+                        .accessibilityLabel(language.t(.captureProcessingMany, pendingProcessingCount))
                 }
             }
 
             Button(action: onToggleFlash) {
                 Image(systemName: flashMode.systemImageName)
             }
-            .accessibilityLabel(captureMode == .video ? "Işık modu" : "Flaş modu")
+            .accessibilityLabel(
+                captureMode == .video ? language.t(.captureLight) : language.t(.captureFlash)
+            )
         }
     }
 
@@ -89,7 +93,7 @@ struct CameraControlsView: View {
         Button(action: onSwitchCamera) {
             Image(systemName: "arrow.triangle.2.circlepath.camera.fill")
         }
-        .accessibilityLabel("Kamerayı değiştir")
+        .accessibilityLabel(language.t(.captureSwitchCamera))
         .disabled(isRecording)
         .opacity(isRecording ? 0.4 : 1)
     }

@@ -60,11 +60,12 @@ final class CameraViewModel {
     var processingStatusMessage: String? {
         guard pendingProcessingCount > 0 else { return nil }
 
+        let language = settingsStore.settings.appLanguage
         if pendingProcessingCount == 1 {
-            return "1 fotoğraf işleniyor…"
+            return language.t(.captureProcessingOne)
         }
 
-        return "\(pendingProcessingCount) fotoğraf işleniyor…"
+        return language.t(.captureProcessingMany, pendingProcessingCount)
     }
 
     var overlaySettings: OverlaySettings {
@@ -197,7 +198,7 @@ final class CameraViewModel {
         guard !isCapturing else { return }
 
         if pendingProcessingCount >= CameraConstants.Capture.maxPendingJobs {
-            saveConfirmation = "Kuyruk dolu, biraz bekleyin"
+            saveConfirmation = settingsStore.settings.appLanguage.t(.captureQueueFull)
             return
         }
 
@@ -286,9 +287,10 @@ final class CameraViewModel {
 
         guard pendingProcessingCount == 0, savedBatchCount > 0 else { return }
 
+        let language = settingsStore.settings.appLanguage
         saveConfirmation = savedBatchCount == 1
-            ? "Fotoğraf kaydedildi"
-            : "\(savedBatchCount) fotoğraf kaydedildi"
+            ? language.t(.capturePhotoSaved)
+            : language.t(.capturePhotosSaved, savedBatchCount)
         savedBatchCount = 0
     }
 
@@ -326,20 +328,25 @@ final class CameraViewModel {
 
         try await photoLibraryService.save(videoAt: outputURL)
         lastCaptureThumbnail = thumbnail
-        saveConfirmation = "Video kaydedildi"
+        saveConfirmation = settingsStore.settings.appLanguage.t(.captureVideoSaved)
     }
 
     /// Katman işlenemezse kayıt kaybolmasın diye ham video kaydedilir.
+    /// Filigran zorunlu olduğu için boş katmanda bile video işlenir.
     private func stamped(_ sourceURL: URL, metadata: PhotoMetadata) async -> URL {
         let branding = currentBranding()
+        let settings = settingsStore.settings
 
-        guard !settingsStore.settings.enabledFields.isEmpty || branding != nil else { return sourceURL }
+        guard settings.appliesAppWatermark
+            || !settings.enabledFields.isEmpty
+            || branding != nil
+        else { return sourceURL }
 
         do {
             let renderedURL = try await videoOverlayRenderer.render(
                 videoAt: sourceURL,
                 metadata: metadata,
-                settings: settingsStore.settings,
+                settings: settings,
                 branding: branding
             )
 
@@ -362,11 +369,13 @@ final class CameraViewModel {
     private func present(_ error: any Error) {
         AppLogger.camera.error("\(String(describing: error), privacy: .public)")
 
+        let language = settingsStore.settings.appLanguage
+
         guard let presentable = error as? any UserPresentableError else {
-            alertItem = ErrorAlertItem(CameraError.captureFailed)
+            alertItem = ErrorAlertItem(CameraError.captureFailed, language: language)
             return
         }
 
-        alertItem = ErrorAlertItem(presentable)
+        alertItem = ErrorAlertItem(presentable, language: language)
     }
 }

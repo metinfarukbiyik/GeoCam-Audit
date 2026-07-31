@@ -34,7 +34,9 @@ final class VideoOverlayRenderer: VideoOverlayRendering {
         videoComposition.animationTool = makeAnimationTool(
             overlay: overlayImage,
             position: settings.position,
-            renderSize: renderSize
+            renderSize: renderSize,
+            language: settings.appLanguage,
+            showsAppWatermark: settings.appliesAppWatermark
         )
         applySDRColorProperties(to: videoComposition)
 
@@ -46,7 +48,9 @@ final class VideoOverlayRenderer: VideoOverlayRendering {
     private func makeAnimationTool(
         overlay: UIImage,
         position: OverlayPosition,
-        renderSize: CGSize
+        renderSize: CGSize,
+        language: AppLanguage,
+        showsAppWatermark: Bool
     ) -> AVVideoCompositionCoreAnimationTool {
         let parentLayer = CALayer()
         let videoLayer = CALayer()
@@ -57,6 +61,12 @@ final class VideoOverlayRenderer: VideoOverlayRendering {
 
         parentLayer.addSublayer(videoLayer)
         parentLayer.addSublayer(makeOverlayLayer(overlay, position: position, renderSize: renderSize))
+
+        if showsAppWatermark {
+            parentLayer.addSublayer(
+                AppWatermarkDrawer.makeLayer(renderSize: renderSize, language: language)
+            )
+        }
 
         return AVVideoCompositionCoreAnimationTool(
             postProcessingAsVideoLayer: videoLayer,

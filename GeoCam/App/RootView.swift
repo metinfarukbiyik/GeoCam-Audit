@@ -40,6 +40,8 @@ struct RootView: View {
             }
         }
         .preferredColorScheme(dependencies.settingsStore.settings.theme.colorScheme)
+        .environment(\.appLanguage, dependencies.settingsStore.settings.appLanguage)
+        .environment(\.locale, dependencies.settingsStore.settings.appLanguage.locale)
         .task { await dismissSplash() }
     }
 

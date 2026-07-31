@@ -50,4 +50,18 @@ nonisolated enum OverlayConstants {
         /// Marka adı, bilgi satırlarına göre bu oranda büyütülür.
         static let titleScale: CGFloat = 1.25
     }
+
+    /// Sağ alt köşe uygulama filigranı.
+    enum Watermark {
+        static let opacity: CGFloat = 0.55
+        static let secondaryOpacity: CGFloat = 0.48
+        static let shadowOpacity: CGFloat = 0.45
+        static let shadowRadius: CGFloat = 1.5
+        static let insetRatio: CGFloat = 0.03
+        static let fontSizeRatio: CGFloat = 0.028
+        static let secondaryFontScale: CGFloat = 0.78
+        static let minFontSize: CGFloat = 11
+        static let minSecondaryFontSize: CGFloat = 9
+        static let lineSpacingRatio: CGFloat = 0.18
+    }
 }

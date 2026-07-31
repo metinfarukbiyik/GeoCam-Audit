@@ -22,18 +22,33 @@ nonisolated enum OverlayField: String, CaseIterable, Identifiable, Codable, Send
 
     var id: String { rawValue }
 
-    var title: String {
+    func title(language: AppLanguage) -> String {
         switch self {
-        case .date: "Tarih"
-        case .time: "Saat"
-        case .address: "Adres"
-        case .coordinates: "Koordinatlar"
-        case .altitude: "Rakım"
-        case .heading: "Pusula Yönü"
-        case .accuracy: "GPS Hassasiyeti"
-        case .workOrder: "İş Emri"
-        case .siteID: "Site ID"
-        case .jobSubject: "Konu / Not"
+        case .date: language.t(.fieldDate)
+        case .time: language.t(.fieldTime)
+        case .address: language.t(.fieldAddress)
+        case .coordinates: language.t(.fieldCoordinates)
+        case .altitude: language.t(.fieldAltitude)
+        case .heading: language.t(.fieldHeading)
+        case .accuracy: language.t(.fieldAccuracy)
+        case .workOrder: language.t(.fieldWorkOrder)
+        case .siteID: language.t(.fieldSiteID)
+        case .jobSubject: language.t(.fieldJobSubject)
+        }
+    }
+
+    func shortTitle(language: AppLanguage) -> String {
+        switch self {
+        case .date: language.t(.fieldDate)
+        case .time: language.t(.fieldTime)
+        case .address: language.t(.fieldShortLocation)
+        case .coordinates: language.t(.fieldShortCoordinate)
+        case .altitude: language.t(.fieldShortAltitude)
+        case .heading: language.t(.fieldShortHeading)
+        case .accuracy: language.t(.fieldShortGPS)
+        case .workOrder: language.t(.prefixWorkOrder)
+        case .siteID: language.t(.prefixSite)
+        case .jobSubject: language.t(.prefixNote)
         }
     }
 

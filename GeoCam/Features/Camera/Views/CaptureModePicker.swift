@@ -10,6 +10,8 @@ import SwiftUI
 /// Fotoğraf ve video modları arasında geçiş sağlayan seçici.
 struct CaptureModePicker: View {
 
+    @Environment(\.appLanguage) private var language
+
     let selection: CaptureMode
     let isEnabled: Bool
     let onSelect: (CaptureMode) -> Void
@@ -20,7 +22,7 @@ struct CaptureModePicker: View {
                 Button {
                     onSelect(mode)
                 } label: {
-                    Text(mode.title)
+                    Text(mode.title(language: language))
                         .font(.subheadline.weight(.semibold))
                         .padding(.horizontal, LayoutConstants.Spacing.medium)
                         .padding(.vertical, LayoutConstants.Spacing.small)

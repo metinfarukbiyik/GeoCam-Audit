@@ -18,10 +18,10 @@ nonisolated struct ErrorAlertItem: Identifiable, Equatable {
         self.message = message
     }
 
-    init(_ error: any UserPresentableError) {
+    init(_ error: any UserPresentableError, language: AppLanguage) {
         self.init(
-            title: error.errorDescription ?? AppConstants.Info.appName,
-            message: error.recoverySuggestionText
+            title: error.presentableTitle(language: language),
+            message: error.presentableRecovery(language: language)
         )
     }
 }

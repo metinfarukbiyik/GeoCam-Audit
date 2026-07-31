@@ -9,18 +9,19 @@ import SwiftUI
 
 /// Hata bildirimi ve öneriler için iletişim bölümü.
 struct ContactSection: View {
+    @Environment(\.appLanguage) private var language
 
     var body: some View {
         Section {
-            if let url = AppConstants.ExternalLink.supportMail {
+            if let url = AppConstants.ExternalLink.supportMail(language: language) {
                 Link(destination: url) {
-                    Label("İletişime Geç", systemImage: "envelope.fill")
+                    Label(language.t(.settingsContactLink), systemImage: "envelope.fill")
                 }
             }
         } header: {
-            Text("Destek")
+            Text(language.t(.settingsSupport))
         } footer: {
-            Text("Hata bildirimi ve iyileştirme önerileriniz için \(AppConstants.Info.supportEmail) adresine yazabilirsiniz.")
+            Text(language.t(.settingsContactFooter, AppConstants.Info.supportEmail))
         }
     }
 }

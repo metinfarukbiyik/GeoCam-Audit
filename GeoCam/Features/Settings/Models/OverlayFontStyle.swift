@@ -16,12 +16,12 @@ nonisolated enum OverlayFontStyle: String, CaseIterable, Identifiable, Codable, 
 
     var id: String { rawValue }
 
-    var title: String {
+    func title(language: AppLanguage) -> String {
         switch self {
-        case .standard: "Standart"
-        case .rounded: "Yumuşak"
-        case .monospaced: "Eşit Aralıklı"
-        case .serif: "Serif"
+        case .standard: language.t(.fontStandard)
+        case .rounded: language.t(.fontRounded)
+        case .monospaced: language.t(.fontMonospaced)
+        case .serif: language.t(.fontSerif)
         }
     }
 

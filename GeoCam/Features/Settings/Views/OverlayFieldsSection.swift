@@ -10,6 +10,7 @@ import SwiftUI
 /// Fotoğrafta hangi bilgilerin gösterileceğini seçtiren bölüm.
 /// Kurumsal iş alanları ayrı İş Bilgisi bölümünde yönetilir.
 struct OverlayFieldsSection: View {
+    @Environment(\.appLanguage) private var language
     @Binding var enabledFields: Set<OverlayField>
 
     private var sensorFields: [OverlayField] {
@@ -17,10 +18,10 @@ struct OverlayFieldsSection: View {
     }
 
     var body: some View {
-        Section("Gösterilecek Bilgiler") {
+        Section(language.t(.settingsOverlayFields)) {
             ForEach(sensorFields) { field in
                 Toggle(isOn: binding(for: field)) {
-                    Label(field.title, systemImage: field.systemImageName)
+                    Label(field.title(language: language), systemImage: field.systemImageName)
                 }
             }
         }

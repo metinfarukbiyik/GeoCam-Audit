@@ -28,24 +28,24 @@ nonisolated enum BrandIcon: String, CaseIterable, Identifiable, Codable, Sendabl
 
     var id: String { rawValue }
 
-    var title: String {
+    func title(language: AppLanguage) -> String {
         switch self {
-        case .none: "Yok"
-        case .building: "Bina"
-        case .hammer: "Çekiç"
-        case .wrench: "Tamir"
-        case .house: "Ev"
-        case .map: "Harita"
-        case .camera: "Kamera"
-        case .seal: "Onay"
-        case .star: "Yıldız"
-        case .briefcase: "Çanta"
-        case .gear: "Dişli"
-        case .leaf: "Yaprak"
-        case .bolt: "Şimşek"
-        case .shield: "Kalkan"
-        case .location: "Konum"
-        case .checkmark: "Tik"
+        case .none: language.t(.brandIconNone)
+        case .building: language.t(.brandIconBuilding)
+        case .hammer: language.t(.brandIconHammer)
+        case .wrench: language.t(.brandIconWrench)
+        case .house: language.t(.brandIconHouse)
+        case .map: language.t(.brandIconMap)
+        case .camera: language.t(.brandIconCamera)
+        case .seal: language.t(.brandIconSeal)
+        case .star: language.t(.brandIconStar)
+        case .briefcase: language.t(.brandIconBriefcase)
+        case .gear: language.t(.brandIconGear)
+        case .leaf: language.t(.brandIconLeaf)
+        case .bolt: language.t(.brandIconBolt)
+        case .shield: language.t(.brandIconShield)
+        case .location: language.t(.brandIconLocation)
+        case .checkmark: language.t(.brandIconCheckmark)
         }
     }
 

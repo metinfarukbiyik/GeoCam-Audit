@@ -20,9 +20,12 @@ struct SettingsView: View {
 
     var body: some View {
         @Bindable var viewModel = viewModel
+        let language = viewModel.settings.appLanguage
 
         NavigationStack {
             Form {
+                LanguageSection(language: $viewModel.settings.appLanguage)
+
                 CameraSection(
                     aspectRatio: $viewModel.settings.aspectRatio,
                     savesOriginalPhoto: $viewModel.settings.savesOriginalPhoto
@@ -57,7 +60,7 @@ struct SettingsView: View {
                 ContactSection()
 
                 Section {
-                    Button("Varsayılana Dön", role: .destructive) {
+                    Button(language.t(.settingsReset), role: .destructive) {
                         viewModel.resetToDefaults()
                     }
                 }
@@ -66,11 +69,11 @@ struct SettingsView: View {
                     DeveloperCreditView()
                 }
             }
-            .navigationTitle("Ayarlar")
+            .navigationTitle(language.t(.settingsTitle))
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .confirmationAction) {
-                    Button("Bitti", action: onClose)
+                    Button(language.t(.settingsDone), action: onClose)
                 }
             }
         }

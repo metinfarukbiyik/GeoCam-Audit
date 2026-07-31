@@ -26,15 +26,15 @@ nonisolated enum OverlayLayoutStyle: String, CaseIterable, Identifiable, Codable
 
     var id: String { rawValue }
 
-    var title: String {
+    func title(language: AppLanguage) -> String {
         switch self {
-        case .card: "Kart"
-        case .compact: "Kompakt"
-        case .banner: "Şerit"
-        case .minimal: "Sade"
-        case .poster: "Poster"
-        case .split: "İkili"
-        case .capsule: "Kapsül"
+        case .card: language.t(.layoutCard)
+        case .compact: language.t(.layoutCompact)
+        case .banner: language.t(.layoutBanner)
+        case .minimal: language.t(.layoutMinimal)
+        case .poster: language.t(.layoutPoster)
+        case .split: language.t(.layoutSplit)
+        case .capsule: language.t(.layoutCapsule)
         }
     }
 }

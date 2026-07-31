@@ -11,6 +11,7 @@ import SwiftUI
 /// Bilgi durumunda InfoOverlayView kullanıldığı için önizleme,
 /// fotoğrafa basılacak katmanla birebir aynıdır.
 struct LocationStatusView: View {
+    @Environment(\.appLanguage) private var language
 
     let viewModel: LocationViewModel
     let settings: OverlaySettings
@@ -56,18 +57,18 @@ struct LocationStatusView: View {
     private var searchingRow: some View {
         HStack(spacing: LayoutConstants.Spacing.small) {
             ProgressView()
-            Text("Konum aranıyor")
+            Text(language.t(.locationSearching))
                 .foregroundStyle(.secondary)
         }
     }
 
     private var permissionRow: some View {
         HStack(spacing: LayoutConstants.Spacing.small) {
-            Label("Konum erişimi kapalı", systemImage: "location.slash")
+            Label(language.t(.locationDenied), systemImage: "location.slash")
 
             Spacer(minLength: LayoutConstants.Spacing.small)
 
-            Button("Ayarlar", action: onOpenSettings)
+            Button(language.t(.locationSettings), action: onOpenSettings)
                 .fontWeight(.medium)
         }
     }

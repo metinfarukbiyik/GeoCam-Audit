@@ -13,18 +13,20 @@ nonisolated enum PhotoError: UserPresentableError {
     case renderingFailed
     case saveFailed
 
-    var errorDescription: String? {
+    func presentableTitle(language: AppLanguage) -> String {
         switch self {
-        case .libraryPermissionDenied: "Fotoğraflar erişimi reddedildi."
-        case .renderingFailed: "Bilgi katmanı fotoğrafa işlenemedi."
-        case .saveFailed: "Fotoğraf kaydedilemedi."
+        case .libraryPermissionDenied: language.t(.errorPhotosPermission)
+        case .renderingFailed: language.t(.errorPhotosRender)
+        case .saveFailed: language.t(.errorPhotosSave)
         }
     }
 
-    var recoverySuggestionText: String? {
+    func presentableRecovery(language: AppLanguage) -> String? {
         switch self {
-        case .libraryPermissionDenied: "Ayarlar > \(AppConstants.Info.appName) bölümünden Fotoğraflar erişimine izin verin."
-        case .renderingFailed, .saveFailed: "Lütfen tekrar deneyin."
+        case .libraryPermissionDenied:
+            language.t(.errorPhotosPermissionHint, AppConstants.Info.appName)
+        case .renderingFailed, .saveFailed:
+            language.t(.errorTryAgain)
         }
     }
 }

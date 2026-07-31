@@ -9,6 +9,7 @@ import SwiftUI
 
 /// Ayarlar listesinin sonunda gösterilen geliştirici künyesi.
 struct DeveloperCreditView: View {
+    @Environment(\.appLanguage) private var language
 
     var body: some View {
         Text(.init(creditMarkdown))
@@ -20,7 +21,7 @@ struct DeveloperCreditView: View {
     /// Ad, Markdown bağlantısı olarak verilir; böylece metin dar alanda da doğal biçimde sarılır.
     private var creditMarkdown: String {
         let name = AppConstants.Info.developerName
-        let suffix = AppConstants.Info.developerCreditSuffix
+        let suffix = language.t(.settingsDeveloperCredit)
 
         guard let url = AppConstants.Info.developerURL else { return "\(name) \(suffix)" }
 

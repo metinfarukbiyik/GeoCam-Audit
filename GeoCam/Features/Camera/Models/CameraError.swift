@@ -15,20 +15,22 @@ nonisolated enum CameraError: UserPresentableError {
     case captureFailed
     case recordingFailed
 
-    var errorDescription: String? {
+    func presentableTitle(language: AppLanguage) -> String {
         switch self {
-        case .permissionDenied: "Kamera erişimi reddedildi."
-        case .deviceUnavailable: "Kullanılabilir bir kamera bulunamadı."
-        case .configurationFailed: "Kamera yapılandırılamadı."
-        case .captureFailed: "Fotoğraf çekilemedi."
-        case .recordingFailed: "Video kaydedilemedi."
+        case .permissionDenied: language.t(.errorCameraPermission)
+        case .deviceUnavailable: language.t(.errorCameraUnavailable)
+        case .configurationFailed: language.t(.errorCameraConfig)
+        case .captureFailed: language.t(.errorCameraCapture)
+        case .recordingFailed: language.t(.errorCameraRecording)
         }
     }
 
-    var recoverySuggestionText: String? {
+    func presentableRecovery(language: AppLanguage) -> String? {
         switch self {
-        case .permissionDenied: "Ayarlar > \(AppConstants.Info.appName) bölümünden kamera erişimine izin verin."
-        case .deviceUnavailable, .configurationFailed, .captureFailed, .recordingFailed: "Lütfen tekrar deneyin."
+        case .permissionDenied:
+            language.t(.errorCameraPermissionHint, AppConstants.Info.appName)
+        case .deviceUnavailable, .configurationFailed, .captureFailed, .recordingFailed:
+            language.t(.errorTryAgain)
         }
     }
 }

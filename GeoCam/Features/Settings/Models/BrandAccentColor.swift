@@ -21,17 +21,17 @@ nonisolated enum BrandAccentColor: String, CaseIterable, Identifiable, Codable, 
 
     var id: String { rawValue }
 
-    var title: String {
+    func title(language: AppLanguage) -> String {
         switch self {
-        case .white: "Beyaz"
-        case .yellow: "Sarı"
-        case .orange: "Turuncu"
-        case .green: "Yeşil"
-        case .mint: "Nane"
-        case .cyan: "Camgöbeği"
-        case .blue: "Mavi"
-        case .pink: "Pembe"
-        case .red: "Kırmızı"
+        case .white: language.t(.brandColorWhite)
+        case .yellow: language.t(.brandColorYellow)
+        case .orange: language.t(.brandColorOrange)
+        case .green: language.t(.brandColorGreen)
+        case .mint: language.t(.brandColorMint)
+        case .cyan: language.t(.brandColorCyan)
+        case .blue: language.t(.brandColorBlue)
+        case .pink: language.t(.brandColorPink)
+        case .red: language.t(.brandColorRed)
         }
     }
 
