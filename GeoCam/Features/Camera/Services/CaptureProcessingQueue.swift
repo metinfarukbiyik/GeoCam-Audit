@@ -42,7 +42,7 @@ actor CaptureProcessingQueue {
         }
     }
 
-    private func jobDidFinish() {
+    private func jobDidFinish() async {
         activeCount = max(0, activeCount - 1)
         pump()
     }

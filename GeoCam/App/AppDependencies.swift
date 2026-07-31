@@ -27,16 +27,45 @@ final class AppDependencies {
     let settingsStore: SettingsStore
     let brandingAssetStore: BrandingAssetStore
 
+    init() {
+        // Varsayılan argüman yerine gövde içinde oluştur; izolasyon ve sıra net olsun.
+        let locationService = LocationService()
+        let compassService = CompassService()
+        let geocodingService = GeocodingService()
+        let addressResolver = AddressResolver(
+            locationService: locationService,
+            geocodingService: geocodingService
+        )
+
+        self.locationService = locationService
+        self.compassService = compassService
+        self.geocodingService = geocodingService
+        self.addressResolver = addressResolver
+        self.cameraManager = CameraManager()
+        self.photoLibraryService = PhotoLibraryService()
+        self.photoMetadataProvider = PhotoMetadataProvider(
+            locationService: locationService,
+            compassService: compassService,
+            addressResolver: addressResolver
+        )
+        self.overlayRenderer = OverlayRenderer()
+        self.videoOverlayRenderer = VideoOverlayRenderer()
+        self.settingsStore = SettingsStore()
+        self.brandingAssetStore = BrandingAssetStore()
+    }
+
+#if DEBUG
+    /// Önizleme / test için özel bağımlılık enjeksiyonu.
     init(
-        cameraManager: any CameraManaging = CameraManager(),
-        locationService: any LocationServicing = LocationService(),
-        compassService: any CompassServicing = CompassService(),
-        geocodingService: any GeocodingServicing = GeocodingService(),
-        photoLibraryService: any PhotoLibraryServicing = PhotoLibraryService(),
-        overlayRenderer: any OverlayRendering = OverlayRenderer(),
-        videoOverlayRenderer: any VideoOverlayRendering = VideoOverlayRenderer(),
-        settingsStore: SettingsStore = SettingsStore(),
-        brandingAssetStore: BrandingAssetStore = BrandingAssetStore()
+        cameraManager: any CameraManaging,
+        locationService: any LocationServicing,
+        compassService: any CompassServicing,
+        geocodingService: any GeocodingServicing,
+        photoLibraryService: any PhotoLibraryServicing,
+        overlayRenderer: any OverlayRendering,
+        videoOverlayRenderer: any VideoOverlayRendering,
+        settingsStore: SettingsStore,
+        brandingAssetStore: BrandingAssetStore
     ) {
         let addressResolver = AddressResolver(
             locationService: locationService,
@@ -59,6 +88,7 @@ final class AppDependencies {
         self.settingsStore = settingsStore
         self.brandingAssetStore = brandingAssetStore
     }
+#endif
 }
 
 extension AppDependencies {

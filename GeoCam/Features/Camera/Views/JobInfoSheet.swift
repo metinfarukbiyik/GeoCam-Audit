@@ -22,22 +22,25 @@ struct JobInfoSheet: View {
                     labeledField(
                         title: OverlayField.workOrder.title(language: language),
                         systemImage: OverlayField.workOrder.systemImageName,
-                        text: workOrderBinding,
-                        prompt: language.t(.jobWorkOrderPrompt)
+                        text: $settings.workOrderNumber,
+                        prompt: language.t(.jobWorkOrderPrompt),
+                        field: .workOrder
                     )
 
                     labeledField(
                         title: OverlayField.siteID.title(language: language),
                         systemImage: OverlayField.siteID.systemImageName,
-                        text: siteIDBinding,
-                        prompt: language.t(.jobSitePrompt)
+                        text: $settings.siteID,
+                        prompt: language.t(.jobSitePrompt),
+                        field: .siteID
                     )
 
                     labeledField(
                         title: OverlayField.jobSubject.title(language: language),
                         systemImage: OverlayField.jobSubject.systemImageName,
-                        text: subjectBinding,
+                        text: $settings.jobSubject,
                         prompt: language.t(.jobSubjectPrompt),
+                        field: .jobSubject,
                         axis: .vertical
                     )
                 } footer: {
@@ -65,51 +68,12 @@ struct JobInfoSheet: View {
         .presentationDragIndicator(.visible)
     }
 
-    private var workOrderBinding: Binding<String> {
-        fieldBinding(
-            get: { settings.workOrderNumber },
-            set: { settings.workOrderNumber = $0 },
-            field: .workOrder
-        )
-    }
-
-    private var siteIDBinding: Binding<String> {
-        fieldBinding(
-            get: { settings.siteID },
-            set: { settings.siteID = $0 },
-            field: .siteID
-        )
-    }
-
-    private var subjectBinding: Binding<String> {
-        fieldBinding(
-            get: { settings.jobSubject },
-            set: { settings.jobSubject = $0 },
-            field: .jobSubject
-        )
-    }
-
-    private func fieldBinding(
-        get: @escaping () -> String,
-        set: @escaping (String) -> Void,
-        field: OverlayField
-    ) -> Binding<String> {
-        Binding(
-            get: get,
-            set: { newValue in
-                set(newValue)
-                if !newValue.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
-                    settings.enabledFields.insert(field)
-                }
-            }
-        )
-    }
-
     private func labeledField(
         title: String,
         systemImage: String,
         text: Binding<String>,
         prompt: String,
+        field: OverlayField,
         axis: Axis = .horizontal
     ) -> some View {
         VStack(alignment: .leading, spacing: LayoutConstants.Spacing.extraSmall) {
@@ -121,6 +85,12 @@ struct JobInfoSheet: View {
                 .textInputAutocapitalization(axis == .vertical ? .sentences : .characters)
                 .autocorrectionDisabled(axis != .vertical)
                 .lineLimit(axis == .vertical ? 2...4 : 1...1)
+                .onChange(of: text.wrappedValue) { _, newValue in
+                    // Değer yazılınca ilgili satırı otomatik aç.
+                    if !newValue.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
+                        settings.enabledFields.insert(field)
+                    }
+                }
         }
         .padding(.vertical, 2)
     }

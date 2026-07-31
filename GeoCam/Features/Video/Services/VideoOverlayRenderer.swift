@@ -28,7 +28,7 @@ final class VideoOverlayRenderer: VideoOverlayRendering {
             metadata: metadata,
             settings: settings,
             branding: branding,
-            targetWidth: renderSize.width
+            targetSize: renderSize
         )
 
         videoComposition.animationTool = makeAnimationTool(

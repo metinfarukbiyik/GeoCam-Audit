@@ -35,7 +35,8 @@ nonisolated enum AppWatermarkDrawer {
         // UIKit sağ alt → CA sol alt orijine çevir.
         let layer = CATextLayer()
         layer.string = metrics.attributed
-        layer.contentsScale = UIScreen.main.scale
+        // nonisolated bağlamda UIScreen.main kullanılamaz; sabit 3× retina yeterlidir.
+        layer.contentsScale = OverlayConstants.Watermark.contentsScale
         layer.alignmentMode = .right
         layer.isWrapped = true
         layer.frame = CGRect(

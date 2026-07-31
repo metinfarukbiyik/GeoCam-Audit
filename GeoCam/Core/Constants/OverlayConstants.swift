@@ -16,8 +16,20 @@ nonisolated enum OverlayConstants {
     /// Fotoğraf kenarına göre yatay boşluk oranı.
     static let horizontalInsetRatio: CGFloat = 0.04
 
-    /// Katmanın kaplayabileceği en fazla genişlik oranı (sol+sağ kenar boşluğu düşülmüş).
+    /// Dikey karelerde katmanın kaplayabileceği en fazla genişlik oranı.
     static let maxWidthRatio: CGFloat = 1 - horizontalInsetRatio * 2
+
+    /// Yatay karelerde katman genişliği (fotoğrafın kısa kenarını yutmamak için daha dar).
+    static let landscapeMaxWidthRatio: CGFloat = 0.48
+
+    /// Yatay çalışma alanında genişliğin kısa kenara göre üst sınırı.
+    static let landscapeShortSideWidthCap: CGFloat = 0.92
+
+    /// Dikey karede katman yüksekliği üst sınırı.
+    static let portraitMaxHeightRatio: CGFloat = 0.55
+
+    /// Yatay karede katman yüksekliği üst sınırı.
+    static let landscapeMaxHeightRatio: CGFloat = 0.42
 
     /// ImageRenderer çıktısı için yarı saydam koyu arka plan.
     static let stampedBackgroundOpacity: CGFloat = 0.48
@@ -63,5 +75,7 @@ nonisolated enum OverlayConstants {
         static let minFontSize: CGFloat = 11
         static let minSecondaryFontSize: CGFloat = 9
         static let lineSpacingRatio: CGFloat = 0.18
+        /// Video `CATextLayer` için ekrandan bağımsız içerik ölçeği.
+        static let contentsScale: CGFloat = 3
     }
 }

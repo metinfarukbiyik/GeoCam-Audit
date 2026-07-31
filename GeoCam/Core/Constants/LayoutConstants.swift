@@ -24,9 +24,14 @@ nonisolated enum LayoutConstants {
     }
 
     enum SideMenu {
-        /// Çekmecenin ekran genişliğine oranı.
+        /// Dikeyde çekmecenin ekran genişliğine oranı.
         static let widthRatio: CGFloat = 0.84
         static let maxWidth: CGFloat = 360
+        /// Yatayda daha dar çekmece; geniş ekranı kaplamasın.
+        static let landscapeWidthRatio: CGFloat = 0.42
+        static let landscapeMaxWidth: CGFloat = 320
+        /// Kapalı menünün sol kenardan sızmasını engelleyen ek kaydırma.
+        static let hiddenOverflowPadding: CGFloat = 32
         /// Çekmeceyi kapatmak için gereken minimum sürükleme mesafesi.
         static let dismissDragThreshold: CGFloat = 60
         static let backdropOpacity: CGFloat = 0.4

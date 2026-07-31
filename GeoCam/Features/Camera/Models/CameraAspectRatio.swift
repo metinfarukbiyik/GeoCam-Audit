@@ -30,4 +30,12 @@ nonisolated enum CameraAspectRatio: String, CaseIterable, Identifiable, Codable,
         case .wide: 9.0 / 16.0
         }
     }
+
+    /// Yatay yerleşimde genişlik / yükseklik oranı.
+    var landscapeRatio: CGFloat { 1 / portraitRatio }
+
+    /// Çerçeve boyutuna göre kullanılacak genişlik / yükseklik oranı.
+    func displayRatio(in bounds: CGSize) -> CGFloat {
+        bounds.width >= bounds.height ? landscapeRatio : portraitRatio
+    }
 }

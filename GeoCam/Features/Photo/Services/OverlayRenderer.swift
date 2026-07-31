@@ -27,7 +27,7 @@ final class OverlayRenderer: OverlayRendering {
                 metadata: photo.metadata,
                 settings: settings,
                 branding: branding,
-                targetWidth: baseImage.size.width
+                targetSize: baseImage.size
             )
             stamped = try await Self.composedImage(
                 base: baseImage,

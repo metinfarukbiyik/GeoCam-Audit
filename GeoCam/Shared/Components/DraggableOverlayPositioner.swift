@@ -25,8 +25,15 @@ struct DraggableOverlayPositioner<Content: View>: View {
     var body: some View {
         GeometryReader { proxy in
             let frameSize = proxy.size
-            let horizontalInset = frameSize.width * OverlayConstants.horizontalInsetRatio
-            let boxWidth = max(frameSize.width - horizontalInset * 2, 0)
+            let isLandscape = frameSize.width > frameSize.height
+            let widthRatio = isLandscape
+                ? OverlayConstants.landscapeMaxWidthRatio
+                : OverlayConstants.maxWidthRatio
+            let maxBoxWidth = max(frameSize.width * widthRatio, 0)
+            // Kısa kenarı aşmasın; yatay çalışma alanında katman fotoğrafı boğmaz.
+            let boxWidth = isLandscape
+                ? min(maxBoxWidth, frameSize.height * OverlayConstants.landscapeShortSideWidthCap)
+                : maxBoxWidth
             let contentSize = CGSize(width: boxWidth, height: contentHeight)
             let origin = resolvedPosition(contentSize: contentSize, in: frameSize)
                 .origin(in: frameSize)
@@ -62,6 +69,23 @@ struct DraggableOverlayPositioner<Content: View>: View {
                     reclampIfNeeded(
                         contentSize: CGSize(width: boxWidth, height: height),
                         in: frameSize
+                    )
+                }
+                .onChange(of: frameSize) { _, newFrame in
+                    // Yatay/dikey dönüşte katman çerçeve içinde kalsın.
+                    let landscape = newFrame.width > newFrame.height
+                    let ratio = landscape
+                        ? OverlayConstants.landscapeMaxWidthRatio
+                        : OverlayConstants.maxWidthRatio
+                    let width = landscape
+                        ? min(
+                            max(newFrame.width * ratio, 0),
+                            newFrame.height * OverlayConstants.landscapeShortSideWidthCap
+                        )
+                        : max(newFrame.width * ratio, 0)
+                    reclampIfNeeded(
+                        contentSize: CGSize(width: width, height: contentHeight),
+                        in: newFrame
                     )
                 }
                 .onChange(of: position) { _, newPosition in

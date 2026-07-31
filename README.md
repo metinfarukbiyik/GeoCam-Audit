@@ -63,7 +63,8 @@ GeoCam/
 ### Bilgi katmanı
 - Canlı önizleme ≈ kayda basılan çıktı
 - Alanlar: tarih, saat, adres, koordinat, rakım, yön, GPS hassasiyeti
-- 7 layout: kompakt, kart, şerit, sade, poster, ikili, kapsül
+- 7 layout: kompakt, kart, şerit, sade, poster, ikili, kapsül (yatay/dikey aynı seçili tasarım)
+- Yatay kullanımda canlı çerçeve + bilgi katmanı cihazla birlikte döner; konum sürüklenerek ayarlanır; damgada ölçek daraltılır
 - Sürüklenebilir konum, pinch ile metin boyutu
 - Canlıda glass / material; damgada yarı saydam koyu arka plan
 - EXIF: kaynak capture metadata JPEG’e aktarılır

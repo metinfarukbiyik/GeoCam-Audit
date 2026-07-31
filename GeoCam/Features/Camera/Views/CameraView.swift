@@ -13,10 +13,12 @@ struct CameraView: View {
     @Environment(\.scenePhase) private var scenePhase
     @Environment(\.openURL) private var openURL
     @Environment(\.appLanguage) private var language
+    @Environment(\.verticalSizeClass) private var verticalSizeClass
     @Environment(AppDependencies.self) private var dependencies
 
     @State private var viewModel: CameraViewModel
     @State private var locationViewModel: LocationViewModel
+    @State private var deviceOrientationObserver = DeviceOrientationObserver()
     @State private var isShutterFlashVisible = false
     @State private var isJobInfoPresented = false
     /// Pinch başlangıcındaki cihaz zoom değeri; jest boyunca çarpan olarak kullanılır.
@@ -57,6 +59,8 @@ struct CameraView: View {
         }
         .errorAlert($viewModel.alertItem)
         .task { await startServices() }
+        .onAppear { deviceOrientationObserver.start() }
+        .onDisappear { deviceOrientationObserver.stop() }
         .onChange(of: scenePhase) { _, newPhase in
             Task { await handle(scenePhase: newPhase) }
         }
@@ -123,6 +127,10 @@ struct CameraView: View {
             .easeInOut(duration: AppConstants.Animation.standard),
             value: viewModel.aspectRatio
         )
+        .animation(
+            .easeInOut(duration: AppConstants.Animation.standard),
+            value: verticalSizeClass
+        )
     }
 
     private var cameraPinchZoomGesture: some Gesture {
@@ -148,7 +156,8 @@ struct CameraView: View {
             logo: dependencies.brandingAssetStore.logo
         )
 
-        return DraggableOverlayPositioner(
+        return GravityAlignedOverlayHost(
+            deviceOrientation: deviceOrientationObserver.orientation,
             position: settings.position,
             textSize: settings.textSize,
             onPositionChange: viewModel.updateOverlayPosition,
@@ -314,13 +323,14 @@ struct CameraView: View {
 
     // MARK: - Geometry
 
-    /// 9:16 tam ekran; 4:3 ekrana sığdırılmış çekim çerçevesi.
+    /// 9:16 / 16:9 tam ekran; 4:3 / 3:4 ekrana sığdırılmış çekim çerçevesi.
+    /// Telefon yatayken çerçeve de yatay orana geçer; bilgi katmanı birlikte döner.
     private static func captureFrame(for ratio: CameraAspectRatio, in bounds: CGSize) -> CGRect {
         switch ratio {
         case .wide:
             return CGRect(origin: .zero, size: bounds)
         case .standard:
-            return aspectFitRect(ratio: ratio.portraitRatio, in: bounds)
+            return aspectFitRect(ratio: ratio.displayRatio(in: bounds), in: bounds)
         }
     }
 

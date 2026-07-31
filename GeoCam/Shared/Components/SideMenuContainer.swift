@@ -8,32 +8,58 @@
 import SwiftUI
 
 /// İçeriğin üzerine soldan açılan çekmece menü yerleşimi.
+/// Tam ekran geometri kullanır; yatayda çentik inset’ini yalnızca bir kez uygular.
 struct SideMenuContainer<Content: View, Menu: View>: View {
 
     @Binding var isPresented: Bool
     @ViewBuilder let content: () -> Content
     @ViewBuilder let menu: () -> Menu
 
+    @Environment(\.verticalSizeClass) private var verticalSizeClass
+    @Environment(\.horizontalSizeClass) private var horizontalSizeClass
+
     var body: some View {
         GeometryReader { proxy in
-            let width = menuWidth(for: proxy.size.width)
+            let width = menuWidth(for: proxy.size)
+            let leadingInset = proxy.safeAreaInsets.leading
+            // Kapalıyken çentik/home tarafına sızmayı önlemek için ekstra kaydırma.
+            let hiddenOffset = -(
+                width
+                + leadingInset
+                + LayoutConstants.SideMenu.hiddenOverflowPadding
+            )
 
-            ZStack(alignment: .leading) {
+            ZStack(alignment: .topLeading) {
                 content()
+                    .frame(width: proxy.size.width, height: proxy.size.height)
 
                 backdrop
 
                 menu()
                     .frame(width: width)
-                    .frame(maxHeight: .infinity)
+                    .frame(maxHeight: .infinity, alignment: .top)
                     .background(.background)
-                    .offset(x: isPresented ? 0 : -width)
+                    // Kenardan kenara geometride menüyü güvenli alanın solundan başlat.
+                    .padding(.leading, leadingInset)
+                    .offset(x: isPresented ? 0 : hiddenOffset)
                     .gesture(dismissGesture)
                     .accessibilityHidden(!isPresented)
+                    .allowsHitTesting(isPresented)
             }
+            .frame(width: proxy.size.width, height: proxy.size.height)
+            .clipped()
             .animation(.easeInOut(duration: AppConstants.Animation.standard), value: isPresented)
         }
-        .ignoresSafeArea(edges: .bottom)
+        // Kamera/önizleme gerçek tam ekran alsın; lacivert letterbox oluşmasın.
+        .ignoresSafeArea()
+        .background(Color.black)
+        // Dönüşte yarı açık / taşmış çekmece kalmasın.
+        .onChange(of: verticalSizeClass) { _, _ in
+            isPresented = false
+        }
+        .onChange(of: horizontalSizeClass) { _, _ in
+            isPresented = false
+        }
     }
 
     @ViewBuilder
@@ -58,8 +84,16 @@ struct SideMenuContainer<Content: View, Menu: View>: View {
             }
     }
 
-    private func menuWidth(for availableWidth: CGFloat) -> CGFloat {
-        min(availableWidth * LayoutConstants.SideMenu.widthRatio, LayoutConstants.SideMenu.maxWidth)
+    private func menuWidth(for size: CGSize) -> CGFloat {
+        let isLandscape = size.width > size.height
+        let ratio = isLandscape
+            ? LayoutConstants.SideMenu.landscapeWidthRatio
+            : LayoutConstants.SideMenu.widthRatio
+        let maxWidth = isLandscape
+            ? LayoutConstants.SideMenu.landscapeMaxWidth
+            : LayoutConstants.SideMenu.maxWidth
+
+        return min(size.width * ratio, maxWidth)
     }
 }
 
@@ -70,5 +104,7 @@ struct SideMenuContainer<Content: View, Menu: View>: View {
         Color.black.ignoresSafeArea()
     } menu: {
         Text("Menü")
+            .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
+            .padding()
     }
 }

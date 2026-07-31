@@ -33,8 +33,18 @@ nonisolated struct OverlayPosition: Equatable, Codable, Sendable {
         guard frameSize.width > 0, frameSize.height > 0 else { return self }
 
         let insetX = OverlayConstants.horizontalInsetRatio
+        let isLandscape = frameSize.width > frameSize.height
+        let maxWidthRatio = isLandscape
+            ? OverlayConstants.landscapeMaxWidthRatio
+            : OverlayConstants.maxWidthRatio
+        let maxWidth = isLandscape
+            ? min(
+                frameSize.width * maxWidthRatio,
+                frameSize.height * OverlayConstants.landscapeShortSideWidthCap
+            )
+            : frameSize.width * maxWidthRatio
         // Tam kullanılabilir genişlikte yalnızca sol kenar boşluğu geçerlidir.
-        let width = min(max(contentSize.width, 0), frameSize.width * OverlayConstants.maxWidthRatio)
+        let width = min(max(contentSize.width, 0), maxWidth)
         let height = max(contentSize.height, 0)
 
         let measuredWidthRatio = width / frameSize.width
