@@ -12,6 +12,8 @@ nonisolated enum AppConstants {
 
     enum Info {
         static let appName = "GeoCam: Audit"
+        /// Çekimlerin toplandığı Fotoğraflar albümü.
+        static let photoAlbumName = "GeoCam"
         static let developerName = "BIYIK.DEV"
         static let developerURL = URL(string: "https://biyik.dev")
         static let supportEmail = "metin@biyik.dev"

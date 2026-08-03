@@ -33,10 +33,8 @@ final class VideoOverlayRenderer: VideoOverlayRendering {
 
         videoComposition.animationTool = makeAnimationTool(
             overlay: overlayImage,
-            position: settings.position,
-            renderSize: renderSize,
-            language: settings.appLanguage,
-            showsAppWatermark: settings.appliesAppWatermark
+            settings: settings,
+            renderSize: renderSize
         )
         applySDRColorProperties(to: videoComposition)
 
@@ -47,10 +45,8 @@ final class VideoOverlayRenderer: VideoOverlayRendering {
 
     private func makeAnimationTool(
         overlay: UIImage,
-        position: OverlayPosition,
-        renderSize: CGSize,
-        language: AppLanguage,
-        showsAppWatermark: Bool
+        settings: OverlaySettings,
+        renderSize: CGSize
     ) -> AVVideoCompositionCoreAnimationTool {
         let parentLayer = CALayer()
         let videoLayer = CALayer()
@@ -60,11 +56,11 @@ final class VideoOverlayRenderer: VideoOverlayRendering {
         videoLayer.frame = parentLayer.frame
 
         parentLayer.addSublayer(videoLayer)
-        parentLayer.addSublayer(makeOverlayLayer(overlay, position: position, renderSize: renderSize))
+        parentLayer.addSublayer(makeOverlayLayer(overlay, settings: settings, renderSize: renderSize))
 
-        if showsAppWatermark {
+        if settings.appliesAppWatermark {
             parentLayer.addSublayer(
-                AppWatermarkDrawer.makeLayer(renderSize: renderSize, language: language)
+                AppWatermarkDrawer.makeLayer(renderSize: renderSize, language: settings.appLanguage)
             )
         }
 
@@ -76,10 +72,10 @@ final class VideoOverlayRenderer: VideoOverlayRendering {
 
     private func makeOverlayLayer(
         _ overlay: UIImage,
-        position: OverlayPosition,
+        settings: OverlaySettings,
         renderSize: CGSize
     ) -> CALayer {
-        let rect = OverlayImageFactory.rect(for: overlay, position: position, in: renderSize)
+        let rect = OverlayImageFactory.rect(for: overlay, settings: settings, in: renderSize)
         let layer = CALayer()
 
         // CALayer koordinat sistemi sol alt köşeden başlar, bu yüzden dikey eksen çevrilir.

@@ -84,7 +84,7 @@ GeoCam/
 - Alanlar: tarih, saat, adres, koordinat, rakım, yön, GPS hassasiyeti
 - 7 layout: kompakt, kart, şerit, sade, poster, ikili, kapsül
 - Ekran döndürme kilidi kapalıyken bile katman cihaz yönüne göre döner
-- Sürüklenebilir konum, pinch ile metin boyutu
+- Sürüklenebilir konum, sağa/sola yaslama, pinch ile tüm tasarımın ölçeği (%45–%100)
 - EXIF: kaynak capture metadata JPEG'e aktarılır
 
 ### Kurumsal
@@ -96,6 +96,7 @@ GeoCam/
 - Tema: sistem / açık / koyu
 - Splash + App Icon (light / dark / tinted)
 - Fotoğraflar'a kayıt + thumbnail kısayolu
+- Çekimler ayrıca **GeoCam** adlı albümde toplanır (yoksa ilk kayıtta oluşturulur)
 
 ---
 
@@ -229,7 +230,12 @@ Proje `GENERATE_INFOPLIST_FILE = YES` kullandığı için izin metinleri **Build
 | `NSCameraUsageDescription` | Fotoğraf/video çekimi | "Fotoğraf çekebilmek için kamera erişimine ihtiyaç duyulur." |
 | `NSLocationWhenInUseUsageDescription` | Konum damgası | "Fotoğrafa konum, adres, rakım ve pusula bilgisi eklemek için konum erişimine ihtiyaç duyulur." |
 | `NSMicrophoneUsageDescription` | Sesli video | "Videoları sesli kaydedebilmek için mikrofon erişimine ihtiyaç duyulur." |
-| `NSPhotoLibraryAddUsageDescription` | Galeriye kayıt | "Çekilen fotoğrafları kaydedebilmek için Fotoğraflar erişimine ihtiyaç duyulur." |
+| `NSPhotoLibraryAddUsageDescription` | Galeriye kayıt | "Çekilen fotoğraf ve videoları kaydedebilmek için Fotoğraflar erişimine ihtiyaç duyulur." |
+| `NSPhotoLibraryUsageDescription` | **GeoCam albümü** | "Çekimlerinizi kaydetmek ve GeoCam albümünde toplamak için Fotoğraflar erişimine ihtiyaç duyulur. Mevcut fotoğraflarınız okunmaz." |
+
+> **Neden tam kitaplık erişimi?** Çekimler `GeoCam` adlı özel bir albümde toplanıyor. PhotoKit'te albüm **bulmak** (fetch) okuma yetkisi ister; salt ekleme (`.addOnly`) yetkisiyle mevcut albüm görülemediği için her çekimde yeni bir albüm oluşurdu. Bu yüzden servis `.readWrite` yetkisi istiyor. Uygulama kullanıcının mevcut fotoğraflarını **okumuyor**; yetki yalnızca albümü çözmek için kullanılıyor. İnceleme notlarına (Adım 10) bu cümleyi eklemeniz, Guideline 5.1.1 sorularını baştan kapatır.
+>
+> Kullanıcı "Seçili Fotoğraflar" (limited) seçerse albüm oluşturulamaz; bu durumda çekim yine kaydedilir, sadece albüme eklenmez. Kod bu duruma karşı sessiz geri düşüş yapar.
 
 Bu metinler **yeterince açıklayıcı** (Guideline 5.1.1 için önemli), ancak **yalnızca Türkçe**. Cihaz dili İngilizce olan bir Apple inceleyicisi Türkçe izin metni görür — bu tek başına ret sebebi olmasa da inceleme sürtünmesi yaratır.
 
@@ -249,6 +255,7 @@ Girilecek metinler:
 | `NSLocationWhenInUseUsageDescription` | Your location is used only to stamp coordinates, address, altitude and compass heading onto the photo. It never leaves your device. | Konumunuz yalnızca fotoğrafa koordinat, adres, rakım ve pusula yönü basmak için kullanılır. Cihazınızdan çıkmaz. | Su ubicación se usa solo para estampar coordenadas, dirección, altitud y rumbo en la foto. Nunca sale de su dispositivo. | Ihr Standort wird nur verwendet, um Koordinaten, Adresse, Höhe und Kompassrichtung auf das Foto zu stempeln. Er verlässt Ihr Gerät nicht. |
 | `NSMicrophoneUsageDescription` | Microphone access is required to record audio with your videos. | Videolarınızı sesli kaydedebilmek için mikrofon erişimi gerekir. | Se requiere acceso al micrófono para grabar audio con sus vídeos. | Mikrofonzugriff ist erforderlich, um Ton mit Ihren Videos aufzunehmen. |
 | `NSPhotoLibraryAddUsageDescription` | GeoCam saves your stamped photos and videos to your photo library. | Damgalanan fotoğraf ve videolarınız Fotoğraflar kitaplığınıza kaydedilir. | GeoCam guarda sus fotos y vídeos sellados en su fototeca. | GeoCam speichert Ihre gestempelten Fotos und Videos in Ihrer Fotomediathek. |
+| `NSPhotoLibraryUsageDescription` | Access is used only to save your captures into a "GeoCam" album. Your existing photos are never read. | Erişim yalnızca çekimlerinizi "GeoCam" albümüne kaydetmek için kullanılır. Mevcut fotoğraflarınız okunmaz. | El acceso se usa solo para guardar sus capturas en un álbum "GeoCam". Sus fotos existentes nunca se leen. | Der Zugriff dient nur dazu, Ihre Aufnahmen in einem "GeoCam"-Album zu speichern. Ihre vorhandenen Fotos werden nie gelesen. |
 
 > String Catalog eklediğinizde Build Settings'teki `INFOPLIST_KEY_NS...UsageDescription` satırlarını **silin**, yoksa çeviri ezilir.
 
@@ -871,7 +878,7 @@ Bu bölüm `PrivacyInfo.xcprivacy` ile **tutarlı olmak zorundadır**.
 
 **Cevap: No, we do not collect data from this app**
 
-**Gerekçe:** Konum, fotoğraf ve ayarlar cihazda kalır; hiçbiri geliştiriciye veya üçüncü tarafa iletilmez. Apple'ın tanımına göre "collect" = veriyi cihazdan çıkarıp geliştiriciye/üçüncü tarafa göndermek. GeoCam bunu yapmaz.
+**Gerekçe:** Konum, fotoğraf ve ayarlar cihazda kalır; hiçbiri geliştiriciye veya üçüncü tarafa iletilmez. Apple'ın tanımına göre "collect" = veriyi cihazdan çıkarıp geliştiriciye/üçüncü tarafa göndermek. GeoCam bunu yapmaz. Fotoğraflar kitaplığına tam erişim istenmesi de beyanı değiştirmez; erişim yalnızca cihaz üzerinde albüm oluşturmak/bulmak için kullanılır.
 
 > `CLGeocoder` çağrısı Apple'ın kendi servisidir ve Apple'ın kendi gizlilik politikasına tabidir — geliştirici veri toplaması sayılmaz.
 
@@ -924,9 +931,12 @@ politikasına tabidir. Bu istekte kişisel kimlik bilgisi gönderilmez.
 **Mikrofon**
 Yalnızca video kaydı sırasında ses almak için kullanılır.
 
-**Fotoğraflar (Ekleme)**
-Çekilen görüntüleri cihazınızın Fotoğraflar kitaplığına kaydetmek için kullanılır.
-Uygulama mevcut fotoğraflarınızı okumaz.
+**Fotoğraflar**
+Çekilen görüntüleri cihazınızın Fotoğraflar kitaplığına kaydetmek ve "GeoCam"
+adlı albümde toplamak için kullanılır. Albümün var olup olmadığını anlamak
+PhotoKit'te okuma yetkisi gerektirdiği için tam erişim istenir; uygulama
+bunun dışında mevcut fotoğraflarınızı okumaz, görüntülemez ve hiçbir yere
+göndermez.
 
 **Ayarlar ve marka bilgileri**
 Dil, tema, layout tercihi, şirket adı, logo ve iş bilgisi cihazınızda yerel
@@ -1001,8 +1011,14 @@ PERMISSIONS AND WHY THEY ARE NEEDED
   only for this overlay and is never transmitted off the device.
 - Microphone: to record audio in video mode. Denying it still allows silent
   video recording.
-- Photo Library (Add only): to save the stamped result. The app never reads
-  existing photos.
+- Photo Library: to save the stamped result and to collect every capture in a
+  dedicated "GeoCam" album. Full access is requested because PhotoKit requires
+  read permission to *look up* an existing album — with add-only access the app
+  cannot see the album it created and would produce a duplicate on every shot.
+  The app never reads, displays or uploads the user's existing photos; the only
+  fetch performed is the one that resolves the "GeoCam" album by title. If the
+  user chooses "Selected Photos", captures are still saved — only the album
+  grouping is skipped.
 
 PRIVACY
 No analytics, no advertising, no third-party SDKs, no user accounts, no server
@@ -1011,8 +1027,9 @@ backend. Reverse geocoding uses Apple's CLGeocoder only.
 HOW TO TEST THE MAIN FLOW
 1. Launch, grant Camera + Location + Photos permissions.
 2. Point at any subject; the info overlay appears over the preview.
-3. Drag the overlay to reposition, pinch it to change text size.
-4. Tap the shutter. The stamped photo is saved to Photos automatically.
+3. Drag the overlay to reposition, pinch it to scale the whole design.
+4. Tap the shutter. The stamped photo is saved to Photos and to the "GeoCam"
+   album automatically.
 5. Open the side menu (top-left) to change language, layout, brand and theme.
 
 Contact: metin@biyik.dev

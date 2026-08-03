@@ -1,0 +1,16 @@
+{
+  "source": "/Users/metinbiyik/Desktop/projeler/GeoCamApp/GeoCam/GeoCam/Features/Camera/Views/CameraZoomPicker.swift",
+  "tables": {
+    "Localizable": [
+      {
+        "comment": "",
+        "key": "%@ yakınlaştırma",
+        "location": {
+          "startingColumn": 37,
+          "startingLine": 33
+        }
+      }
+    ]
+  },
+  "version": 1
+}

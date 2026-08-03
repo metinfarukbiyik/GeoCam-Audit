@@ -5,6 +5,7 @@
 //  Created by Metin Faruk Bıyık on 30.07.2026.
 //
 
+import CoreGraphics
 import Foundation
 
 /// Bilgi katmanının ve uygulama görünümünün kullanıcı tercihleri.
@@ -14,6 +15,10 @@ nonisolated struct OverlaySettings: Equatable, Codable, Sendable {
     var theme: AppTheme
     var fontStyle: OverlayFontStyle
     var textSize: OverlayTextSize
+    /// Katmanın tamamına uygulanan geometrik küçültme oranı (parmakla ayarlanır).
+    var overlayScale: CGFloat
+    /// Katmanın yaslandığı kenar.
+    var horizontalAlignment: OverlayHorizontalAlignment
     var position: OverlayPosition
     var aspectRatio: CameraAspectRatio
     /// Arayüz ve katman metinleri dili.
@@ -40,6 +45,8 @@ nonisolated struct OverlaySettings: Equatable, Codable, Sendable {
         theme: .system,
         fontStyle: .rounded,
         textSize: .medium,
+        overlayScale: OverlayConstants.Scale.maximum,
+        horizontalAlignment: .leading,
         position: .default,
         aspectRatio: .wide,
         appLanguage: .turkish,
@@ -68,6 +75,11 @@ nonisolated struct OverlaySettings: Equatable, Codable, Sendable {
 
     func isEnabled(_ field: OverlayField) -> Bool {
         enabledFields.contains(field)
+    }
+
+    /// Aralık dışına çıkmış kayıtlara karşı güvenli ölçek.
+    var resolvedScale: CGFloat {
+        OverlayConstants.Scale.clamped(overlayScale)
     }
 
     /// Damgalı çıktıya uygulama filigranı uygulanır mı?
@@ -121,6 +133,12 @@ nonisolated extension OverlaySettings {
         theme = try container.decodeIfPresent(AppTheme.self, forKey: .theme) ?? fallback.theme
         fontStyle = try container.decodeIfPresent(OverlayFontStyle.self, forKey: .fontStyle) ?? fallback.fontStyle
         textSize = try container.decodeIfPresent(OverlayTextSize.self, forKey: .textSize) ?? fallback.textSize
+        overlayScale = try container.decodeIfPresent(CGFloat.self, forKey: .overlayScale)
+            ?? fallback.overlayScale
+        horizontalAlignment = try container.decodeIfPresent(
+            OverlayHorizontalAlignment.self,
+            forKey: .horizontalAlignment
+        ) ?? fallback.horizontalAlignment
         let decodedPosition = try container.decodeIfPresent(OverlayPosition.self, forKey: .position)
         // Eski varsayılan konumlar yeni sol-üst + kenar boşluklu modele taşınır.
         if let decodedPosition, Self.legacyDefaultPositions.contains(decodedPosition) {

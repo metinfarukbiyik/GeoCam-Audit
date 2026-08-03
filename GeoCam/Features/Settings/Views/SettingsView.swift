@@ -54,7 +54,9 @@ struct SettingsView: View {
                     layoutStyle: $viewModel.settings.layoutStyle,
                     theme: $viewModel.settings.theme,
                     fontStyle: $viewModel.settings.fontStyle,
-                    textSize: $viewModel.settings.textSize
+                    textSize: $viewModel.settings.textSize,
+                    horizontalAlignment: $viewModel.settings.horizontalAlignment,
+                    overlayScale: $viewModel.settings.overlayScale
                 )
 
                 ContactSection()

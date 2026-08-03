@@ -32,7 +32,7 @@ final class OverlayRenderer: OverlayRendering {
             stamped = try await Self.composedImage(
                 base: baseImage,
                 overlay: overlayImage,
-                position: settings.position
+                settings: settings
             )
         } else {
             stamped = baseImage
@@ -70,14 +70,14 @@ final class OverlayRenderer: OverlayRendering {
     private nonisolated static func composedImage(
         base: UIImage,
         overlay: UIImage,
-        position: OverlayPosition
+        settings: OverlaySettings
     ) async throws -> UIImage {
         let photoSize = base.size
         let format = UIGraphicsImageRendererFormat()
         format.scale = 1
         format.opaque = true
 
-        let overlayRect = OverlayImageFactory.rect(for: overlay, position: position, in: photoSize)
+        let overlayRect = OverlayImageFactory.rect(for: overlay, settings: settings, in: photoSize)
 
         return UIGraphicsImageRenderer(size: photoSize, format: format).image { _ in
             base.draw(in: CGRect(origin: .zero, size: photoSize))

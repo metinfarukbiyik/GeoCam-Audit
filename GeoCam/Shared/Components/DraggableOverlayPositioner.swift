@@ -7,42 +7,43 @@
 
 import SwiftUI
 
-/// Bilgi katmanını ekran içinde tutar: sabit genişlik, sürükleme, pinch ile punto.
+/// Bilgi katmanını çerçeve içinde konumlandırır: kenar yaslaması, sürükleme ve
+/// çift parmakla tüm tasarımı küçültme.
+/// Kayıtlı konum yalnızca kullanıcı sürüklediğinde güncellenir; yerleşim kaynaklı
+/// sığdırma işlemleri sadece görüntülemeye uygulanır.
 struct DraggableOverlayPositioner<Content: View>: View {
 
     let position: OverlayPosition
-    let textSize: OverlayTextSize
+    let alignment: OverlayHorizontalAlignment
+    /// Katmanın tamamına uygulanan geometrik ölçek.
+    let scale: CGFloat
     let onPositionChange: (OverlayPosition) -> Void
-    let onTextSizeChange: (OverlayTextSize) -> Void
+    let onScaleChange: (CGFloat) -> Void
     @ViewBuilder let content: (_ maxWidth: CGFloat) -> Content
 
     @State private var contentHeight: CGFloat = 120
     @State private var dragTranslation: CGSize = .zero
-    @State private var pinchScale: CGFloat = 1
-    @State private var lastPinchMagnification: CGFloat = 1
+    @State private var pinchMagnification: CGFloat = 1
     @State private var isPinching = false
 
     var body: some View {
         GeometryReader { proxy in
             let frameSize = proxy.size
-            let isLandscape = frameSize.width > frameSize.height
-            let widthRatio = isLandscape
-                ? OverlayConstants.landscapeMaxWidthRatio
-                : OverlayConstants.maxWidthRatio
-            let maxBoxWidth = max(frameSize.width * widthRatio, 0)
-            // Kısa kenarı aşmasın; yatay çalışma alanında katman fotoğrafı boğmaz.
-            let boxWidth = isLandscape
-                ? min(maxBoxWidth, frameSize.height * OverlayConstants.landscapeShortSideWidthCap)
-                : maxBoxWidth
-            let contentSize = CGSize(width: boxWidth, height: contentHeight)
+            let layoutWidth = Self.layoutWidth(in: frameSize)
+            let currentScale = effectiveScale
+            // Tasarım tam genişlikte çizilip küçültülür; satır kırılmaları damgayla aynı kalır.
+            let contentSize = CGSize(
+                width: layoutWidth * currentScale,
+                height: contentHeight * currentScale
+            )
             let origin = resolvedPosition(contentSize: contentSize, in: frameSize)
-                .origin(in: frameSize)
+                .origin(contentSize: contentSize, in: frameSize, alignment: alignment)
 
             Color.clear
                 .frame(width: frameSize.width, height: frameSize.height)
                 .overlay(alignment: .topLeading) {
-                    FixedWidthLayout(width: boxWidth) {
-                        content(boxWidth)
+                    FixedWidthLayout(width: layoutWidth) {
+                        content(layoutWidth)
                     }
                     .background {
                         GeometryReader { inner in
@@ -55,66 +56,42 @@ struct DraggableOverlayPositioner<Content: View>: View {
                     .compositingGroup()
                     .clipShape(Rectangle())
                     .contentShape(Rectangle())
-                    .scaleEffect(pinchScale, anchor: .topLeading)
+                    .scaleEffect(currentScale, anchor: .topLeading)
                     .offset(x: origin.x, y: origin.y)
                     .gesture(pinchGesture)
                     .simultaneousGesture(dragGesture(contentSize: contentSize, in: frameSize))
                 }
                 .clipped()
                 .onPreferenceChange(OverlayHeightKey.self) { contentHeight = $0 }
-                .onAppear {
-                    reclampIfNeeded(contentSize: contentSize, in: frameSize)
-                }
-                .onChange(of: contentHeight) { _, height in
-                    reclampIfNeeded(
-                        contentSize: CGSize(width: boxWidth, height: height),
-                        in: frameSize
-                    )
-                }
-                .onChange(of: frameSize) { _, newFrame in
-                    // Yatay/dikey dönüşte katman çerçeve içinde kalsın.
-                    let landscape = newFrame.width > newFrame.height
-                    let ratio = landscape
-                        ? OverlayConstants.landscapeMaxWidthRatio
-                        : OverlayConstants.maxWidthRatio
-                    let width = landscape
-                        ? min(
-                            max(newFrame.width * ratio, 0),
-                            newFrame.height * OverlayConstants.landscapeShortSideWidthCap
-                        )
-                        : max(newFrame.width * ratio, 0)
-                    reclampIfNeeded(
-                        contentSize: CGSize(width: width, height: contentHeight),
-                        in: newFrame
-                    )
-                }
-                .onChange(of: position) { _, newPosition in
-                    reclampIfNeeded(
-                        position: newPosition,
-                        contentSize: contentSize,
-                        in: frameSize
-                    )
-                }
-                .onChange(of: textSize) { _, _ in
-                    let leading = OverlayPosition(
-                        x: OverlayConstants.horizontalInsetRatio,
-                        y: position.y
-                    ).clamped(contentSize: contentSize, in: frameSize)
-
-                    if leading != position {
-                        onPositionChange(leading)
-                    }
-                }
         }
     }
 
-    private func resolvedPosition(contentSize: CGSize, in frameSize: CGSize) -> OverlayPosition {
-        guard !isPinching else {
-            return position.clamped(contentSize: contentSize, in: frameSize)
-        }
+    /// Tasarımın çizildiği mantıksal genişlik; yatayda kısa kenarı yutmaz.
+    private static func layoutWidth(in frameSize: CGSize) -> CGFloat {
+        let isLandscape = frameSize.width > frameSize.height
+        let ratio = isLandscape
+            ? OverlayConstants.landscapeMaxWidthRatio
+            : OverlayConstants.maxWidthRatio
+        let width = max(frameSize.width * ratio, 0)
 
-        return position
-            .moved(by: dragTranslation, in: frameSize)
+        guard isLandscape else { return width }
+
+        return min(width, frameSize.height * OverlayConstants.landscapeShortSideWidthCap)
+    }
+
+    /// Pinch sırasında önizleme, jest bittiğinde uygulanacak ölçeği birebir yansıtır.
+    private var effectiveScale: CGFloat {
+        guard isPinching else { return OverlayConstants.Scale.clamped(scale) }
+
+        return OverlayConstants.Scale.clamped(scale * pinchMagnification)
+    }
+
+    private func resolvedPosition(contentSize: CGSize, in frameSize: CGSize) -> OverlayPosition {
+        let base = position.clamped(contentSize: contentSize, in: frameSize)
+        guard !isPinching else { return base }
+
+        return base
+            .moved(by: dragTranslation, in: frameSize, alignment: alignment)
             .clamped(contentSize: contentSize, in: frameSize)
     }
 
@@ -128,9 +105,11 @@ struct DraggableOverlayPositioner<Content: View>: View {
                 defer { dragTranslation = .zero }
                 guard !isPinching else { return }
 
+                // Sürükleme, ekranda görünen konumdan devam eder.
+                let base = position.clamped(contentSize: contentSize, in: frameSize)
                 onPositionChange(
-                    position
-                        .moved(by: value.translation, in: frameSize)
+                    base
+                        .moved(by: value.translation, in: frameSize, alignment: alignment)
                         .clamped(contentSize: contentSize, in: frameSize)
                 )
             }
@@ -144,39 +123,23 @@ struct DraggableOverlayPositioner<Content: View>: View {
                     dragTranslation = .zero
                 }
 
-                lastPinchMagnification = value
-                pinchScale = min(max(value, 0.7), 1.35)
+                pinchMagnification = value
             }
-            .onEnded { _ in
-                let magnification = lastPinchMagnification
-                pinchScale = 1
-                lastPinchMagnification = 1
+            .onEnded { value in
+                let resolved = OverlayConstants.Scale.clamped(scale * value)
+                pinchMagnification = 1
                 dragTranslation = .zero
 
-                if magnification <= OverlayConstants.Pinch.shrinkThreshold, let smaller = textSize.smaller {
-                    onTextSizeChange(smaller)
-                } else if magnification >= OverlayConstants.Pinch.growThreshold, let larger = textSize.larger {
-                    onTextSizeChange(larger)
+                if resolved != OverlayConstants.Scale.clamped(scale) {
+                    onScaleChange(resolved)
                 }
 
+                // Jest biter bitmez sürükleme devralmasın diye kısa bir tampon bırakılır.
                 Task { @MainActor in
                     try? await Task.sleep(for: .milliseconds(50))
                     isPinching = false
                 }
             }
-    }
-
-    private func reclampIfNeeded(
-        position: OverlayPosition? = nil,
-        contentSize: CGSize,
-        in frameSize: CGSize
-    ) {
-        guard contentSize.width > 0, frameSize.width > 0 else { return }
-
-        let source = position ?? self.position
-        let clamped = source.clamped(contentSize: contentSize, in: frameSize)
-        guard clamped != source else { return }
-        onPositionChange(clamped)
     }
 }
 
@@ -190,13 +153,14 @@ private struct OverlayHeightKey: PreferenceKey {
 
 #Preview {
     @Previewable @State var position = OverlayPosition.default
-    @Previewable @State var textSize = OverlayTextSize.medium
+    @Previewable @State var scale: CGFloat = 0.7
 
     return DraggableOverlayPositioner(
         position: position,
-        textSize: textSize,
+        alignment: .trailing,
+        scale: scale,
         onPositionChange: { position = $0 },
-        onTextSizeChange: { textSize = $0 }
+        onScaleChange: { scale = $0 }
     ) { maxWidth in
         Text("Besirli, Trabzon Merkez, Trabzon, Türkiye")
             .padding()

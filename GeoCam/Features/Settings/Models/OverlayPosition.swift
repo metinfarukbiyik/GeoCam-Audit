@@ -7,8 +7,9 @@
 
 import CoreGraphics
 
-/// Bilgi katmanının sol-üst köşesinin, çerçeveye göre normalize edilmiş konumu (0...1).
-/// Sol üst referans alındığı için sola yaslı tasarımlar fotoğrafta da sola hizalanır.
+/// Bilgi katmanının çerçeveye göre normalize edilmiş konumu (0...1).
+/// `x`, yaslanan kenardan içeri boşluktur: sola yaslıyken soldan, sağa yaslıyken sağdan ölçülür.
+/// Böylece kenar tercihi değişince katman aynı boşlukla karşı kenara taşınır.
 nonisolated struct OverlayPosition: Equatable, Codable, Sendable {
     var x: CGFloat
     var y: CGFloat
@@ -19,11 +20,18 @@ nonisolated struct OverlayPosition: Equatable, Codable, Sendable {
     )
 
     /// Sürükleme mesafesini normalize ederek konuma ekler.
-    func moved(by translation: CGSize, in frameSize: CGSize) -> OverlayPosition {
+    /// Sağa yaslıyken yatay eksen ters yönde ilerler.
+    func moved(
+        by translation: CGSize,
+        in frameSize: CGSize,
+        alignment: OverlayHorizontalAlignment
+    ) -> OverlayPosition {
         guard frameSize.width > 0, frameSize.height > 0 else { return self }
 
+        let horizontal = alignment == .leading ? translation.width : -translation.width
+
         return OverlayPosition(
-            x: x + translation.width / frameSize.width,
+            x: x + horizontal / frameSize.width,
             y: y + translation.height / frameSize.height
         )
     }
@@ -33,18 +41,7 @@ nonisolated struct OverlayPosition: Equatable, Codable, Sendable {
         guard frameSize.width > 0, frameSize.height > 0 else { return self }
 
         let insetX = OverlayConstants.horizontalInsetRatio
-        let isLandscape = frameSize.width > frameSize.height
-        let maxWidthRatio = isLandscape
-            ? OverlayConstants.landscapeMaxWidthRatio
-            : OverlayConstants.maxWidthRatio
-        let maxWidth = isLandscape
-            ? min(
-                frameSize.width * maxWidthRatio,
-                frameSize.height * OverlayConstants.landscapeShortSideWidthCap
-            )
-            : frameSize.width * maxWidthRatio
-        // Tam kullanılabilir genişlikte yalnızca sol kenar boşluğu geçerlidir.
-        let width = min(max(contentSize.width, 0), maxWidth)
+        let width = min(max(contentSize.width, 0), frameSize.width)
         let height = max(contentSize.height, 0)
 
         let measuredWidthRatio = width / frameSize.width
@@ -61,8 +58,33 @@ nonisolated struct OverlayPosition: Equatable, Codable, Sendable {
         )
     }
 
-    /// Verilen çerçevede piksel/nokta cinsinden sol-üst köşe.
-    func origin(in frameSize: CGSize) -> CGPoint {
-        CGPoint(x: x * frameSize.width, y: y * frameSize.height)
+    /// Verilen çerçevede nokta cinsinden sol-üst köşe.
+    func origin(
+        contentSize: CGSize,
+        in frameSize: CGSize,
+        alignment: OverlayHorizontalAlignment
+    ) -> CGPoint {
+        let inset = x * frameSize.width
+        let originX = switch alignment {
+        case .leading: inset
+        case .trailing: frameSize.width - contentSize.width - inset
+        }
+
+        return CGPoint(x: originX, y: y * frameSize.height)
+    }
+
+    /// Bozuk (NaN/sonsuz) veya 0...1 dışına çıkmış kayıtlı değerleri güvenli hale getirir.
+    /// Çerçeveye sığdırma işlemi burada yapılmaz; o karar görüntüleme anına aittir.
+    func sanitized() -> OverlayPosition {
+        OverlayPosition(
+            x: Self.normalized(x, fallback: OverlayConstants.Position.defaultX),
+            y: Self.normalized(y, fallback: OverlayConstants.Position.defaultY)
+        )
+    }
+
+    private static func normalized(_ value: CGFloat, fallback: CGFloat) -> CGFloat {
+        guard value.isFinite else { return fallback }
+
+        return min(max(value, 0), 1)
     }
 }

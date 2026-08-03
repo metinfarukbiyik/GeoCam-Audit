@@ -1,0 +1,16 @@
+{
+  "source": "/Users/metinbiyik/Desktop/projeler/GeoCamApp/GeoCam/GeoCam/Shared/Components/GravityAlignedOverlayHost.swift",
+  "tables": {
+    "Localizable": [
+      {
+        "comment": "",
+        "key": "Besirli, Trabzon",
+        "location": {
+          "startingColumn": 1,
+          "startingLine": 52
+        }
+      }
+    ]
+  },
+  "version": 1
+}

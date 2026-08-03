@@ -21,7 +21,7 @@ enum OverlayImageFactory {
         branding: OverlayBranding?,
         targetSize: CGSize
     ) throws -> UIImage {
-        let placement = Placement.make(for: targetSize)
+        let placement = Placement.make(for: targetSize, scale: settings.resolvedScale)
 
         let content = InfoOverlayView(
             metadata: metadata,
@@ -43,10 +43,20 @@ enum OverlayImageFactory {
 
     /// Katmanın hedef çerçevedeki dikdörtgeni. Sol üst köşe başlangıçlı koordinat sistemine göredir.
     /// Saf geometri hesabı olduğu için herhangi bir thread'den çağrılabilir.
-    nonisolated static func rect(for image: UIImage, position: OverlayPosition, in frameSize: CGSize) -> CGRect {
-        let placement = Placement.make(for: frameSize)
+    nonisolated static func rect(
+        for image: UIImage,
+        settings: OverlaySettings,
+        in frameSize: CGSize
+    ) -> CGRect {
+        let placement = Placement.make(for: frameSize, scale: settings.resolvedScale)
         let size = placement.fittedSize(for: image.size, in: frameSize)
-        let origin = position.clamped(contentSize: size, in: frameSize).origin(in: frameSize)
+        let origin = settings.position
+            .clamped(contentSize: size, in: frameSize)
+            .origin(
+                contentSize: size,
+                in: frameSize,
+                alignment: settings.horizontalAlignment
+            )
 
         return CGRect(origin: origin, size: size)
     }
@@ -62,10 +72,11 @@ enum OverlayImageFactory {
         let maxHeightRatio: CGFloat
         let maxWidthRatio: CGFloat
 
-        static func make(for frameSize: CGSize) -> Placement {
+        static func make(for frameSize: CGSize, scale overlayScale: CGFloat) -> Placement {
             let isLandscape = frameSize.width > frameSize.height
+            let userScale = OverlayConstants.Scale.clamped(overlayScale)
 
-            // Aynı seçili tasarım çizilir; yatayda yalnızca fotoğrafa sığacak ölçek değişir.
+            // Aynı seçili tasarım çizilir; yatayda ve küçültmede yalnızca ölçek değişir.
             let layoutWidth = OverlayConstants.referenceWidth * OverlayConstants.maxWidthRatio
             let widthRatio = isLandscape
                 ? OverlayConstants.landscapeMaxWidthRatio
@@ -75,20 +86,21 @@ enum OverlayImageFactory {
                 : OverlayConstants.portraitMaxHeightRatio
 
             let uncappedWidth = max(frameSize.width * widthRatio, 1)
-            let desiredWidth = isLandscape
+            let fittedWidth = isLandscape
                 ? min(
                     uncappedWidth,
                     frameSize.height * OverlayConstants.landscapeShortSideWidthCap
                 )
                 : uncappedWidth
+            let desiredWidth = fittedWidth * userScale
             let scale = desiredWidth / max(layoutWidth, 1)
 
             return Placement(
                 isLandscape: isLandscape,
                 layoutWidth: layoutWidth,
                 scale: scale,
-                maxHeightRatio: heightRatio,
-                maxWidthRatio: widthRatio
+                maxHeightRatio: heightRatio * userScale,
+                maxWidthRatio: desiredWidth / max(frameSize.width, 1)
             )
         }
 

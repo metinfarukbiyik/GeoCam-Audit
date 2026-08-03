@@ -12,9 +12,10 @@ struct GravityAlignedOverlayHost<Content: View>: View {
 
     let deviceOrientation: DeviceDisplayOrientation
     let position: OverlayPosition
-    let textSize: OverlayTextSize
+    let alignment: OverlayHorizontalAlignment
+    let scale: CGFloat
     let onPositionChange: (OverlayPosition) -> Void
-    let onTextSizeChange: (OverlayTextSize) -> Void
+    let onScaleChange: (CGFloat) -> Void
     @ViewBuilder let content: (_ maxWidth: CGFloat) -> Content
 
     var body: some View {
@@ -29,16 +30,15 @@ struct GravityAlignedOverlayHost<Content: View>: View {
 
             DraggableOverlayPositioner(
                 position: position,
-                textSize: textSize,
+                alignment: alignment,
+                scale: scale,
                 onPositionChange: onPositionChange,
-                onTextSizeChange: onTextSizeChange,
+                onScaleChange: onScaleChange,
                 content: content
             )
             .frame(width: workSize.width, height: workSize.height)
             .rotationEffect(.degrees(degrees))
             .frame(width: frameSize.width, height: frameSize.height)
-            // Hit-test alanı yalnızca önizleme çerçevesi; layout taşması olmasın.
-            .allowsHitTesting(true)
             .animation(
                 .easeInOut(duration: AppConstants.Animation.standard),
                 value: deviceOrientation
@@ -51,14 +51,15 @@ struct GravityAlignedOverlayHost<Content: View>: View {
 
 #Preview {
     @Previewable @State var position = OverlayPosition.default
-    @Previewable @State var textSize = OverlayTextSize.medium
+    @Previewable @State var scale: CGFloat = 0.7
 
     return GravityAlignedOverlayHost(
         deviceOrientation: .landscapeLeft,
         position: position,
-        textSize: textSize,
+        alignment: .trailing,
+        scale: scale,
         onPositionChange: { position = $0 },
-        onTextSizeChange: { textSize = $0 }
+        onScaleChange: { scale = $0 }
     ) { maxWidth in
         Text("Besirli, Trabzon")
             .padding()

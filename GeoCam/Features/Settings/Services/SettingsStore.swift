@@ -26,17 +26,9 @@ final class SettingsStore: SettingsStoring {
         self.storageKey = storageKey
 
         var loaded = Self.load(from: defaults, key: storageKey) ?? .default
-        // Eski sağa kaymış X değerleri tam genişlik kutuda taşmaya yol açıyordu.
-        loaded.position = loaded.position.clamped(
-            contentSize: CGSize(
-                width: OverlayConstants.referenceWidth * OverlayConstants.maxWidthRatio,
-                height: 1
-            ),
-            in: CGSize(
-                width: OverlayConstants.referenceWidth,
-                height: OverlayConstants.referenceWidth
-            )
-        )
+        // Konum yalnızca doğrulanır. Çerçeveye sığdırma görüntüleme anında yapılır;
+        // burada sıkıştırılırsa kullanıcının bıraktığı yer her açılışta kaybolur.
+        loaded.position = loaded.position.sanitized()
         self.settings = loaded
     }
 

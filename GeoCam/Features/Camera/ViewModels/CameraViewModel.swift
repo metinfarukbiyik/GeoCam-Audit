@@ -150,19 +150,22 @@ final class CameraViewModel {
 
     /// Kullanıcı bilgi katmanını sürüklediğinde yeni konum kalıcı hale getirilir.
     func updateOverlayPosition(_ position: OverlayPosition) {
+        let sanitized = position.sanitized()
         var settings = settingsStore.settings
-        settings.position = position
+        guard settings.position != sanitized else { return }
+
+        settings.position = sanitized
         settingsStore.update(settings)
         settingsRevision += 1
     }
 
-    /// Çift parmak sıkıştırma/açma ile bilgi katmanı metin boyutu güncellenir.
-    func updateOverlayTextSize(_ textSize: OverlayTextSize) {
+    /// Çift parmak jesti ile bilgi katmanının tamamı küçültülüp büyütülür.
+    func updateOverlayScale(_ scale: CGFloat) {
+        let clamped = OverlayConstants.Scale.clamped(scale)
         var settings = settingsStore.settings
-        guard settings.textSize != textSize else { return }
-        settings.textSize = textSize
-        // Küçültünce sağa taşmayı önlemek için sol kenar boşluğuna yasla.
-        settings.position.x = OverlayConstants.horizontalInsetRatio
+        guard settings.resolvedScale != clamped else { return }
+
+        settings.overlayScale = clamped
         settingsStore.update(settings)
         settingsRevision += 1
     }

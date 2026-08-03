@@ -37,20 +37,4 @@ nonisolated enum OverlayTextSize: String, CaseIterable, Identifiable, Codable, S
     var titlePointSize: CGFloat {
         pointSize * OverlayConstants.Text.titleScale
     }
-
-    var smaller: OverlayTextSize? {
-        switch self {
-        case .small: nil
-        case .medium: .small
-        case .large: .medium
-        }
-    }
-
-    var larger: OverlayTextSize? {
-        switch self {
-        case .small: .medium
-        case .medium: .large
-        case .large: nil
-        }
-    }
 }

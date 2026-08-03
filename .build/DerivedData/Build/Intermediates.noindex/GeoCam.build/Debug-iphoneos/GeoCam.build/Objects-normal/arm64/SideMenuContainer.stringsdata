@@ -1,0 +1,24 @@
+{
+  "source": "/Users/metinbiyik/Desktop/projeler/GeoCamApp/GeoCam/GeoCam/Shared/Components/SideMenuContainer.swift",
+  "tables": {
+    "Localizable": [
+      {
+        "comment": "",
+        "key": "Menüyü kapat",
+        "location": {
+          "startingColumn": 37,
+          "startingLine": 73
+        }
+      },
+      {
+        "comment": "",
+        "key": "Menü",
+        "location": {
+          "startingColumn": 1,
+          "startingLine": 100
+        }
+      }
+    ]
+  },
+  "version": 1
+}

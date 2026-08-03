@@ -51,6 +51,10 @@ nonisolated enum L10n {
         case settingsTheme
         case settingsFont
         case settingsTextSize
+        case settingsOverlayScale
+        case settingsAlignment
+        case alignmentLeading
+        case alignmentTrailing
         case settingsContact
         case settingsContactFooter
         case settingsSendEmail
@@ -290,10 +294,10 @@ nonisolated enum L10n {
             .turkish: "Görünüm", .english: "Appearance", .spanish: "Apariencia", .german: "Darstellung"
         ],
         .settingsAppearanceFooter: [
-            .turkish: "Tasarım seçimi kamera önizlemesine anında yansır. Bilgi katmanını parmağınızla sürükleyerek fotoğraftaki yerini değiştirebilirsiniz.",
-            .english: "Layout changes apply instantly on the camera preview. Drag the info overlay to reposition it on the photo.",
-            .spanish: "El diseño se aplica al instante en la vista previa. Arrastra la capa para reposicionarla.",
-            .german: "Layout-Änderungen gelten sofort in der Vorschau. Ziehen Sie das Overlay, um es zu positionieren."
+            .turkish: "Tasarım seçimi kamera önizlemesine anında yansır. Katmanı parmağınızla sürükleyerek yerini, çift parmakla sıkıştırıp açarak tasarımın tamamını küçültüp büyütebilirsiniz. Yaslama, katmanı seçtiğiniz kenara taşır. Bıraktığınız yer ve boyut korunur.",
+            .english: "Layout changes apply instantly on the camera preview. Drag the overlay to reposition it and pinch to scale the whole design. Alignment moves it to the chosen edge. Your position and size are remembered.",
+            .spanish: "El diseño se aplica al instante en la vista previa. Arrastra la capa para reposicionarla y pellízcala para escalar todo el diseño. La alineación la mueve al borde elegido. Se recuerdan la posición y el tamaño.",
+            .german: "Layout-Änderungen gelten sofort in der Vorschau. Ziehen Sie das Overlay zum Positionieren und skalieren Sie das gesamte Design mit der Pinch-Geste. Die Ausrichtung verschiebt es an den gewählten Rand. Position und Größe bleiben erhalten."
         ],
         .settingsLayout: [
             .turkish: "Katman Tasarımı", .english: "Overlay Layout", .spanish: "Diseño de capa", .german: "Overlay-Layout"
@@ -306,6 +310,24 @@ nonisolated enum L10n {
         ],
         .settingsTextSize: [
             .turkish: "Metin Boyutu", .english: "Text Size", .spanish: "Tamaño de texto", .german: "Textgröße"
+        ],
+        .settingsOverlayScale: [
+            .turkish: "Katman Boyutu",
+            .english: "Overlay Size",
+            .spanish: "Tamaño de la capa",
+            .german: "Overlay-Größe"
+        ],
+        .settingsAlignment: [
+            .turkish: "Yaslama",
+            .english: "Alignment",
+            .spanish: "Alineación",
+            .german: "Ausrichtung"
+        ],
+        .alignmentLeading: [
+            .turkish: "Sol", .english: "Left", .spanish: "Izquierda", .german: "Links"
+        ],
+        .alignmentTrailing: [
+            .turkish: "Sağ", .english: "Right", .spanish: "Derecha", .german: "Rechts"
         ],
         .settingsContact: [
             .turkish: "İletişim", .english: "Contact", .spanish: "Contacto", .german: "Kontakt"

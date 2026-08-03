@@ -159,9 +159,10 @@ struct CameraView: View {
         return GravityAlignedOverlayHost(
             deviceOrientation: deviceOrientationObserver.orientation,
             position: settings.position,
-            textSize: settings.textSize,
+            alignment: settings.horizontalAlignment,
+            scale: settings.resolvedScale,
             onPositionChange: viewModel.updateOverlayPosition,
-            onTextSizeChange: viewModel.updateOverlayTextSize
+            onScaleChange: viewModel.updateOverlayScale
         ) { maxWidth in
             LocationStatusView(
                 viewModel: locationViewModel,

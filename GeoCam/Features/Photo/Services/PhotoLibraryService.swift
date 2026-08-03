@@ -9,24 +9,30 @@ import OSLog
 import Photos
 
 /// PhotoKit tabanlı kayıt servisi.
+/// Çekimler hem kitaplığa hem de uygulamanın kendi albümüne yazılır.
 @MainActor
 @Observable
 final class PhotoLibraryService: PhotoLibraryServicing {
 
+    /// Albümü bulup oluşturabilmek için salt ekleme yetkisi yetmez, okuma da gerekir.
+    private static let accessLevel: PHAccessLevel = .readWrite
+
     private(set) var permissionStatus: PermissionStatus
 
+    private let albumStore = PhotoAlbumStore()
+
     init() {
-        permissionStatus = PermissionStatus(PHPhotoLibrary.authorizationStatus(for: .addOnly))
+        permissionStatus = PermissionStatus(PHPhotoLibrary.authorizationStatus(for: Self.accessLevel))
     }
 
-    func requestAddPermission() async -> PermissionStatus {
-        let current = PermissionStatus(PHPhotoLibrary.authorizationStatus(for: .addOnly))
+    func requestPermission() async -> PermissionStatus {
+        let current = PermissionStatus(PHPhotoLibrary.authorizationStatus(for: Self.accessLevel))
         guard current == .notDetermined else {
             permissionStatus = current
             return current
         }
 
-        let status = await PHPhotoLibrary.requestAuthorization(for: .addOnly)
+        let status = await PHPhotoLibrary.requestAuthorization(for: Self.accessLevel)
         permissionStatus = PermissionStatus(status)
         return permissionStatus
     }
@@ -56,17 +62,37 @@ final class PhotoLibraryService: PhotoLibraryServicing {
     private func performCreation(
         _ configure: @escaping @Sendable (PHAssetCreationRequest) -> Void
     ) async throws {
-        guard await requestAddPermission().isAuthorized else {
+        guard await requestPermission().isAuthorized else {
             throw PhotoError.libraryPermissionDenied
         }
 
+        let albumIdentifier = await albumStore.identifier()
+
         do {
             try await PHPhotoLibrary.shared().performChanges { @Sendable in
-                configure(PHAssetCreationRequest.forAsset())
+                let request = PHAssetCreationRequest.forAsset()
+                configure(request)
+                Self.addCreatedAsset(of: request, toAlbum: albumIdentifier)
             }
         } catch {
             AppLogger.photo.error("Kitaplığa kaydedilemedi: \(error.localizedDescription, privacy: .public)")
             throw PhotoError.saveFailed
         }
+    }
+
+    /// Albüme ekleme sessizce atlanabilir; çekimin kitaplığa yazılması her koşulda önceliklidir.
+    private nonisolated static func addCreatedAsset(
+        of request: PHAssetCreationRequest,
+        toAlbum identifier: String?
+    ) {
+        guard let identifier,
+              let placeholder = request.placeholderForCreatedAsset,
+              let album = PHAssetCollection
+                  .fetchAssetCollections(withLocalIdentifiers: [identifier], options: nil)
+                  .firstObject,
+              let albumRequest = PHAssetCollectionChangeRequest(for: album)
+        else { return }
+
+        albumRequest.addAssets([placeholder] as NSArray)
     }
 }

@@ -14,7 +14,7 @@ nonisolated extension PermissionStatus {
         case .notDetermined: self = .notDetermined
         case .restricted: self = .restricted
         case .denied: self = .denied
-        // Sadece ekleme izninde .limited tam yetkiye eşdeğerdir.
+        // Sınırlı erişimde de yeni çekim eklenebilir; yalnızca albüm oluşturma devre dışı kalır.
         case .authorized, .limited: self = .authorized
         @unknown default: self = .denied
         }

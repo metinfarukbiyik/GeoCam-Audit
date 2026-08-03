@@ -35,7 +35,7 @@ nonisolated enum OverlayConstants {
     static let stampedBackgroundOpacity: CGFloat = 0.48
 
     enum Position {
-        /// Katman sol kenarının varsayılan yatay konumu (0...1).
+        /// Katmanın yaslandığı kenardan varsayılan yatay boşluğu (0...1).
         static let defaultX: CGFloat = OverlayConstants.horizontalInsetRatio
         /// Katman üst kenarının varsayılan dikey konumu (0...1).
         /// Kontrollerin üstünde kalacak şekilde yerleştirilir.
@@ -48,11 +48,19 @@ nonisolated enum OverlayConstants {
         static let yOffset: CGFloat = 1
     }
 
-    enum Pinch {
-        /// Bu eşiğin altında çift parmak sıkıştırma bir üst küçük boyuta geçer.
-        static let shrinkThreshold: CGFloat = 0.9
-        /// Bu eşiğin üstünde çift parmak açma bir üst büyük boyuta geçer.
-        static let growThreshold: CGFloat = 1.12
+    /// Katmanın tamamına uygulanan geometrik küçültme oranı.
+    /// Yazı, iç boşluk, logo ve kart genişliği birlikte ölçeklenir.
+    enum Scale {
+        /// Parmakla inilebilecek en küçük oran.
+        static let minimum: CGFloat = 0.45
+        /// Tam boy; kart fotoğrafın kullanılabilir genişliğini kaplar.
+        static let maximum: CGFloat = 1
+
+        static func clamped(_ value: CGFloat) -> CGFloat {
+            guard value.isFinite else { return maximum }
+
+            return min(max(value, minimum), maximum)
+        }
     }
 
     enum Text {

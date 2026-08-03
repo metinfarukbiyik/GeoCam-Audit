@@ -12,7 +12,8 @@ import Foundation
 protocol PhotoLibraryServicing: AnyObject {
     var permissionStatus: PermissionStatus { get }
 
-    func requestAddPermission() async -> PermissionStatus
+    func requestPermission() async -> PermissionStatus
+    /// Görseli kitaplığa ve uygulama albümüne ekler.
     func save(imageData: Data) async throws
     /// Videoyu kitaplığa ekler ve geçici dosyayı temizler.
     func save(videoAt url: URL) async throws
