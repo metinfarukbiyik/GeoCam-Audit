@@ -15,8 +15,8 @@ struct DeveloperCreditView: View {
         Text(.init(creditMarkdown))
             .font(.footnote)
             .foregroundStyle(.secondary)
-            .multilineTextAlignment(.center)
-            .frame(maxWidth: .infinity, alignment: .center)
+            .multilineTextAlignment(.leading)
+            .frame(maxWidth: .infinity, alignment: .leading)
     }
 
     /// Ad, Markdown bağlantısı olarak verilir; böylece metin dar alanda da doğal biçimde sarılır.
