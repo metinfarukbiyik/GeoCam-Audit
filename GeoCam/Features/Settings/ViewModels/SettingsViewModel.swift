@@ -9,7 +9,7 @@ import Observation
 import UIKit
 
 /// Ayarlar ekranının durumunu yöneten görünüm modeli.
-/// Değerler store üzerinden okunur/yazılır; böylece Toggle gibi iç içe Binding'ler de kalıcılaşır.
+/// Değişiklikler taslakta tutulur; yalnızca Bitti ile kalıcılaştırılır.
 @MainActor
 @Observable
 final class SettingsViewModel {
@@ -17,29 +17,40 @@ final class SettingsViewModel {
     private let settingsStore: SettingsStore
     private let brandingAssetStore: BrandingAssetStore
 
-    var settings: OverlaySettings {
-        get { settingsStore.settings }
-        set { settingsStore.update(newValue) }
-    }
-
-    var logo: UIImage? { brandingAssetStore.logo }
+    /// Ekranda düzenlenen geçici tercihler.
+    var draft: OverlaySettings
+    /// Taslak logo; Bitti’ye kadar disk / store’a yazılmaz.
+    var draftLogo: UIImage?
 
     init(settingsStore: SettingsStore, brandingAssetStore: BrandingAssetStore) {
         self.settingsStore = settingsStore
         self.brandingAssetStore = brandingAssetStore
+        self.draft = settingsStore.settings
+        self.draftLogo = brandingAssetStore.logo
     }
 
-    func updateLogo(_ image: UIImage?) {
-        brandingAssetStore.updateLogo(image)
+    /// Sheet açılmadan önce kalıcı değerlerden taze taslak üretir.
+    func prepareForPresentation() {
+        draft = settingsStore.settings
+        draftLogo = brandingAssetStore.logo
+    }
 
-        // Logo eklendiğinde marka katmanı kullanıcıdan ayrıca onay beklemeden görünür olur.
-        if image != nil, !settings.showsBranding {
-            settings.showsBranding = true
+    /// Taslağı kalıcı depoya yazar.
+    func save() {
+        settingsStore.update(draft)
+        brandingAssetStore.updateLogo(draftLogo)
+    }
+
+    func updateDraftLogo(_ image: UIImage?) {
+        draftLogo = image
+
+        if image != nil {
+            draft.showsBranding = true
         }
     }
 
-    func resetToDefaults() {
-        settingsStore.resetToDefaults()
-        brandingAssetStore.updateLogo(nil)
+    func resetDraftToDefaults() {
+        draft = .default
+        draftLogo = nil
     }
 }

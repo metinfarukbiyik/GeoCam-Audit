@@ -9,19 +9,14 @@ import CoreLocation
 
 nonisolated extension CLLocationCoordinate2D {
 
-    /// Ondalık koordinat metni (örn. "41.00824, 28.97836").
-    /// Beş ondalık taşmayı azaltır; yaklaşık 1 m hassasiyet yeterlidir.
-    var decimalText: String {
-        let latitudeText = latitude.formatted(.number.precision(.fractionLength(5)).grouping(.never))
-        let longitudeText = longitude.formatted(.number.precision(.fractionLength(5)).grouping(.never))
-        return "\(latitudeText), \(longitudeText)"
+    /// Enlemin derece-dakika-saniye metni (örn. `41°00'29.7"N`).
+    var latitudeSexagesimalText: String {
+        Self.sexagesimalText(for: latitude, positiveSuffix: "N", negativeSuffix: "S")
     }
 
-    /// Derece-dakika-saniye koordinat metni (örn. "41°00'29.7\"N 28°58'42.1\"E").
-    var sexagesimalText: String {
-        let latitudeText = Self.sexagesimalText(for: latitude, positiveSuffix: "N", negativeSuffix: "S")
-        let longitudeText = Self.sexagesimalText(for: longitude, positiveSuffix: "E", negativeSuffix: "W")
-        return "\(latitudeText) \(longitudeText)"
+    /// Boylamın derece-dakika-saniye metni (örn. `28°58'42.1"E`).
+    var longitudeSexagesimalText: String {
+        Self.sexagesimalText(for: longitude, positiveSuffix: "E", negativeSuffix: "W")
     }
 
     private static func sexagesimalText(
@@ -30,10 +25,21 @@ nonisolated extension CLLocationCoordinate2D {
         negativeSuffix: String
     ) -> String {
         let absoluteValue = abs(value)
-        let degrees = Int(absoluteValue)
-        let minutesValue = (absoluteValue - Double(degrees)) * 60
-        let minutes = Int(minutesValue)
-        let seconds = (minutesValue - Double(minutes)) * 60
+        var degrees = Int(absoluteValue)
+        var minutes = Int((absoluteValue - Double(degrees)) * 60)
+        var seconds = ((absoluteValue - Double(degrees)) * 60 - Double(minutes)) * 60
+
+        // Tek ondalığa yuvarlama 60.0 üretirse bir üst birime taşınır; "41°00'60.0\"N" gösterilmez.
+        if (seconds * 10).rounded() >= 600 {
+            seconds = 0
+            minutes += 1
+        }
+
+        if minutes >= 60 {
+            minutes = 0
+            degrees += 1
+        }
+
         let suffix = value >= 0 ? positiveSuffix : negativeSuffix
 
         return String(format: "%d°%02d'%04.1f\"%@", degrees, minutes, seconds, suffix)

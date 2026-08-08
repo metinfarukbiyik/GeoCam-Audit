@@ -7,11 +7,11 @@
 
 import SwiftUI
 
-/// Uygulamanın kök navigasyon kabuğu: kamera + sol ayarlar çekmecesi.
+/// Uygulamanın kök navigasyon kabuğu: kamera + ayarlar sayfası.
 struct RootView: View {
 
     @Environment(AppDependencies.self) private var dependencies
-    @State private var isMenuPresented = false
+    @State private var isSettingsPresented = false
     @State private var cameraViewModel: CameraViewModel
     @State private var locationViewModel: LocationViewModel
     @State private var settingsViewModel: SettingsViewModel
@@ -23,24 +23,33 @@ struct RootView: View {
     }
 
     var body: some View {
-        SideMenuContainer(isPresented: $isMenuPresented) {
-            NavigationStack {
-                CameraView(
-                    viewModel: cameraViewModel,
-                    locationViewModel: locationViewModel,
-                    onOpenMenu: { isMenuPresented = true }
-                )
-            }
-        } menu: {
-            SettingsView(
-                viewModel: settingsViewModel,
-                onClose: { isMenuPresented = false }
+        NavigationStack {
+            CameraView(
+                viewModel: cameraViewModel,
+                locationViewModel: locationViewModel,
+                onOpenSettings: openSettings
             )
         }
         .background(Color.black)
         .preferredColorScheme(dependencies.settingsStore.settings.theme.colorScheme)
         .environment(\.appLanguage, dependencies.settingsStore.settings.appLanguage)
         .environment(\.locale, dependencies.settingsStore.settings.appLanguage.locale)
+        .sheet(isPresented: $isSettingsPresented) {
+            SettingsView(
+                viewModel: settingsViewModel,
+                onDone: {
+                    isSettingsPresented = false
+                }
+            )
+            // Tema taslakta değişebilir; sheet kendi tercihini taşır.
+            .preferredColorScheme(settingsViewModel.draft.theme.colorScheme)
+            .presentationDragIndicator(.visible)
+        }
+    }
+
+    private func openSettings() {
+        settingsViewModel.prepareForPresentation()
+        isSettingsPresented = true
     }
 }
 

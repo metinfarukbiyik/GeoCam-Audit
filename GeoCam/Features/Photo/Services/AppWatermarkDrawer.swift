@@ -7,14 +7,26 @@
 
 import UIKit
 
-/// Damgalı fotoğraf/video köşesine uygulama filigranı çizer.
-/// Uygulama adı + orijinallik satırı ile kaydın güvenilirliğini vurgular.
+/// Damgalı fotoğraf/videoya köşe filigranları çizer.
+/// Sol alt: onay ikonu + doğrulama cümlesi (beyaz).
+/// Sağ alt: altlı üstlü GeoCam / audit marka yazısı.
 nonisolated enum AppWatermarkDrawer {
 
-    /// Görüntünün sağ alt köşesine yarı saydam filigran ekler.
+    /// Görüntünün alt köşelerine filigran ekler.
     static func apply(to image: UIImage, language: AppLanguage) -> UIImage {
         let size = image.size
         guard size.width > 0, size.height > 0 else { return image }
+
+        let left = makeBadge(
+            kind: .verified,
+            canvasWidth: size.width,
+            language: language
+        )
+        let right = makeBadge(
+            kind: .brand,
+            canvasWidth: size.width,
+            language: language
+        )
 
         let format = UIGraphicsImageRendererFormat()
         format.scale = 1
@@ -22,113 +34,267 @@ nonisolated enum AppWatermarkDrawer {
 
         return UIGraphicsImageRenderer(size: size, format: format).image { _ in
             image.draw(in: CGRect(origin: .zero, size: size))
-            drawText(in: size, language: language)
+            if let left {
+                left.image.draw(at: origin(for: left, side: .leading, in: size))
+            }
+            if let right {
+                right.image.draw(at: origin(for: right, side: .trailing, in: size))
+            }
         }
     }
 
     /// Video Core Animation hiyerarşisine eklenecek filigran katmanı.
     /// `parentLayer.isGeometryFlipped == false` (sol alt orijin) varsayılır.
     static func makeLayer(renderSize: CGSize, language: AppLanguage) -> CALayer {
-        let metrics = textMetrics(for: renderSize.width, language: language)
-        let inset = renderSize.width * OverlayConstants.Watermark.insetRatio
+        let parent = CALayer()
+        parent.frame = CGRect(origin: .zero, size: renderSize)
 
-        // UIKit sağ alt → CA sol alt orijine çevir.
-        let layer = CATextLayer()
-        layer.string = metrics.attributed
-        // nonisolated bağlamda UIScreen.main kullanılamaz; sabit 3× retina yeterlidir.
-        layer.contentsScale = OverlayConstants.Watermark.contentsScale
-        layer.alignmentMode = .right
-        layer.isWrapped = true
-        layer.frame = CGRect(
-            x: renderSize.width - metrics.size.width - inset,
-            y: inset,
-            width: ceil(metrics.size.width),
-            height: ceil(metrics.size.height)
-        )
-        layer.shadowColor = UIColor.black.cgColor
-        layer.shadowOpacity = Float(OverlayConstants.Watermark.shadowOpacity)
-        layer.shadowOffset = CGSize(width: 0, height: 1)
-        layer.shadowRadius = OverlayConstants.Watermark.shadowRadius
+        if let left = makeBadge(kind: .verified, canvasWidth: renderSize.width, language: language) {
+            parent.addSublayer(layer(for: left, side: .leading, in: renderSize))
+        }
+        if let right = makeBadge(kind: .brand, canvasWidth: renderSize.width, language: language) {
+            parent.addSublayer(layer(for: right, side: .trailing, in: renderSize))
+        }
 
-        return layer
+        return parent
     }
 
     // MARK: - Private
 
-    private static func drawText(in canvasSize: CGSize, language: AppLanguage) {
-        let metrics = textMetrics(for: canvasSize.width, language: language)
-        let inset = canvasSize.width * OverlayConstants.Watermark.insetRatio
-        let origin = CGPoint(
-            x: canvasSize.width - metrics.size.width - inset,
-            y: canvasSize.height - metrics.size.height - inset
-        )
-
-        shadowed(metrics.attributed).draw(at: CGPoint(x: origin.x, y: origin.y + 1))
-        metrics.attributed.draw(at: origin)
+    private enum Side {
+        case leading
+        case trailing
     }
 
-    private static func textMetrics(
-        for width: CGFloat,
-        language: AppLanguage
-    ) -> (attributed: NSAttributedString, size: CGSize) {
-        let titleSize = max(
-            OverlayConstants.Watermark.minFontSize,
-            width * OverlayConstants.Watermark.fontSizeRatio
-        )
-        let subtitleSize = max(
-            OverlayConstants.Watermark.minSecondaryFontSize,
-            titleSize * OverlayConstants.Watermark.secondaryFontScale
-        )
-
-        let titleFont = UIFont.systemFont(ofSize: titleSize, weight: .semibold)
-        let subtitleFont = UIFont.systemFont(ofSize: subtitleSize, weight: .medium)
-        let lineSpacing = titleSize * OverlayConstants.Watermark.lineSpacingRatio
-
-        let paragraph = NSMutableParagraphStyle()
-        paragraph.alignment = .right
-        paragraph.lineSpacing = lineSpacing
-
-        let result = NSMutableAttributedString()
-        result.append(
-            NSAttributedString(
-                string: AppConstants.Info.appName,
-                attributes: [
-                    .font: titleFont,
-                    .foregroundColor: UIColor.white.withAlphaComponent(OverlayConstants.Watermark.opacity),
-                    .paragraphStyle: paragraph
-                ]
-            )
-        )
-        result.append(NSAttributedString(string: "\n"))
-        result.append(
-            NSAttributedString(
-                string: language.t(.watermarkAuthenticity),
-                attributes: [
-                    .font: subtitleFont,
-                    .foregroundColor: UIColor.white.withAlphaComponent(OverlayConstants.Watermark.secondaryOpacity),
-                    .paragraphStyle: paragraph
-                ]
-            )
-        )
-
-        let bounds = result.boundingRect(
-            with: CGSize(width: CGFloat.greatestFiniteMagnitude, height: CGFloat.greatestFiniteMagnitude),
-            options: [.usesLineFragmentOrigin, .usesFontLeading],
-            context: nil
-        )
-
-        return (result, CGSize(width: ceil(bounds.width), height: ceil(bounds.height)))
+    private enum Kind {
+        case verified
+        case brand
     }
 
-    /// Gölge, asıl metnin font/paragraph yapısını korur; yalnızca renk değişir.
-    private static func shadowed(_ attributed: NSAttributedString) -> NSAttributedString {
-        let result = NSMutableAttributedString(attributedString: attributed)
-        let fullRange = NSRange(location: 0, length: result.length)
-        result.enumerateAttributes(in: fullRange) { attributes, range, _ in
-            var next = attributes
-            next[.foregroundColor] = UIColor.black.withAlphaComponent(OverlayConstants.Watermark.shadowOpacity)
-            result.setAttributes(next, range: range)
+    private static func origin(
+        for badge: (image: UIImage, shadowPadding: CGFloat),
+        side: Side,
+        in canvasSize: CGSize
+    ) -> CGPoint {
+        let inset = canvasSize.width * OverlayConstants.Watermark.insetRatio - badge.shadowPadding
+        let x = switch side {
+        case .leading: inset
+        case .trailing: canvasSize.width - badge.image.size.width - inset
         }
-        return result
+
+        return CGPoint(
+            x: x,
+            y: canvasSize.height - badge.image.size.height - inset
+        )
+    }
+
+    private static func layer(
+        for badge: (image: UIImage, shadowPadding: CGFloat),
+        side: Side,
+        in renderSize: CGSize
+    ) -> CALayer {
+        let inset = renderSize.width * OverlayConstants.Watermark.insetRatio - badge.shadowPadding
+        let x = switch side {
+        case .leading: inset
+        case .trailing: renderSize.width - badge.image.size.width - inset
+        }
+
+        let layer = CALayer()
+        layer.contents = badge.image.cgImage
+        layer.contentsGravity = .resizeAspect
+        layer.frame = CGRect(
+            x: x,
+            y: inset,
+            width: badge.image.size.width,
+            height: badge.image.size.height
+        )
+        return layer
+    }
+
+    private static func makeBadge(
+        kind: Kind,
+        canvasWidth: CGFloat,
+        language: AppLanguage
+    ) -> (image: UIImage, shadowPadding: CGFloat)? {
+        let metrics = Metrics(kind: kind, canvasWidth: canvasWidth, language: language)
+        guard metrics.badgeSize.width > 0, metrics.badgeSize.height > 0 else { return nil }
+
+        let format = UIGraphicsImageRendererFormat()
+        format.scale = 1
+        format.opaque = false
+
+        let image = UIGraphicsImageRenderer(size: metrics.badgeSize, format: format).image { context in
+            context.cgContext.setShadow(
+                offset: CGSize(width: 0, height: metrics.shadowYOffset),
+                blur: metrics.shadowBlur,
+                color: UIColor.black.withAlphaComponent(OverlayConstants.Watermark.shadowOpacity).cgColor
+            )
+
+            metrics.icon?.draw(in: metrics.iconRect)
+            metrics.text.draw(in: metrics.textRect)
+        }
+
+        return (image, metrics.padding)
+    }
+
+    private static var brandBlue: UIColor {
+        UIColor(
+            red: OverlayConstants.Watermark.brandBlueRed,
+            green: OverlayConstants.Watermark.brandBlueGreen,
+            blue: OverlayConstants.Watermark.brandBlueBlue,
+            alpha: 1
+        )
+    }
+
+    private struct Metrics {
+        let icon: UIImage?
+        let text: NSAttributedString
+        let iconRect: CGRect
+        let textRect: CGRect
+        let badgeSize: CGSize
+        let shadowBlur: CGFloat
+        let shadowYOffset: CGFloat
+        let padding: CGFloat
+
+        init(kind: Kind, canvasWidth: CGFloat, language: AppLanguage) {
+            let titleSize = max(
+                OverlayConstants.Watermark.minFontSize,
+                canvasWidth * OverlayConstants.Watermark.fontSizeRatio
+            )
+
+            shadowBlur = max(
+                OverlayConstants.Watermark.minShadowBlur,
+                titleSize * OverlayConstants.Watermark.shadowBlurRatio
+            )
+            shadowYOffset = titleSize * OverlayConstants.Watermark.shadowYOffsetRatio
+            padding = shadowBlur + shadowYOffset
+
+            text = Self.makeText(kind: kind, titleSize: titleSize, language: language)
+            let textSize = Self.boundingSize(of: text)
+
+            let iconHeight = titleSize * OverlayConstants.Watermark.iconScale
+            let spacing = titleSize * OverlayConstants.Watermark.iconSpacingRatio
+
+            switch kind {
+            case .verified:
+                icon = Self.makeSymbol(
+                    named: OverlayConstants.Watermark.verifiedIconName,
+                    height: iconHeight,
+                    color: .white
+                )
+                let iconSize = icon.map { image -> CGSize in
+                    let ratio = image.size.height > 0 ? image.size.width / image.size.height : 1
+                    return CGSize(width: iconHeight * ratio, height: iconHeight)
+                } ?? .zero
+                let contentHeight = max(textSize.height, iconSize.height)
+                badgeSize = CGSize(
+                    width: ceil(iconSize.width + spacing + textSize.width + padding * 2),
+                    height: ceil(contentHeight + padding * 2)
+                )
+                iconRect = CGRect(
+                    x: padding,
+                    y: padding + (contentHeight - iconSize.height) / 2,
+                    width: iconSize.width,
+                    height: iconSize.height
+                )
+                textRect = CGRect(
+                    x: padding + iconSize.width + spacing,
+                    y: padding + (contentHeight - textSize.height) / 2,
+                    width: ceil(textSize.width),
+                    height: ceil(textSize.height)
+                )
+
+            case .brand:
+                icon = nil
+                iconRect = .zero
+                badgeSize = CGSize(
+                    width: ceil(textSize.width + padding * 2),
+                    height: ceil(textSize.height + padding * 2)
+                )
+                textRect = CGRect(
+                    x: padding,
+                    y: padding,
+                    width: ceil(textSize.width),
+                    height: ceil(textSize.height)
+                )
+            }
+        }
+
+        private static func makeSymbol(named name: String, height: CGFloat, color: UIColor) -> UIImage? {
+            let configuration = UIImage.SymbolConfiguration(pointSize: height, weight: .semibold)
+
+            return UIImage(systemName: name, withConfiguration: configuration)?
+                .withTintColor(color, renderingMode: .alwaysOriginal)
+        }
+
+        private static func makeText(
+            kind: Kind,
+            titleSize: CGFloat,
+            language: AppLanguage
+        ) -> NSAttributedString {
+            switch kind {
+            case .verified:
+                let paragraph = NSMutableParagraphStyle()
+                paragraph.alignment = .left
+
+                return NSAttributedString(
+                    string: language.t(.watermarkVerified),
+                    attributes: [
+                        .font: UIFont.systemFont(ofSize: titleSize, weight: .bold),
+                        .foregroundColor: UIColor.white,
+                        .paragraphStyle: paragraph
+                    ]
+                )
+
+            case .brand:
+                return makeBrandWordmark(titleSize: titleSize)
+            }
+        }
+
+        /// Altlı üstlü: GeoCam (beyaz) / audit (mavi).
+        private static func makeBrandWordmark(titleSize: CGFloat) -> NSAttributedString {
+            let fontSize = titleSize * OverlayConstants.Watermark.brandFontScale
+            let font = UIFont.systemFont(ofSize: fontSize, weight: .light)
+            let paragraph = NSMutableParagraphStyle()
+            paragraph.alignment = .right
+            paragraph.lineSpacing = fontSize * OverlayConstants.Watermark.brandLineSpacingRatio
+            let kern = OverlayConstants.Watermark.brandKerning
+
+            let result = NSMutableAttributedString()
+            result.append(
+                NSAttributedString(
+                    string: "GeoCam\n",
+                    attributes: [
+                        .font: font,
+                        .foregroundColor: UIColor.white,
+                        .paragraphStyle: paragraph,
+                        .kern: kern
+                    ]
+                )
+            )
+            result.append(
+                NSAttributedString(
+                    string: "audit",
+                    attributes: [
+                        .font: font,
+                        .foregroundColor: AppWatermarkDrawer.brandBlue,
+                        .paragraphStyle: paragraph,
+                        .kern: kern
+                    ]
+                )
+            )
+
+            return result
+        }
+
+        private static func boundingSize(of text: NSAttributedString) -> CGSize {
+            let bounds = text.boundingRect(
+                with: CGSize(width: CGFloat.greatestFiniteMagnitude, height: CGFloat.greatestFiniteMagnitude),
+                options: [.usesLineFragmentOrigin, .usesFontLeading],
+                context: nil
+            )
+
+            return CGSize(width: ceil(bounds.width), height: ceil(bounds.height))
+        }
     }
 }

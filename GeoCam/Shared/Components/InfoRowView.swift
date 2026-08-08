@@ -9,10 +9,12 @@ import SwiftUI
 
 /// Simge + etiket + değer düzeninde bilgi satırı.
 /// Değer sutunu esnek genişliktedir; uzun koordinatlar satır atlar.
+/// Sağa yaslı katmanda sıralama aynalanır: değer solda, simge sağda kalır.
 struct InfoRowView: View {
     let systemImage: String
     let title: String
     let value: String
+    var alignment: OverlayHorizontalAlignment = .leading
     var tone: Tone = .standard
     var valueTint: Color?
 
@@ -23,30 +25,48 @@ struct InfoRowView: View {
 
     var body: some View {
         HStack(alignment: .top, spacing: LayoutConstants.Spacing.small) {
-            Image(systemName: systemImage)
-                .imageScale(.medium)
-                .accessibilityHidden(true)
-
-            Text(title)
-                .foregroundStyle(titleColor)
-                .fixedSize(horizontal: true, vertical: false)
-
-            Group {
-                if let valueTint {
-                    Text(value).foregroundStyle(valueTint)
-                } else {
-                    Text(value)
-                }
+            switch alignment {
+            case .leading:
+                markView
+                titleView
+                valueView
+            case .trailing:
+                valueView
+                titleView
+                markView
             }
-            .fontWeight(.medium)
-            .multilineTextAlignment(.trailing)
-            .lineLimit(2)
-            .minimumScaleFactor(0.75)
-            .frame(minWidth: 0, maxWidth: .infinity, alignment: .trailing)
-            .layoutPriority(-1)
         }
-        .frame(minWidth: 0, maxWidth: .infinity, alignment: .leading)
+        .frame(minWidth: 0, maxWidth: .infinity, alignment: alignment.frameAlignment)
         .accessibilityElement(children: .combine)
+    }
+
+    private var markView: some View {
+        Image(systemName: systemImage)
+            .imageScale(.medium)
+            .accessibilityHidden(true)
+    }
+
+    private var titleView: some View {
+        Text(title)
+            .foregroundStyle(titleColor)
+            .fixedSize(horizontal: true, vertical: false)
+    }
+
+    private var valueView: some View {
+        Group {
+            if let valueTint {
+                Text(value).foregroundStyle(valueTint)
+            } else {
+                Text(value)
+            }
+        }
+        .fontWeight(.medium)
+        // Değer, etiketin karşı tarafına yaslanır.
+        .multilineTextAlignment(alignment.opposite.textAlignment)
+        .lineLimit(2)
+        .minimumScaleFactor(0.75)
+        .frame(minWidth: 0, maxWidth: .infinity, alignment: alignment.opposite.frameAlignment)
+        .layoutPriority(-1)
     }
 
     private var titleColor: Color {
@@ -58,13 +78,16 @@ struct InfoRowView: View {
 }
 
 #Preview {
-    VStack {
-        InfoRowView(
-            systemImage: "globe",
-            title: "Koordinat",
-            value: "40,99386, 39,69464"
-        )
-        .frame(width: 280)
+    VStack(spacing: 12) {
+        ForEach(OverlayHorizontalAlignment.allCases) { alignment in
+            InfoRowView(
+                systemImage: "globe",
+                title: "Koordinat",
+                value: "Enlem 41°00'29.7\"N",
+                alignment: alignment
+            )
+            .frame(width: 280)
+        }
     }
     .padding()
 }

@@ -1,100 +1,23 @@
 {
-  "/Users/metinbiyik/Desktop/projeler/GeoCamApp/GeoCam/GeoCam/Features/Photo/Views/InfoOverlayView.swift" : {
-    "const-values" : "/Users/metinbiyik/Desktop/projeler/GeoCamApp/GeoCam/.build/DerivedData/Build/Intermediates.noindex/GeoCam.build/Debug-iphoneos/GeoCam.build/Objects-normal/arm64/InfoOverlayView.swiftconstvalues",
-    "dependencies" : "/Users/metinbiyik/Desktop/projeler/GeoCamApp/GeoCam/.build/DerivedData/Build/Intermediates.noindex/GeoCam.build/Debug-iphoneos/GeoCam.build/Objects-normal/arm64/InfoOverlayView.d",
-    "diagnostics" : "/Users/metinbiyik/Desktop/projeler/GeoCamApp/GeoCam/.build/DerivedData/Build/Intermediates.noindex/GeoCam.build/Debug-iphoneos/GeoCam.build/Objects-normal/arm64/InfoOverlayView.dia",
-    "object" : "/Users/metinbiyik/Desktop/projeler/GeoCamApp/GeoCam/.build/DerivedData/Build/Intermediates.noindex/GeoCam.build/Debug-iphoneos/GeoCam.build/Objects-normal/arm64/InfoOverlayView.o",
-    "swift-dependencies" : "/Users/metinbiyik/Desktop/projeler/GeoCamApp/GeoCam/.build/DerivedData/Build/Intermediates.noindex/GeoCam.build/Debug-iphoneos/GeoCam.build/Objects-normal/arm64/InfoOverlayView.swiftdeps"
+  "/Users/metinbiyik/Desktop/projeler/GeoCamApp/GeoCam/GeoCam/Features/Video/Services/VideoOverlayRendering.swift" : {
+    "const-values" : "/Users/metinbiyik/Desktop/projeler/GeoCamApp/GeoCam/.build/DerivedData/Build/Intermediates.noindex/GeoCam.build/Debug-iphoneos/GeoCam.build/Objects-normal/arm64/VideoOverlayRendering.swiftconstvalues",
+    "dependencies" : "/Users/metinbiyik/Desktop/projeler/GeoCamApp/GeoCam/.build/DerivedData/Build/Intermediates.noindex/GeoCam.build/Debug-iphoneos/GeoCam.build/Objects-normal/arm64/VideoOverlayRendering.d",
+    "diagnostics" : "/Users/metinbiyik/Desktop/projeler/GeoCamApp/GeoCam/.build/DerivedData/Build/Intermediates.noindex/GeoCam.build/Debug-iphoneos/GeoCam.build/Objects-normal/arm64/VideoOverlayRendering.dia",
+    "object" : "/Users/metinbiyik/Desktop/projeler/GeoCamApp/GeoCam/.build/DerivedData/Build/Intermediates.noindex/GeoCam.build/Debug-iphoneos/GeoCam.build/Objects-normal/arm64/VideoOverlayRendering.o",
+    "swift-dependencies" : "/Users/metinbiyik/Desktop/projeler/GeoCamApp/GeoCam/.build/DerivedData/Build/Intermediates.noindex/GeoCam.build/Debug-iphoneos/GeoCam.build/Objects-normal/arm64/VideoOverlayRendering.swiftdeps"
   },
-  "/Users/metinbiyik/Desktop/projeler/GeoCamApp/GeoCam/GeoCam/Features/Photo/Views/OverlayLayouts/OverlaySplitLayout.swift" : {
-    "const-values" : "/Users/metinbiyik/Desktop/projeler/GeoCamApp/GeoCam/.build/DerivedData/Build/Intermediates.noindex/GeoCam.build/Debug-iphoneos/GeoCam.build/Objects-normal/arm64/OverlaySplitLayout.swiftconstvalues",
-    "dependencies" : "/Users/metinbiyik/Desktop/projeler/GeoCamApp/GeoCam/.build/DerivedData/Build/Intermediates.noindex/GeoCam.build/Debug-iphoneos/GeoCam.build/Objects-normal/arm64/OverlaySplitLayout.d",
-    "diagnostics" : "/Users/metinbiyik/Desktop/projeler/GeoCamApp/GeoCam/.build/DerivedData/Build/Intermediates.noindex/GeoCam.build/Debug-iphoneos/GeoCam.build/Objects-normal/arm64/OverlaySplitLayout.dia",
-    "object" : "/Users/metinbiyik/Desktop/projeler/GeoCamApp/GeoCam/.build/DerivedData/Build/Intermediates.noindex/GeoCam.build/Debug-iphoneos/GeoCam.build/Objects-normal/arm64/OverlaySplitLayout.o",
-    "swift-dependencies" : "/Users/metinbiyik/Desktop/projeler/GeoCamApp/GeoCam/.build/DerivedData/Build/Intermediates.noindex/GeoCam.build/Debug-iphoneos/GeoCam.build/Objects-normal/arm64/OverlaySplitLayout.swiftdeps"
+  "/Users/metinbiyik/Desktop/projeler/GeoCamApp/GeoCam/GeoCam/Shared/Components/GlassCardView.swift" : {
+    "const-values" : "/Users/metinbiyik/Desktop/projeler/GeoCamApp/GeoCam/.build/DerivedData/Build/Intermediates.noindex/GeoCam.build/Debug-iphoneos/GeoCam.build/Objects-normal/arm64/GlassCardView.swiftconstvalues",
+    "dependencies" : "/Users/metinbiyik/Desktop/projeler/GeoCamApp/GeoCam/.build/DerivedData/Build/Intermediates.noindex/GeoCam.build/Debug-iphoneos/GeoCam.build/Objects-normal/arm64/GlassCardView.d",
+    "diagnostics" : "/Users/metinbiyik/Desktop/projeler/GeoCamApp/GeoCam/.build/DerivedData/Build/Intermediates.noindex/GeoCam.build/Debug-iphoneos/GeoCam.build/Objects-normal/arm64/GlassCardView.dia",
+    "object" : "/Users/metinbiyik/Desktop/projeler/GeoCamApp/GeoCam/.build/DerivedData/Build/Intermediates.noindex/GeoCam.build/Debug-iphoneos/GeoCam.build/Objects-normal/arm64/GlassCardView.o",
+    "swift-dependencies" : "/Users/metinbiyik/Desktop/projeler/GeoCamApp/GeoCam/.build/DerivedData/Build/Intermediates.noindex/GeoCam.build/Debug-iphoneos/GeoCam.build/Objects-normal/arm64/GlassCardView.swiftdeps"
   },
-  "/Users/metinbiyik/Desktop/projeler/GeoCamApp/GeoCam/GeoCam/Features/Settings/Models/AppLanguage.swift" : {
-    "const-values" : "/Users/metinbiyik/Desktop/projeler/GeoCamApp/GeoCam/.build/DerivedData/Build/Intermediates.noindex/GeoCam.build/Debug-iphoneos/GeoCam.build/Objects-normal/arm64/AppLanguage.swiftconstvalues",
-    "dependencies" : "/Users/metinbiyik/Desktop/projeler/GeoCamApp/GeoCam/.build/DerivedData/Build/Intermediates.noindex/GeoCam.build/Debug-iphoneos/GeoCam.build/Objects-normal/arm64/AppLanguage.d",
-    "diagnostics" : "/Users/metinbiyik/Desktop/projeler/GeoCamApp/GeoCam/.build/DerivedData/Build/Intermediates.noindex/GeoCam.build/Debug-iphoneos/GeoCam.build/Objects-normal/arm64/AppLanguage.dia",
-    "object" : "/Users/metinbiyik/Desktop/projeler/GeoCamApp/GeoCam/.build/DerivedData/Build/Intermediates.noindex/GeoCam.build/Debug-iphoneos/GeoCam.build/Objects-normal/arm64/AppLanguage.o",
-    "swift-dependencies" : "/Users/metinbiyik/Desktop/projeler/GeoCamApp/GeoCam/.build/DerivedData/Build/Intermediates.noindex/GeoCam.build/Debug-iphoneos/GeoCam.build/Objects-normal/arm64/AppLanguage.swiftdeps"
-  },
-  "/Users/metinbiyik/Desktop/projeler/GeoCamApp/GeoCam/GeoCam/Features/Settings/Models/AppTheme.swift" : {
-    "const-values" : "/Users/metinbiyik/Desktop/projeler/GeoCamApp/GeoCam/.build/DerivedData/Build/Intermediates.noindex/GeoCam.build/Debug-iphoneos/GeoCam.build/Objects-normal/arm64/AppTheme.swiftconstvalues",
-    "dependencies" : "/Users/metinbiyik/Desktop/projeler/GeoCamApp/GeoCam/.build/DerivedData/Build/Intermediates.noindex/GeoCam.build/Debug-iphoneos/GeoCam.build/Objects-normal/arm64/AppTheme.d",
-    "diagnostics" : "/Users/metinbiyik/Desktop/projeler/GeoCamApp/GeoCam/.build/DerivedData/Build/Intermediates.noindex/GeoCam.build/Debug-iphoneos/GeoCam.build/Objects-normal/arm64/AppTheme.dia",
-    "object" : "/Users/metinbiyik/Desktop/projeler/GeoCamApp/GeoCam/.build/DerivedData/Build/Intermediates.noindex/GeoCam.build/Debug-iphoneos/GeoCam.build/Objects-normal/arm64/AppTheme.o",
-    "swift-dependencies" : "/Users/metinbiyik/Desktop/projeler/GeoCamApp/GeoCam/.build/DerivedData/Build/Intermediates.noindex/GeoCam.build/Debug-iphoneos/GeoCam.build/Objects-normal/arm64/AppTheme.swiftdeps"
-  },
-  "/Users/metinbiyik/Desktop/projeler/GeoCamApp/GeoCam/GeoCam/Features/Settings/Models/BrandAccentColor.swift" : {
-    "const-values" : "/Users/metinbiyik/Desktop/projeler/GeoCamApp/GeoCam/.build/DerivedData/Build/Intermediates.noindex/GeoCam.build/Debug-iphoneos/GeoCam.build/Objects-normal/arm64/BrandAccentColor.swiftconstvalues",
-    "dependencies" : "/Users/metinbiyik/Desktop/projeler/GeoCamApp/GeoCam/.build/DerivedData/Build/Intermediates.noindex/GeoCam.build/Debug-iphoneos/GeoCam.build/Objects-normal/arm64/BrandAccentColor.d",
-    "diagnostics" : "/Users/metinbiyik/Desktop/projeler/GeoCamApp/GeoCam/.build/DerivedData/Build/Intermediates.noindex/GeoCam.build/Debug-iphoneos/GeoCam.build/Objects-normal/arm64/BrandAccentColor.dia",
-    "object" : "/Users/metinbiyik/Desktop/projeler/GeoCamApp/GeoCam/.build/DerivedData/Build/Intermediates.noindex/GeoCam.build/Debug-iphoneos/GeoCam.build/Objects-normal/arm64/BrandAccentColor.o",
-    "swift-dependencies" : "/Users/metinbiyik/Desktop/projeler/GeoCamApp/GeoCam/.build/DerivedData/Build/Intermediates.noindex/GeoCam.build/Debug-iphoneos/GeoCam.build/Objects-normal/arm64/BrandAccentColor.swiftdeps"
-  },
-  "/Users/metinbiyik/Desktop/projeler/GeoCamApp/GeoCam/GeoCam/Features/Settings/Models/BrandFontStyle.swift" : {
-    "const-values" : "/Users/metinbiyik/Desktop/projeler/GeoCamApp/GeoCam/.build/DerivedData/Build/Intermediates.noindex/GeoCam.build/Debug-iphoneos/GeoCam.build/Objects-normal/arm64/BrandFontStyle.swiftconstvalues",
-    "dependencies" : "/Users/metinbiyik/Desktop/projeler/GeoCamApp/GeoCam/.build/DerivedData/Build/Intermediates.noindex/GeoCam.build/Debug-iphoneos/GeoCam.build/Objects-normal/arm64/BrandFontStyle.d",
-    "diagnostics" : "/Users/metinbiyik/Desktop/projeler/GeoCamApp/GeoCam/.build/DerivedData/Build/Intermediates.noindex/GeoCam.build/Debug-iphoneos/GeoCam.build/Objects-normal/arm64/BrandFontStyle.dia",
-    "object" : "/Users/metinbiyik/Desktop/projeler/GeoCamApp/GeoCam/.build/DerivedData/Build/Intermediates.noindex/GeoCam.build/Debug-iphoneos/GeoCam.build/Objects-normal/arm64/BrandFontStyle.o",
-    "swift-dependencies" : "/Users/metinbiyik/Desktop/projeler/GeoCamApp/GeoCam/.build/DerivedData/Build/Intermediates.noindex/GeoCam.build/Debug-iphoneos/GeoCam.build/Objects-normal/arm64/BrandFontStyle.swiftdeps"
-  },
-  "/Users/metinbiyik/Desktop/projeler/GeoCamApp/GeoCam/GeoCam/Features/Settings/Models/BrandIcon.swift" : {
-    "const-values" : "/Users/metinbiyik/Desktop/projeler/GeoCamApp/GeoCam/.build/DerivedData/Build/Intermediates.noindex/GeoCam.build/Debug-iphoneos/GeoCam.build/Objects-normal/arm64/BrandIcon.swiftconstvalues",
-    "dependencies" : "/Users/metinbiyik/Desktop/projeler/GeoCamApp/GeoCam/.build/DerivedData/Build/Intermediates.noindex/GeoCam.build/Debug-iphoneos/GeoCam.build/Objects-normal/arm64/BrandIcon.d",
-    "diagnostics" : "/Users/metinbiyik/Desktop/projeler/GeoCamApp/GeoCam/.build/DerivedData/Build/Intermediates.noindex/GeoCam.build/Debug-iphoneos/GeoCam.build/Objects-normal/arm64/BrandIcon.dia",
-    "object" : "/Users/metinbiyik/Desktop/projeler/GeoCamApp/GeoCam/.build/DerivedData/Build/Intermediates.noindex/GeoCam.build/Debug-iphoneos/GeoCam.build/Objects-normal/arm64/BrandIcon.o",
-    "swift-dependencies" : "/Users/metinbiyik/Desktop/projeler/GeoCamApp/GeoCam/.build/DerivedData/Build/Intermediates.noindex/GeoCam.build/Debug-iphoneos/GeoCam.build/Objects-normal/arm64/BrandIcon.swiftdeps"
-  },
-  "/Users/metinbiyik/Desktop/projeler/GeoCamApp/GeoCam/GeoCam/Features/Settings/Models/OverlayField.swift" : {
-    "const-values" : "/Users/metinbiyik/Desktop/projeler/GeoCamApp/GeoCam/.build/DerivedData/Build/Intermediates.noindex/GeoCam.build/Debug-iphoneos/GeoCam.build/Objects-normal/arm64/OverlayField.swiftconstvalues",
-    "dependencies" : "/Users/metinbiyik/Desktop/projeler/GeoCamApp/GeoCam/.build/DerivedData/Build/Intermediates.noindex/GeoCam.build/Debug-iphoneos/GeoCam.build/Objects-normal/arm64/OverlayField.d",
-    "diagnostics" : "/Users/metinbiyik/Desktop/projeler/GeoCamApp/GeoCam/.build/DerivedData/Build/Intermediates.noindex/GeoCam.build/Debug-iphoneos/GeoCam.build/Objects-normal/arm64/OverlayField.dia",
-    "object" : "/Users/metinbiyik/Desktop/projeler/GeoCamApp/GeoCam/.build/DerivedData/Build/Intermediates.noindex/GeoCam.build/Debug-iphoneos/GeoCam.build/Objects-normal/arm64/OverlayField.o",
-    "swift-dependencies" : "/Users/metinbiyik/Desktop/projeler/GeoCamApp/GeoCam/.build/DerivedData/Build/Intermediates.noindex/GeoCam.build/Debug-iphoneos/GeoCam.build/Objects-normal/arm64/OverlayField.swiftdeps"
-  },
-  "/Users/metinbiyik/Desktop/projeler/GeoCamApp/GeoCam/GeoCam/Features/Settings/Models/OverlayFontStyle.swift" : {
-    "const-values" : "/Users/metinbiyik/Desktop/projeler/GeoCamApp/GeoCam/.build/DerivedData/Build/Intermediates.noindex/GeoCam.build/Debug-iphoneos/GeoCam.build/Objects-normal/arm64/OverlayFontStyle.swiftconstvalues",
-    "dependencies" : "/Users/metinbiyik/Desktop/projeler/GeoCamApp/GeoCam/.build/DerivedData/Build/Intermediates.noindex/GeoCam.build/Debug-iphoneos/GeoCam.build/Objects-normal/arm64/OverlayFontStyle.d",
-    "diagnostics" : "/Users/metinbiyik/Desktop/projeler/GeoCamApp/GeoCam/.build/DerivedData/Build/Intermediates.noindex/GeoCam.build/Debug-iphoneos/GeoCam.build/Objects-normal/arm64/OverlayFontStyle.dia",
-    "object" : "/Users/metinbiyik/Desktop/projeler/GeoCamApp/GeoCam/.build/DerivedData/Build/Intermediates.noindex/GeoCam.build/Debug-iphoneos/GeoCam.build/Objects-normal/arm64/OverlayFontStyle.o",
-    "swift-dependencies" : "/Users/metinbiyik/Desktop/projeler/GeoCamApp/GeoCam/.build/DerivedData/Build/Intermediates.noindex/GeoCam.build/Debug-iphoneos/GeoCam.build/Objects-normal/arm64/OverlayFontStyle.swiftdeps"
-  },
-  "/Users/metinbiyik/Desktop/projeler/GeoCamApp/GeoCam/GeoCam/Features/Settings/Models/OverlayHorizontalAlignment.swift" : {
-    "const-values" : "/Users/metinbiyik/Desktop/projeler/GeoCamApp/GeoCam/.build/DerivedData/Build/Intermediates.noindex/GeoCam.build/Debug-iphoneos/GeoCam.build/Objects-normal/arm64/OverlayHorizontalAlignment.swiftconstvalues",
-    "dependencies" : "/Users/metinbiyik/Desktop/projeler/GeoCamApp/GeoCam/.build/DerivedData/Build/Intermediates.noindex/GeoCam.build/Debug-iphoneos/GeoCam.build/Objects-normal/arm64/OverlayHorizontalAlignment.d",
-    "diagnostics" : "/Users/metinbiyik/Desktop/projeler/GeoCamApp/GeoCam/.build/DerivedData/Build/Intermediates.noindex/GeoCam.build/Debug-iphoneos/GeoCam.build/Objects-normal/arm64/OverlayHorizontalAlignment.dia",
-    "object" : "/Users/metinbiyik/Desktop/projeler/GeoCamApp/GeoCam/.build/DerivedData/Build/Intermediates.noindex/GeoCam.build/Debug-iphoneos/GeoCam.build/Objects-normal/arm64/OverlayHorizontalAlignment.o",
-    "swift-dependencies" : "/Users/metinbiyik/Desktop/projeler/GeoCamApp/GeoCam/.build/DerivedData/Build/Intermediates.noindex/GeoCam.build/Debug-iphoneos/GeoCam.build/Objects-normal/arm64/OverlayHorizontalAlignment.swiftdeps"
-  },
-  "/Users/metinbiyik/Desktop/projeler/GeoCamApp/GeoCam/GeoCam/Features/Settings/Models/OverlayLayoutStyle.swift" : {
-    "const-values" : "/Users/metinbiyik/Desktop/projeler/GeoCamApp/GeoCam/.build/DerivedData/Build/Intermediates.noindex/GeoCam.build/Debug-iphoneos/GeoCam.build/Objects-normal/arm64/OverlayLayoutStyle.swiftconstvalues",
-    "dependencies" : "/Users/metinbiyik/Desktop/projeler/GeoCamApp/GeoCam/.build/DerivedData/Build/Intermediates.noindex/GeoCam.build/Debug-iphoneos/GeoCam.build/Objects-normal/arm64/OverlayLayoutStyle.d",
-    "diagnostics" : "/Users/metinbiyik/Desktop/projeler/GeoCamApp/GeoCam/.build/DerivedData/Build/Intermediates.noindex/GeoCam.build/Debug-iphoneos/GeoCam.build/Objects-normal/arm64/OverlayLayoutStyle.dia",
-    "object" : "/Users/metinbiyik/Desktop/projeler/GeoCamApp/GeoCam/.build/DerivedData/Build/Intermediates.noindex/GeoCam.build/Debug-iphoneos/GeoCam.build/Objects-normal/arm64/OverlayLayoutStyle.o",
-    "swift-dependencies" : "/Users/metinbiyik/Desktop/projeler/GeoCamApp/GeoCam/.build/DerivedData/Build/Intermediates.noindex/GeoCam.build/Debug-iphoneos/GeoCam.build/Objects-normal/arm64/OverlayLayoutStyle.swiftdeps"
-  },
-  "/Users/metinbiyik/Desktop/projeler/GeoCamApp/GeoCam/GeoCam/Features/Settings/Models/OverlayPosition.swift" : {
-    "const-values" : "/Users/metinbiyik/Desktop/projeler/GeoCamApp/GeoCam/.build/DerivedData/Build/Intermediates.noindex/GeoCam.build/Debug-iphoneos/GeoCam.build/Objects-normal/arm64/OverlayPosition.swiftconstvalues",
-    "dependencies" : "/Users/metinbiyik/Desktop/projeler/GeoCamApp/GeoCam/.build/DerivedData/Build/Intermediates.noindex/GeoCam.build/Debug-iphoneos/GeoCam.build/Objects-normal/arm64/OverlayPosition.d",
-    "diagnostics" : "/Users/metinbiyik/Desktop/projeler/GeoCamApp/GeoCam/.build/DerivedData/Build/Intermediates.noindex/GeoCam.build/Debug-iphoneos/GeoCam.build/Objects-normal/arm64/OverlayPosition.dia",
-    "object" : "/Users/metinbiyik/Desktop/projeler/GeoCamApp/GeoCam/.build/DerivedData/Build/Intermediates.noindex/GeoCam.build/Debug-iphoneos/GeoCam.build/Objects-normal/arm64/OverlayPosition.o",
-    "swift-dependencies" : "/Users/metinbiyik/Desktop/projeler/GeoCamApp/GeoCam/.build/DerivedData/Build/Intermediates.noindex/GeoCam.build/Debug-iphoneos/GeoCam.build/Objects-normal/arm64/OverlayPosition.swiftdeps"
-  },
-  "/Users/metinbiyik/Desktop/projeler/GeoCamApp/GeoCam/GeoCam/Features/Settings/Models/OverlaySettings.swift" : {
-    "const-values" : "/Users/metinbiyik/Desktop/projeler/GeoCamApp/GeoCam/.build/DerivedData/Build/Intermediates.noindex/GeoCam.build/Debug-iphoneos/GeoCam.build/Objects-normal/arm64/OverlaySettings.swiftconstvalues",
-    "dependencies" : "/Users/metinbiyik/Desktop/projeler/GeoCamApp/GeoCam/.build/DerivedData/Build/Intermediates.noindex/GeoCam.build/Debug-iphoneos/GeoCam.build/Objects-normal/arm64/OverlaySettings.d",
-    "diagnostics" : "/Users/metinbiyik/Desktop/projeler/GeoCamApp/GeoCam/.build/DerivedData/Build/Intermediates.noindex/GeoCam.build/Debug-iphoneos/GeoCam.build/Objects-normal/arm64/OverlaySettings.dia",
-    "object" : "/Users/metinbiyik/Desktop/projeler/GeoCamApp/GeoCam/.build/DerivedData/Build/Intermediates.noindex/GeoCam.build/Debug-iphoneos/GeoCam.build/Objects-normal/arm64/OverlaySettings.o",
-    "swift-dependencies" : "/Users/metinbiyik/Desktop/projeler/GeoCamApp/GeoCam/.build/DerivedData/Build/Intermediates.noindex/GeoCam.build/Debug-iphoneos/GeoCam.build/Objects-normal/arm64/OverlaySettings.swiftdeps"
-  },
-  "/Users/metinbiyik/Desktop/projeler/GeoCamApp/GeoCam/GeoCam/Features/Settings/Models/OverlayTextSize.swift" : {
-    "const-values" : "/Users/metinbiyik/Desktop/projeler/GeoCamApp/GeoCam/.build/DerivedData/Build/Intermediates.noindex/GeoCam.build/Debug-iphoneos/GeoCam.build/Objects-normal/arm64/OverlayTextSize.swiftconstvalues",
-    "dependencies" : "/Users/metinbiyik/Desktop/projeler/GeoCamApp/GeoCam/.build/DerivedData/Build/Intermediates.noindex/GeoCam.build/Debug-iphoneos/GeoCam.build/Objects-normal/arm64/OverlayTextSize.d",
-    "diagnostics" : "/Users/metinbiyik/Desktop/projeler/GeoCamApp/GeoCam/.build/DerivedData/Build/Intermediates.noindex/GeoCam.build/Debug-iphoneos/GeoCam.build/Objects-normal/arm64/OverlayTextSize.dia",
-    "object" : "/Users/metinbiyik/Desktop/projeler/GeoCamApp/GeoCam/.build/DerivedData/Build/Intermediates.noindex/GeoCam.build/Debug-iphoneos/GeoCam.build/Objects-normal/arm64/OverlayTextSize.o",
-    "swift-dependencies" : "/Users/metinbiyik/Desktop/projeler/GeoCamApp/GeoCam/.build/DerivedData/Build/Intermediates.noindex/GeoCam.build/Debug-iphoneos/GeoCam.build/Objects-normal/arm64/OverlayTextSize.swiftdeps"
+  "/Users/metinbiyik/Desktop/projeler/GeoCamApp/GeoCam/GeoCam/Shared/Components/GravityAlignedOverlayHost.swift" : {
+    "const-values" : "/Users/metinbiyik/Desktop/projeler/GeoCamApp/GeoCam/.build/DerivedData/Build/Intermediates.noindex/GeoCam.build/Debug-iphoneos/GeoCam.build/Objects-normal/arm64/GravityAlignedOverlayHost.swiftconstvalues",
+    "dependencies" : "/Users/metinbiyik/Desktop/projeler/GeoCamApp/GeoCam/.build/DerivedData/Build/Intermediates.noindex/GeoCam.build/Debug-iphoneos/GeoCam.build/Objects-normal/arm64/GravityAlignedOverlayHost.d",
+    "diagnostics" : "/Users/metinbiyik/Desktop/projeler/GeoCamApp/GeoCam/.build/DerivedData/Build/Intermediates.noindex/GeoCam.build/Debug-iphoneos/GeoCam.build/Objects-normal/arm64/GravityAlignedOverlayHost.dia",
+    "object" : "/Users/metinbiyik/Desktop/projeler/GeoCamApp/GeoCam/.build/DerivedData/Build/Intermediates.noindex/GeoCam.build/Debug-iphoneos/GeoCam.build/Objects-normal/arm64/GravityAlignedOverlayHost.o",
+    "swift-dependencies" : "/Users/metinbiyik/Desktop/projeler/GeoCamApp/GeoCam/.build/DerivedData/Build/Intermediates.noindex/GeoCam.build/Debug-iphoneos/GeoCam.build/Objects-normal/arm64/GravityAlignedOverlayHost.swiftdeps"
   }
 }

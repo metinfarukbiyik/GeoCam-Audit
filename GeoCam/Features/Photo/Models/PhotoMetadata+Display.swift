@@ -16,8 +16,11 @@ nonisolated extension PhotoMetadata {
         address?.formatted
     }
 
+    /// Derece-dakika-saniye metni (örn. `41°00'29.7"N 28°58'42.1"E`).
     var coordinateText: String? {
-        location?.coordinate.decimalText
+        guard let coordinate = location?.coordinate else { return nil }
+
+        return "\(coordinate.latitudeSexagesimalText) \(coordinate.longitudeSexagesimalText)"
     }
 
     /// Adres yoksa koordinat; konum satırı için yedek metin.

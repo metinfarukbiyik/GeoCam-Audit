@@ -23,6 +23,19 @@ nonisolated enum AppConstants {
         /// Sistemin Fotoğraflar uygulamasını açar.
         static let photosApp = URL(string: "photos-redirect://")
 
+        /// App Store uygulama kimliği.
+        static let appStoreID = "6797103829"
+
+        /// App Store ürün sayfası.
+        static let appStorePage = URL(
+            string: "https://apps.apple.com/app/id\(appStoreID)"
+        )
+
+        /// App Store puan / yorum ekranı.
+        static let appStoreReview = URL(
+            string: "https://apps.apple.com/app/id\(appStoreID)?action=write-review"
+        )
+
         /// Konu satırı hazır gelen destek e-postası.
         static func supportMail(language: AppLanguage) -> URL? {
             var components = URLComponents()
@@ -44,9 +57,9 @@ nonisolated enum AppConstants {
         static let brandingLogoFileName = "branding-logo.png"
     }
 
-    /// Ücretli özellik kapıları. İlk sürümde filigran kaldırılamaz.
+    /// Uygulama davranış kapıları. Filigran bu sürümde her zaman uygulanır.
     enum Features {
-        /// `true` olduğunda kullanıcı (veya Pro) filigranı kapatabilir.
+        /// `true` olduğunda kullanıcı filigranı kapatabilir. Şu an kapalıdır.
         static let allowsRemovingAppWatermark = false
     }
 

@@ -18,11 +18,12 @@ struct OverlayPosterLayout: View {
     }
 
     var body: some View {
-        VStack(alignment: .leading, spacing: LayoutConstants.Spacing.extraSmall) {
+        VStack(alignment: model.alignment.stackAlignment, spacing: LayoutConstants.Spacing.extraSmall) {
             if let branding = model.branding {
                 OverlayBrandingHeaderView(
                     branding: branding,
                     textSize: model.textSize,
+                    alignment: model.alignment,
                     maxWidth: innerWidth
                 )
             }
@@ -30,23 +31,21 @@ struct OverlayPosterLayout: View {
             if let address = model.addressText {
                 Text(address)
                     .font(.system(size: model.textSize.titlePointSize, weight: .bold))
-                    .multilineTextAlignment(.leading)
                     .lineLimit(4)
                     .fixedSize(horizontal: false, vertical: true)
-                    .frame(width: innerWidth, alignment: .leading)
+                    .frame(width: innerWidth, alignment: model.alignment.frameAlignment)
             }
 
             ForEach(model.detailRows) { row in
                 Text(row.displayText)
                     .foregroundStyle(.white.opacity(0.9))
-                    .multilineTextAlignment(.leading)
                     .lineLimit(2)
                     .fixedSize(horizontal: false, vertical: true)
-                    .frame(width: innerWidth, alignment: .leading)
+                    .frame(width: innerWidth, alignment: model.alignment.frameAlignment)
             }
         }
         .padding(LayoutConstants.Spacing.medium)
-        .frame(width: maxWidth, alignment: .leading)
+        .frame(width: maxWidth, alignment: model.alignment.frameAlignment)
         .background { posterBackground }
         .clipped()
     }

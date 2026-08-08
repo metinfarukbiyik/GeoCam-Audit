@@ -17,15 +17,16 @@ nonisolated struct OverlaySettings: Equatable, Codable, Sendable {
     var textSize: OverlayTextSize
     /// Katmanın tamamına uygulanan geometrik küçültme oranı (parmakla ayarlanır).
     var overlayScale: CGFloat
-    /// Katmanın yaslandığı kenar.
-    var horizontalAlignment: OverlayHorizontalAlignment
-    var position: OverlayPosition
+    /// Bilgi katmanının yaslandığı kenar (yalnızca sol / sağ).
+    var corner: OverlayCorner
+    /// Kenar üzerindeki dikey konum (0 = üst, 1 = filigranın üstü).
+    var verticalPosition: CGFloat
     var aspectRatio: CameraAspectRatio
     /// Arayüz ve katman metinleri dili.
     var appLanguage: AppLanguage
     /// Açıkken damgalı kopyaya ek olarak işlenmemiş orijinal de Fotoğraflar’a yazılır.
     var savesOriginalPhoto: Bool
-    /// Gelecekte Pro ile kapatılabilir; şimdilik `appliesAppWatermark` her zaman true döner.
+    /// Kullanıcı tercihi; `allowsRemovingAppWatermark` kapalıyken yok sayılır.
     var showsAppWatermark: Bool
     var showsBranding: Bool
     var brandName: String
@@ -40,14 +41,14 @@ nonisolated struct OverlaySettings: Equatable, Codable, Sendable {
     var jobSubject: String
 
     static let `default` = OverlaySettings(
-        enabledFields: [.date, .time, .address, .coordinates, .heading, .accuracy],
-        layoutStyle: .compact,
+        enabledFields: [.date, .time, .address, .coordinates, .altitude, .heading, .accuracy],
+        layoutStyle: .minimal,
         theme: .system,
         fontStyle: .rounded,
         textSize: .medium,
         overlayScale: OverlayConstants.Scale.maximum,
-        horizontalAlignment: .leading,
-        position: .default,
+        corner: .default,
+        verticalPosition: OverlayConstants.VerticalPosition.defaultValue,
         aspectRatio: .wide,
         appLanguage: .turkish,
         savesOriginalPhoto: false,
@@ -67,11 +68,15 @@ nonisolated struct OverlaySettings: Equatable, Codable, Sendable {
         .address, .coordinates, .altitude, .heading, .accuracy
     ]
 
-    /// Önceki sürümlerde kaydedilmiş varsayılan konumlar.
-    private static let legacyDefaultPositions: [OverlayPosition] = [
-        OverlayPosition(x: 0.5, y: 0.85),
-        OverlayPosition(x: 0.18, y: 0.72)
+    /// Önceki varsayılan alan seti (rakım kapalıydı); açılışta bir kez tamamlanır.
+    private static let legacyDefaultFieldsWithoutAltitude: Set<OverlayField> = [
+        .date, .time, .address, .coordinates, .heading, .accuracy
     ]
+
+    /// Metin yönü, seçili köşenin yatay tarafına göre belirlenir.
+    var horizontalAlignment: OverlayHorizontalAlignment {
+        corner.horizontalAlignment
+    }
 
     func isEnabled(_ field: OverlayField) -> Bool {
         enabledFields.contains(field)
@@ -82,8 +87,13 @@ nonisolated struct OverlaySettings: Equatable, Codable, Sendable {
         OverlayConstants.Scale.clamped(overlayScale)
     }
 
+    /// Aralık dışına çıkmış dikey konum.
+    var resolvedVerticalPosition: CGFloat {
+        OverlayConstants.VerticalPosition.clamped(verticalPosition)
+    }
+
     /// Damgalı çıktıya uygulama filigranı uygulanır mı?
-    /// Ücretsiz sürümde her zaman açık; Pro kapısı açılınca kullanıcı tercihine düşer.
+    /// Bu sürümde her zaman açık; kapı açılınca kullanıcı tercihine düşer.
     var appliesAppWatermark: Bool {
         AppConstants.Features.allowsRemovingAppWatermark ? showsAppWatermark : true
     }
@@ -128,6 +138,7 @@ nonisolated extension OverlaySettings {
 
         enabledFields = try container.decodeIfPresent(Set<OverlayField>.self, forKey: .enabledFields)
             ?? fallback.enabledFields
+
         layoutStyle = try container.decodeIfPresent(OverlayLayoutStyle.self, forKey: .layoutStyle)
             ?? fallback.layoutStyle
         theme = try container.decodeIfPresent(AppTheme.self, forKey: .theme) ?? fallback.theme
@@ -135,17 +146,39 @@ nonisolated extension OverlaySettings {
         textSize = try container.decodeIfPresent(OverlayTextSize.self, forKey: .textSize) ?? fallback.textSize
         overlayScale = try container.decodeIfPresent(CGFloat.self, forKey: .overlayScale)
             ?? fallback.overlayScale
-        horizontalAlignment = try container.decodeIfPresent(
-            OverlayHorizontalAlignment.self,
-            forKey: .horizontalAlignment
-        ) ?? fallback.horizontalAlignment
-        let decodedPosition = try container.decodeIfPresent(OverlayPosition.self, forKey: .position)
-        // Eski varsayılan konumlar yeni sol-üst + kenar boşluklu modele taşınır.
-        if let decodedPosition, Self.legacyDefaultPositions.contains(decodedPosition) {
-            position = fallback.position
+
+        let legacyPosition = try container.decodeIfPresent(OverlayPosition.self, forKey: .position)?
+            .sanitized()
+
+        if let decodedCorner = try container.decodeIfPresent(OverlayCorner.self, forKey: .corner) {
+            corner = decodedCorner
         } else {
-            position = decodedPosition ?? fallback.position
+            // Serbest konum döneminden kenara göç.
+            let alignment = try container.decodeIfPresent(
+                OverlayHorizontalAlignment.self,
+                forKey: .horizontalAlignment
+            ) ?? .leading
+            if let legacyPosition {
+                corner = OverlayCorner.migrating(from: legacyPosition, alignment: alignment)
+            } else {
+                corner = fallback.corner
+            }
+
+            // Yalnızca kenar öncesi kayıtlarda bir kez: eski varsayılan sete rakım eklenir.
+            if enabledFields == Self.legacyDefaultFieldsWithoutAltitude {
+                enabledFields.insert(.altitude)
+            }
         }
+
+        if let decodedVertical = try container.decodeIfPresent(CGFloat.self, forKey: .verticalPosition) {
+            verticalPosition = OverlayConstants.VerticalPosition.clamped(decodedVertical)
+        } else if let legacyPosition, !container.contains(.corner) {
+            verticalPosition = OverlayConstants.VerticalPosition.clamped(legacyPosition.y)
+        } else {
+            // Eski alt-köşe kayıtları: dikey anahtar yoksa alta yakın varsayılan.
+            verticalPosition = fallback.verticalPosition
+        }
+
         aspectRatio = try container.decodeIfPresent(CameraAspectRatio.self, forKey: .aspectRatio)
             ?? fallback.aspectRatio
         appLanguage = try container.decodeIfPresent(AppLanguage.self, forKey: .appLanguage)
@@ -165,5 +198,55 @@ nonisolated extension OverlaySettings {
             ?? fallback.workOrderNumber
         siteID = try container.decodeIfPresent(String.self, forKey: .siteID) ?? fallback.siteID
         jobSubject = try container.decodeIfPresent(String.self, forKey: .jobSubject) ?? fallback.jobSubject
+    }
+
+    /// Eski anahtarlar yalnızca okunur; yeni kayıtlara yazılmaz.
+    private enum CodingKeys: String, CodingKey {
+        case enabledFields
+        case layoutStyle
+        case theme
+        case fontStyle
+        case textSize
+        case overlayScale
+        case corner
+        case verticalPosition
+        case horizontalAlignment
+        case position
+        case aspectRatio
+        case appLanguage
+        case savesOriginalPhoto
+        case showsAppWatermark
+        case showsBranding
+        case brandName
+        case brandFontStyle
+        case brandAccentColor
+        case brandIcon
+        case workOrderNumber
+        case siteID
+        case jobSubject
+    }
+
+    func encode(to encoder: any Encoder) throws {
+        var container = encoder.container(keyedBy: CodingKeys.self)
+        try container.encode(enabledFields, forKey: .enabledFields)
+        try container.encode(layoutStyle, forKey: .layoutStyle)
+        try container.encode(theme, forKey: .theme)
+        try container.encode(fontStyle, forKey: .fontStyle)
+        try container.encode(textSize, forKey: .textSize)
+        try container.encode(overlayScale, forKey: .overlayScale)
+        try container.encode(corner, forKey: .corner)
+        try container.encode(verticalPosition, forKey: .verticalPosition)
+        try container.encode(aspectRatio, forKey: .aspectRatio)
+        try container.encode(appLanguage, forKey: .appLanguage)
+        try container.encode(savesOriginalPhoto, forKey: .savesOriginalPhoto)
+        try container.encode(showsAppWatermark, forKey: .showsAppWatermark)
+        try container.encode(showsBranding, forKey: .showsBranding)
+        try container.encode(brandName, forKey: .brandName)
+        try container.encode(brandFontStyle, forKey: .brandFontStyle)
+        try container.encode(brandAccentColor, forKey: .brandAccentColor)
+        try container.encode(brandIcon, forKey: .brandIcon)
+        try container.encode(workOrderNumber, forKey: .workOrderNumber)
+        try container.encode(siteID, forKey: .siteID)
+        try container.encode(jobSubject, forKey: .jobSubject)
     }
 }

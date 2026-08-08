@@ -33,11 +33,14 @@ nonisolated struct OverlayDisplayModel {
     let addressTitle: String
     let detailRows: [Row]
     let textSize: OverlayTextSize
+    /// Tasarımların hizalamayı aynalamak için kullandığı yön.
+    let alignment: OverlayHorizontalAlignment
 
     init(metadata: PhotoMetadata, settings: OverlaySettings, branding: OverlayBranding?) {
         let language = settings.appLanguage
         self.branding = branding
         self.textSize = settings.textSize
+        self.alignment = settings.horizontalAlignment
         self.addressText = settings.isEnabled(.address) ? metadata.placeText : nil
         self.addressTitle = language.t(.fieldShortLocation)
         self.detailRows = Self.makeDetailRows(metadata: metadata, settings: settings, language: language)

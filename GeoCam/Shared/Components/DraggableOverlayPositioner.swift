@@ -7,17 +7,16 @@
 
 import SwiftUI
 
-/// Bilgi katmanını çerçeve içinde konumlandırır: kenar yaslaması, sürükleme ve
-/// çift parmakla tüm tasarımı küçültme.
-/// Kayıtlı konum yalnızca kullanıcı sürüklediğinde güncellenir; yerleşim kaynaklı
-/// sığdırma işlemleri sadece görüntülemeye uygulanır.
+/// Bilgi katmanını ekranın en soluna veya en sağına yaslar.
+/// Yatayda ortaya alınamaz; dikeyde parmakla serbestçe taşınır.
+/// Bırakınca kenar + dikey konum kaydedilir.
 struct DraggableOverlayPositioner<Content: View>: View {
 
-    let position: OverlayPosition
-    let alignment: OverlayHorizontalAlignment
+    let corner: OverlayCorner
+    let verticalPosition: CGFloat
     /// Katmanın tamamına uygulanan geometrik ölçek.
     let scale: CGFloat
-    let onPositionChange: (OverlayPosition) -> Void
+    let onPlacementChange: (_ corner: OverlayCorner, _ verticalPosition: CGFloat) -> Void
     let onScaleChange: (CGFloat) -> Void
     @ViewBuilder let content: (_ maxWidth: CGFloat) -> Content
 
@@ -31,13 +30,16 @@ struct DraggableOverlayPositioner<Content: View>: View {
             let frameSize = proxy.size
             let layoutWidth = Self.layoutWidth(in: frameSize)
             let currentScale = effectiveScale
-            // Tasarım tam genişlikte çizilip küçültülür; satır kırılmaları damgayla aynı kalır.
             let contentSize = CGSize(
                 width: layoutWidth * currentScale,
                 height: contentHeight * currentScale
             )
-            let origin = resolvedPosition(contentSize: contentSize, in: frameSize)
-                .origin(contentSize: contentSize, in: frameSize, alignment: alignment)
+            let previewEdge = resolvedEdge(translation: dragTranslation, in: frameSize)
+            let origin = previewOrigin(
+                edge: previewEdge,
+                contentSize: contentSize,
+                in: frameSize
+            )
 
             Color.clear
                 .frame(width: frameSize.width, height: frameSize.height)
@@ -59,14 +61,17 @@ struct DraggableOverlayPositioner<Content: View>: View {
                     .scaleEffect(currentScale, anchor: .topLeading)
                     .offset(x: origin.x, y: origin.y)
                     .gesture(pinchGesture)
-                    .simultaneousGesture(dragGesture(contentSize: contentSize, in: frameSize))
+                    .highPriorityGesture(dragGesture(contentSize: contentSize, in: frameSize))
                 }
                 .clipped()
                 .onPreferenceChange(OverlayHeightKey.self) { contentHeight = $0 }
+                .animation(
+                    .easeInOut(duration: AppConstants.Animation.standard),
+                    value: corner
+                )
         }
     }
 
-    /// Tasarımın çizildiği mantıksal genişlik; yatayda kısa kenarı yutmaz.
     private static func layoutWidth(in frameSize: CGSize) -> CGFloat {
         let isLandscape = frameSize.width > frameSize.height
         let ratio = isLandscape
@@ -79,20 +84,59 @@ struct DraggableOverlayPositioner<Content: View>: View {
         return min(width, frameSize.height * OverlayConstants.landscapeShortSideWidthCap)
     }
 
-    /// Pinch sırasında önizleme, jest bittiğinde uygulanacak ölçeği birebir yansıtır.
     private var effectiveScale: CGFloat {
         guard isPinching else { return OverlayConstants.Scale.clamped(scale) }
 
         return OverlayConstants.Scale.clamped(scale * pinchMagnification)
     }
 
-    private func resolvedPosition(contentSize: CGSize, in frameSize: CGSize) -> OverlayPosition {
-        let base = position.clamped(contentSize: contentSize, in: frameSize)
-        guard !isPinching else { return base }
+    /// İçerik genişliğinden bağımsız: sağa/sola eşiği aşınca kenar değişir.
+    private func resolvedEdge(translation: CGSize, in frameSize: CGSize) -> OverlayCorner {
+        guard !isPinching, translation != .zero else { return corner }
 
-        return base
-            .moved(by: dragTranslation, in: frameSize, alignment: alignment)
-            .clamped(contentSize: contentSize, in: frameSize)
+        let threshold = max(
+            frameSize.width * OverlayDragConstants.edgeSwitchWidthRatio,
+            OverlayDragConstants.edgeSwitchMinimumDistance
+        )
+
+        switch corner {
+        case .leading:
+            return translation.width > threshold ? .trailing : .leading
+        case .trailing:
+            return translation.width < -threshold ? .leading : .trailing
+        }
+    }
+
+    private func previewOrigin(
+        edge: OverlayCorner,
+        contentSize: CGSize,
+        in frameSize: CGSize
+    ) -> CGPoint {
+        let base = corner.origin(
+            contentSize: contentSize,
+            in: frameSize,
+            verticalPosition: verticalPosition
+        )
+        guard !isPinching, dragTranslation != .zero else {
+            return edge.origin(
+                contentSize: contentSize,
+                in: frameSize,
+                verticalPosition: verticalPosition
+            )
+        }
+
+        let range = OverlayCorner.verticalRange(contentHeight: contentSize.height, in: frameSize)
+        let y = min(max(base.y + dragTranslation.height, range.lowerBound), range.upperBound)
+
+        return edge.origin(
+            contentSize: contentSize,
+            in: frameSize,
+            verticalPosition: OverlayCorner.normalizedVerticalPosition(
+                y: y,
+                contentHeight: contentSize.height,
+                in: frameSize
+            )
+        )
     }
 
     private func dragGesture(contentSize: CGSize, in frameSize: CGSize) -> some Gesture {
@@ -105,13 +149,28 @@ struct DraggableOverlayPositioner<Content: View>: View {
                 defer { dragTranslation = .zero }
                 guard !isPinching else { return }
 
-                // Sürükleme, ekranda görünen konumdan devam eder.
-                let base = position.clamped(contentSize: contentSize, in: frameSize)
-                onPositionChange(
-                    base
-                        .moved(by: value.translation, in: frameSize, alignment: alignment)
-                        .clamped(contentSize: contentSize, in: frameSize)
+                let translation = value.translation
+                dragTranslation = translation
+                let edge = resolvedEdge(translation: translation, in: frameSize)
+                let base = corner.origin(
+                    contentSize: contentSize,
+                    in: frameSize,
+                    verticalPosition: verticalPosition
                 )
+                let range = OverlayCorner.verticalRange(
+                    contentHeight: contentSize.height,
+                    in: frameSize
+                )
+                let y = min(max(base.y + translation.height, range.lowerBound), range.upperBound)
+                let vertical = OverlayCorner.normalizedVerticalPosition(
+                    y: y,
+                    contentHeight: contentSize.height,
+                    in: frameSize
+                )
+
+                if edge != corner || abs(vertical - OverlayConstants.VerticalPosition.clamped(verticalPosition)) > 0.001 {
+                    onPlacementChange(edge, vertical)
+                }
             }
     }
 
@@ -134,13 +193,18 @@ struct DraggableOverlayPositioner<Content: View>: View {
                     onScaleChange(resolved)
                 }
 
-                // Jest biter bitmez sürükleme devralmasın diye kısa bir tampon bırakılır.
                 Task { @MainActor in
                     try? await Task.sleep(for: .milliseconds(50))
                     isPinching = false
                 }
             }
     }
+}
+
+private enum OverlayDragConstants {
+    /// Kenar değiştirmek için gereken yatay sürükleme oranı (ekran genişliğine göre).
+    static let edgeSwitchWidthRatio: CGFloat = 0.16
+    static let edgeSwitchMinimumDistance: CGFloat = 44
 }
 
 private struct OverlayHeightKey: PreferenceKey {
@@ -152,14 +216,15 @@ private struct OverlayHeightKey: PreferenceKey {
 }
 
 #Preview {
-    @Previewable @State var position = OverlayPosition.default
+    @Previewable @State var corner = OverlayCorner.trailing
+    @Previewable @State var vertical: CGFloat = 0.7
     @Previewable @State var scale: CGFloat = 0.7
 
     return DraggableOverlayPositioner(
-        position: position,
-        alignment: .trailing,
+        corner: corner,
+        verticalPosition: vertical,
         scale: scale,
-        onPositionChange: { position = $0 },
+        onPlacementChange: { corner = $0; vertical = $1 },
         onScaleChange: { scale = $0 }
     ) { maxWidth in
         Text("Besirli, Trabzon Merkez, Trabzon, Türkiye")

@@ -7,77 +7,83 @@
 
 import SwiftUI
 
-/// Kullanıcı tercihlerinin düzenlendiği, soldan açılan menü içeriği.
+/// Kullanıcı tercihlerinin düzenlendiği ayarlar sayfası.
+/// Değişiklikler Bitti ile kaydedilir; kapatılırsa taslak atılır.
 struct SettingsView: View {
 
-    @State private var viewModel: SettingsViewModel
-    private let onClose: () -> Void
+    @Bindable var viewModel: SettingsViewModel
+    private let onDone: () -> Void
 
-    init(viewModel: SettingsViewModel, onClose: @escaping () -> Void) {
-        _viewModel = State(initialValue: viewModel)
-        self.onClose = onClose
+    init(viewModel: SettingsViewModel, onDone: @escaping () -> Void) {
+        self.viewModel = viewModel
+        self.onDone = onDone
     }
 
     var body: some View {
-        @Bindable var viewModel = viewModel
-        let language = viewModel.settings.appLanguage
+        let language = viewModel.draft.appLanguage
 
         NavigationStack {
             Form {
-                LanguageSection(language: $viewModel.settings.appLanguage)
+                LanguageSection(language: $viewModel.draft.appLanguage)
 
                 CameraSection(
-                    aspectRatio: $viewModel.settings.aspectRatio,
-                    savesOriginalPhoto: $viewModel.settings.savesOriginalPhoto
+                    aspectRatio: $viewModel.draft.aspectRatio,
+                    savesOriginalPhoto: $viewModel.draft.savesOriginalPhoto
                 )
 
                 JobInfoSection(
-                    enabledFields: $viewModel.settings.enabledFields,
-                    workOrderNumber: $viewModel.settings.workOrderNumber,
-                    siteID: $viewModel.settings.siteID,
-                    jobSubject: $viewModel.settings.jobSubject
+                    enabledFields: $viewModel.draft.enabledFields,
+                    workOrderNumber: $viewModel.draft.workOrderNumber,
+                    siteID: $viewModel.draft.siteID,
+                    jobSubject: $viewModel.draft.jobSubject
                 )
 
-                OverlayFieldsSection(enabledFields: $viewModel.settings.enabledFields)
+                OverlayFieldsSection(enabledFields: $viewModel.draft.enabledFields)
 
                 BrandingSection(
-                    showsBranding: $viewModel.settings.showsBranding,
-                    brandName: $viewModel.settings.brandName,
-                    brandFontStyle: $viewModel.settings.brandFontStyle,
-                    brandAccentColor: $viewModel.settings.brandAccentColor,
-                    brandIcon: $viewModel.settings.brandIcon,
-                    logo: viewModel.logo,
-                    onLogoChange: viewModel.updateLogo
+                    showsBranding: $viewModel.draft.showsBranding,
+                    brandName: $viewModel.draft.brandName,
+                    brandFontStyle: $viewModel.draft.brandFontStyle,
+                    brandAccentColor: $viewModel.draft.brandAccentColor,
+                    brandIcon: $viewModel.draft.brandIcon,
+                    logo: viewModel.draftLogo,
+                    onLogoChange: viewModel.updateDraftLogo
                 )
 
                 AppearanceSection(
-                    layoutStyle: $viewModel.settings.layoutStyle,
-                    theme: $viewModel.settings.theme,
-                    fontStyle: $viewModel.settings.fontStyle,
-                    textSize: $viewModel.settings.textSize,
-                    horizontalAlignment: $viewModel.settings.horizontalAlignment,
-                    overlayScale: $viewModel.settings.overlayScale
+                    layoutStyle: $viewModel.draft.layoutStyle,
+                    theme: $viewModel.draft.theme,
+                    fontStyle: $viewModel.draft.fontStyle,
+                    textSize: $viewModel.draft.textSize,
+                    corner: $viewModel.draft.corner,
+                    overlayScale: $viewModel.draft.overlayScale
                 )
 
                 ContactSection()
 
                 Section {
                     Button(language.t(.settingsReset), role: .destructive) {
-                        viewModel.resetToDefaults()
+                        viewModel.resetDraftToDefaults()
                     }
-                }
-
-                Section {
+                } footer: {
                     DeveloperCreditView()
+                        .padding(.top, LayoutConstants.Spacing.small)
                 }
             }
             .navigationTitle(language.t(.settingsTitle))
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .confirmationAction) {
-                    Button(language.t(.settingsDone), action: onClose)
+                    Button(language.t(.settingsDone)) {
+                        viewModel.save()
+                        onDone()
+                    }
+                    .fontWeight(.semibold)
                 }
             }
+            // Dil taslakta seçilince form metinleri de güncellensin.
+            .environment(\.appLanguage, language)
+            .environment(\.locale, language.locale)
         }
     }
 }
@@ -85,6 +91,6 @@ struct SettingsView: View {
 #Preview {
     SettingsView(
         viewModel: AppDependencies().makeSettingsViewModel(),
-        onClose: {}
+        onDone: {}
     )
 }

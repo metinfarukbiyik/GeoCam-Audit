@@ -17,11 +17,12 @@ struct OverlayMinimalLayout: View {
     }
 
     var body: some View {
-        VStack(alignment: .leading, spacing: LayoutConstants.Spacing.extraSmall) {
+        VStack(alignment: model.alignment.stackAlignment, spacing: LayoutConstants.Spacing.extraSmall) {
             if let branding = model.branding {
                 OverlayBrandingHeaderView(
                     branding: branding,
                     textSize: model.textSize,
+                    alignment: model.alignment,
                     maxWidth: innerWidth
                 )
             }
@@ -29,22 +30,20 @@ struct OverlayMinimalLayout: View {
             if let address = model.addressText {
                 Text(address)
                     .fontWeight(.semibold)
-                    .multilineTextAlignment(.leading)
                     .lineLimit(4)
                     .fixedSize(horizontal: false, vertical: true)
-                    .frame(width: innerWidth, alignment: .leading)
+                    .frame(width: innerWidth, alignment: model.alignment.frameAlignment)
             }
 
             ForEach(model.detailRows) { row in
                 Text(row.showsInlineLabel ? row.displayText : "\(row.title): \(row.value)")
-                    .multilineTextAlignment(.leading)
                     .lineLimit(2)
                     .fixedSize(horizontal: false, vertical: true)
-                    .frame(width: innerWidth, alignment: .leading)
+                    .frame(width: innerWidth, alignment: model.alignment.frameAlignment)
             }
         }
         .padding(LayoutConstants.Spacing.small)
-        .frame(width: maxWidth, alignment: .leading)
+        .frame(width: maxWidth, alignment: model.alignment.frameAlignment)
         .shadow(
             color: .black.opacity(OverlayConstants.MinimalShadow.opacity),
             radius: OverlayConstants.MinimalShadow.radius,

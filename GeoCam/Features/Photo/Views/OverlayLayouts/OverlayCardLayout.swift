@@ -18,11 +18,12 @@ struct OverlayCardLayout: View {
     }
 
     var body: some View {
-        VStack(alignment: .leading, spacing: LayoutConstants.Spacing.extraSmall) {
+        VStack(alignment: model.alignment.stackAlignment, spacing: LayoutConstants.Spacing.extraSmall) {
             if let branding = model.branding {
                 OverlayBrandingHeaderView(
                     branding: branding,
                     textSize: model.textSize,
+                    alignment: model.alignment,
                     maxWidth: innerWidth
                 )
 
@@ -38,35 +39,35 @@ struct OverlayCardLayout: View {
                     systemImage: row.systemImage,
                     title: row.title,
                     value: row.value,
+                    alignment: model.alignment,
                     tone: .onDark,
                     valueTint: row.tint
                 )
             }
         }
         .padding(LayoutConstants.Spacing.medium)
-        .frame(width: maxWidth, alignment: .leading)
+        .frame(width: maxWidth, alignment: model.alignment.frameAlignment)
         .overlayChrome(chromeStyle)
     }
 
     @ViewBuilder
     private var addressBlock: some View {
         if let address = model.addressText {
-            VStack(alignment: .leading, spacing: LayoutConstants.Spacing.extraSmall) {
-                HStack(spacing: LayoutConstants.Spacing.small) {
+            VStack(alignment: model.alignment.stackAlignment, spacing: LayoutConstants.Spacing.extraSmall) {
+                OverlayMarkedRow(alignment: model.alignment, verticalAlignment: .center) {
                     Image(systemName: "mappin.and.ellipse")
                         .imageScale(.medium)
                         .accessibilityHidden(true)
-
+                } content: {
                     Text(model.addressTitle)
                         .foregroundStyle(.white.opacity(0.75))
                 }
 
                 Text(address)
                     .fontWeight(.medium)
-                    .multilineTextAlignment(.leading)
                     .lineLimit(4)
                     .fixedSize(horizontal: false, vertical: true)
-                    .frame(width: innerWidth, alignment: .leading)
+                    .frame(width: innerWidth, alignment: model.alignment.frameAlignment)
             }
             .accessibilityElement(children: .combine)
         }

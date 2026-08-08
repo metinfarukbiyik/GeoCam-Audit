@@ -417,7 +417,7 @@
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = GeoCam/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = "GeoCam: Audit";
-				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.photography";
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.business";
 				INFOPLIST_KEY_NSCameraUsageDescription = "Fotoğraf çekebilmek için kamera erişimine ihtiyaç duyulur.";
 				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "Fotoğrafa konum, adres, rakım ve pusula bilgisi eklemek için konum erişimine ihtiyaç duyulur.";
 				INFOPLIST_KEY_NSMicrophoneUsageDescription = "Videoları sesli kaydedebilmek için mikrofon erişimine ihtiyaç duyulur.";
@@ -431,7 +431,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.0;
+				MARKETING_VERSION = 1.3;
 				PRODUCT_BUNDLE_IDENTIFIER = dev.biyik.geocam.audit;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				STRING_CATALOG_GENERATE_SYMBOLS = YES;
@@ -460,7 +460,7 @@
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = GeoCam/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = "GeoCam: Audit";
-				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.photography";
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.business";
 				INFOPLIST_KEY_NSCameraUsageDescription = "Fotoğraf çekebilmek için kamera erişimine ihtiyaç duyulur.";
 				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "Fotoğrafa konum, adres, rakım ve pusula bilgisi eklemek için konum erişimine ihtiyaç duyulur.";
 				INFOPLIST_KEY_NSMicrophoneUsageDescription = "Videoları sesli kaydedebilmek için mikrofon erişimine ihtiyaç duyulur.";
@@ -474,7 +474,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.0;
+				MARKETING_VERSION = 1.3;
 				PRODUCT_BUNDLE_IDENTIFIER = dev.biyik.geocam.audit;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				STRING_CATALOG_GENERATE_SYMBOLS = YES;

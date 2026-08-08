@@ -148,13 +148,16 @@ final class CameraViewModel {
         saveConfirmation = nil
     }
 
-    /// Kullanıcı bilgi katmanını sürüklediğinde yeni konum kalıcı hale getirilir.
-    func updateOverlayPosition(_ position: OverlayPosition) {
-        let sanitized = position.sanitized()
+    /// Kullanıcı bilgi katmanını kenarda bırakınca kenar + dikey konum kalıcı hale getirilir.
+    func updateOverlayPlacement(_ corner: OverlayCorner, _ verticalPosition: CGFloat) {
+        let clampedVertical = OverlayConstants.VerticalPosition.clamped(verticalPosition)
         var settings = settingsStore.settings
-        guard settings.position != sanitized else { return }
+        guard settings.corner != corner
+            || settings.resolvedVerticalPosition != clampedVertical
+        else { return }
 
-        settings.position = sanitized
+        settings.corner = corner
+        settings.verticalPosition = clampedVertical
         settingsStore.update(settings)
         settingsRevision += 1
     }

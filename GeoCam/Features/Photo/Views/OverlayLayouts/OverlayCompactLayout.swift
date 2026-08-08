@@ -23,43 +23,42 @@ struct OverlayCompactLayout: View {
     }
 
     var body: some View {
-        VStack(alignment: .leading, spacing: LayoutConstants.Spacing.extraSmall) {
+        VStack(alignment: model.alignment.stackAlignment, spacing: LayoutConstants.Spacing.extraSmall) {
             if let branding = model.branding {
                 OverlayBrandingHeaderView(
                     branding: branding,
                     textSize: model.textSize,
+                    alignment: model.alignment,
                     maxWidth: innerWidth
                 )
             }
 
             if let address = model.addressText {
-                HStack(alignment: .top, spacing: LayoutConstants.Spacing.small) {
+                OverlayMarkedRow(alignment: model.alignment) {
                     Image(systemName: "mappin.and.ellipse")
                         .frame(width: 14, alignment: .center)
                         .accessibilityHidden(true)
-
+                } content: {
                     Text(address)
                         .fontWeight(.medium)
-                        .multilineTextAlignment(.leading)
                         .lineLimit(4)
                         .fixedSize(horizontal: false, vertical: true)
-                        .frame(width: addressTextWidth, alignment: .leading)
+                        .frame(width: addressTextWidth, alignment: model.alignment.frameAlignment)
                 }
-                .frame(width: innerWidth, alignment: .leading)
+                .frame(width: innerWidth, alignment: model.alignment.frameAlignment)
             }
 
             ForEach(model.detailRows) { row in
                 Text(row.displayText)
                     .foregroundStyle(row.tint ?? .white.opacity(0.9))
-                    .multilineTextAlignment(.leading)
                     .lineLimit(3)
                     .fixedSize(horizontal: false, vertical: true)
-                    .frame(width: innerWidth, alignment: .leading)
+                    .frame(width: innerWidth, alignment: model.alignment.frameAlignment)
             }
         }
         .padding(.horizontal, LayoutConstants.Spacing.medium)
         .padding(.vertical, LayoutConstants.Spacing.small)
-        .frame(width: maxWidth, alignment: .leading)
+        .frame(width: maxWidth, alignment: model.alignment.frameAlignment)
         .background {
             chromeBackground
         }

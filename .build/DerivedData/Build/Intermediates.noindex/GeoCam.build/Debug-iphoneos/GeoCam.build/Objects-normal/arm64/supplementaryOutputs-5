@@ -1,100 +1,30 @@
 {
-  "/Users/metinbiyik/Desktop/projeler/GeoCamApp/GeoCam/GeoCam/Features/Location/Models/LocationAccuracyLevel.swift" : {
-    "const-values" : "/Users/metinbiyik/Desktop/projeler/GeoCamApp/GeoCam/.build/DerivedData/Build/Intermediates.noindex/GeoCam.build/Debug-iphoneos/GeoCam.build/Objects-normal/arm64/LocationAccuracyLevel.swiftconstvalues",
-    "dependencies" : "/Users/metinbiyik/Desktop/projeler/GeoCamApp/GeoCam/.build/DerivedData/Build/Intermediates.noindex/GeoCam.build/Debug-iphoneos/GeoCam.build/Objects-normal/arm64/LocationAccuracyLevel.d",
-    "diagnostics" : "/Users/metinbiyik/Desktop/projeler/GeoCamApp/GeoCam/.build/DerivedData/Build/Intermediates.noindex/GeoCam.build/Debug-iphoneos/GeoCam.build/Objects-normal/arm64/LocationAccuracyLevel.dia",
-    "object" : "/Users/metinbiyik/Desktop/projeler/GeoCamApp/GeoCam/.build/DerivedData/Build/Intermediates.noindex/GeoCam.build/Debug-iphoneos/GeoCam.build/Objects-normal/arm64/LocationAccuracyLevel.o",
-    "swift-dependencies" : "/Users/metinbiyik/Desktop/projeler/GeoCamApp/GeoCam/.build/DerivedData/Build/Intermediates.noindex/GeoCam.build/Debug-iphoneos/GeoCam.build/Objects-normal/arm64/LocationAccuracyLevel.swiftdeps"
+  "/Users/metinbiyik/Desktop/projeler/GeoCamApp/GeoCam/GeoCam/Features/Photo/Views/InfoOverlayView.swift" : {
+    "const-values" : "/Users/metinbiyik/Desktop/projeler/GeoCamApp/GeoCam/.build/DerivedData/Build/Intermediates.noindex/GeoCam.build/Debug-iphoneos/GeoCam.build/Objects-normal/arm64/InfoOverlayView.swiftconstvalues",
+    "dependencies" : "/Users/metinbiyik/Desktop/projeler/GeoCamApp/GeoCam/.build/DerivedData/Build/Intermediates.noindex/GeoCam.build/Debug-iphoneos/GeoCam.build/Objects-normal/arm64/InfoOverlayView.d",
+    "diagnostics" : "/Users/metinbiyik/Desktop/projeler/GeoCamApp/GeoCam/.build/DerivedData/Build/Intermediates.noindex/GeoCam.build/Debug-iphoneos/GeoCam.build/Objects-normal/arm64/InfoOverlayView.dia",
+    "object" : "/Users/metinbiyik/Desktop/projeler/GeoCamApp/GeoCam/.build/DerivedData/Build/Intermediates.noindex/GeoCam.build/Debug-iphoneos/GeoCam.build/Objects-normal/arm64/InfoOverlayView.o",
+    "swift-dependencies" : "/Users/metinbiyik/Desktop/projeler/GeoCamApp/GeoCam/.build/DerivedData/Build/Intermediates.noindex/GeoCam.build/Debug-iphoneos/GeoCam.build/Objects-normal/arm64/InfoOverlayView.swiftdeps"
   },
-  "/Users/metinbiyik/Desktop/projeler/GeoCamApp/GeoCam/GeoCam/Features/Location/Models/LocationError.swift" : {
-    "const-values" : "/Users/metinbiyik/Desktop/projeler/GeoCamApp/GeoCam/.build/DerivedData/Build/Intermediates.noindex/GeoCam.build/Debug-iphoneos/GeoCam.build/Objects-normal/arm64/LocationError.swiftconstvalues",
-    "dependencies" : "/Users/metinbiyik/Desktop/projeler/GeoCamApp/GeoCam/.build/DerivedData/Build/Intermediates.noindex/GeoCam.build/Debug-iphoneos/GeoCam.build/Objects-normal/arm64/LocationError.d",
-    "diagnostics" : "/Users/metinbiyik/Desktop/projeler/GeoCamApp/GeoCam/.build/DerivedData/Build/Intermediates.noindex/GeoCam.build/Debug-iphoneos/GeoCam.build/Objects-normal/arm64/LocationError.dia",
-    "object" : "/Users/metinbiyik/Desktop/projeler/GeoCamApp/GeoCam/.build/DerivedData/Build/Intermediates.noindex/GeoCam.build/Debug-iphoneos/GeoCam.build/Objects-normal/arm64/LocationError.o",
-    "swift-dependencies" : "/Users/metinbiyik/Desktop/projeler/GeoCamApp/GeoCam/.build/DerivedData/Build/Intermediates.noindex/GeoCam.build/Debug-iphoneos/GeoCam.build/Objects-normal/arm64/LocationError.swiftdeps"
+  "/Users/metinbiyik/Desktop/projeler/GeoCamApp/GeoCam/GeoCam/Features/Photo/Views/OverlayLayouts/OverlayBrandingHeaderView.swift" : {
+    "const-values" : "/Users/metinbiyik/Desktop/projeler/GeoCamApp/GeoCam/.build/DerivedData/Build/Intermediates.noindex/GeoCam.build/Debug-iphoneos/GeoCam.build/Objects-normal/arm64/OverlayBrandingHeaderView.swiftconstvalues",
+    "dependencies" : "/Users/metinbiyik/Desktop/projeler/GeoCamApp/GeoCam/.build/DerivedData/Build/Intermediates.noindex/GeoCam.build/Debug-iphoneos/GeoCam.build/Objects-normal/arm64/OverlayBrandingHeaderView.d",
+    "diagnostics" : "/Users/metinbiyik/Desktop/projeler/GeoCamApp/GeoCam/.build/DerivedData/Build/Intermediates.noindex/GeoCam.build/Debug-iphoneos/GeoCam.build/Objects-normal/arm64/OverlayBrandingHeaderView.dia",
+    "object" : "/Users/metinbiyik/Desktop/projeler/GeoCamApp/GeoCam/.build/DerivedData/Build/Intermediates.noindex/GeoCam.build/Debug-iphoneos/GeoCam.build/Objects-normal/arm64/OverlayBrandingHeaderView.o",
+    "swift-dependencies" : "/Users/metinbiyik/Desktop/projeler/GeoCamApp/GeoCam/.build/DerivedData/Build/Intermediates.noindex/GeoCam.build/Debug-iphoneos/GeoCam.build/Objects-normal/arm64/OverlayBrandingHeaderView.swiftdeps"
   },
-  "/Users/metinbiyik/Desktop/projeler/GeoCamApp/GeoCam/GeoCam/Features/Location/Models/LocationSnapshot+CoreLocation.swift" : {
-    "const-values" : "/Users/metinbiyik/Desktop/projeler/GeoCamApp/GeoCam/.build/DerivedData/Build/Intermediates.noindex/GeoCam.build/Debug-iphoneos/GeoCam.build/Objects-normal/arm64/LocationSnapshot+CoreLocation.swiftconstvalues",
-    "dependencies" : "/Users/metinbiyik/Desktop/projeler/GeoCamApp/GeoCam/.build/DerivedData/Build/Intermediates.noindex/GeoCam.build/Debug-iphoneos/GeoCam.build/Objects-normal/arm64/LocationSnapshot+CoreLocation.d",
-    "diagnostics" : "/Users/metinbiyik/Desktop/projeler/GeoCamApp/GeoCam/.build/DerivedData/Build/Intermediates.noindex/GeoCam.build/Debug-iphoneos/GeoCam.build/Objects-normal/arm64/LocationSnapshot+CoreLocation.dia",
-    "object" : "/Users/metinbiyik/Desktop/projeler/GeoCamApp/GeoCam/.build/DerivedData/Build/Intermediates.noindex/GeoCam.build/Debug-iphoneos/GeoCam.build/Objects-normal/arm64/LocationSnapshot+CoreLocation.o",
-    "swift-dependencies" : "/Users/metinbiyik/Desktop/projeler/GeoCamApp/GeoCam/.build/DerivedData/Build/Intermediates.noindex/GeoCam.build/Debug-iphoneos/GeoCam.build/Objects-normal/arm64/LocationSnapshot+CoreLocation.swiftdeps"
+  "/Users/metinbiyik/Desktop/projeler/GeoCamApp/GeoCam/GeoCam/Features/Settings/Services/SettingsStore.swift" : {
+    "const-values" : "/Users/metinbiyik/Desktop/projeler/GeoCamApp/GeoCam/.build/DerivedData/Build/Intermediates.noindex/GeoCam.build/Debug-iphoneos/GeoCam.build/Objects-normal/arm64/SettingsStore.swiftconstvalues",
+    "dependencies" : "/Users/metinbiyik/Desktop/projeler/GeoCamApp/GeoCam/.build/DerivedData/Build/Intermediates.noindex/GeoCam.build/Debug-iphoneos/GeoCam.build/Objects-normal/arm64/SettingsStore.d",
+    "diagnostics" : "/Users/metinbiyik/Desktop/projeler/GeoCamApp/GeoCam/.build/DerivedData/Build/Intermediates.noindex/GeoCam.build/Debug-iphoneos/GeoCam.build/Objects-normal/arm64/SettingsStore.dia",
+    "object" : "/Users/metinbiyik/Desktop/projeler/GeoCamApp/GeoCam/.build/DerivedData/Build/Intermediates.noindex/GeoCam.build/Debug-iphoneos/GeoCam.build/Objects-normal/arm64/SettingsStore.o",
+    "swift-dependencies" : "/Users/metinbiyik/Desktop/projeler/GeoCamApp/GeoCam/.build/DerivedData/Build/Intermediates.noindex/GeoCam.build/Debug-iphoneos/GeoCam.build/Objects-normal/arm64/SettingsStore.swiftdeps"
   },
-  "/Users/metinbiyik/Desktop/projeler/GeoCamApp/GeoCam/GeoCam/Features/Location/Models/LocationSnapshot.swift" : {
-    "const-values" : "/Users/metinbiyik/Desktop/projeler/GeoCamApp/GeoCam/.build/DerivedData/Build/Intermediates.noindex/GeoCam.build/Debug-iphoneos/GeoCam.build/Objects-normal/arm64/LocationSnapshot.swiftconstvalues",
-    "dependencies" : "/Users/metinbiyik/Desktop/projeler/GeoCamApp/GeoCam/.build/DerivedData/Build/Intermediates.noindex/GeoCam.build/Debug-iphoneos/GeoCam.build/Objects-normal/arm64/LocationSnapshot.d",
-    "diagnostics" : "/Users/metinbiyik/Desktop/projeler/GeoCamApp/GeoCam/.build/DerivedData/Build/Intermediates.noindex/GeoCam.build/Debug-iphoneos/GeoCam.build/Objects-normal/arm64/LocationSnapshot.dia",
-    "object" : "/Users/metinbiyik/Desktop/projeler/GeoCamApp/GeoCam/.build/DerivedData/Build/Intermediates.noindex/GeoCam.build/Debug-iphoneos/GeoCam.build/Objects-normal/arm64/LocationSnapshot.o",
-    "swift-dependencies" : "/Users/metinbiyik/Desktop/projeler/GeoCamApp/GeoCam/.build/DerivedData/Build/Intermediates.noindex/GeoCam.build/Debug-iphoneos/GeoCam.build/Objects-normal/arm64/LocationSnapshot.swiftdeps"
-  },
-  "/Users/metinbiyik/Desktop/projeler/GeoCamApp/GeoCam/GeoCam/Features/Location/Models/PostalAddress+CoreLocation.swift" : {
-    "const-values" : "/Users/metinbiyik/Desktop/projeler/GeoCamApp/GeoCam/.build/DerivedData/Build/Intermediates.noindex/GeoCam.build/Debug-iphoneos/GeoCam.build/Objects-normal/arm64/PostalAddress+CoreLocation.swiftconstvalues",
-    "dependencies" : "/Users/metinbiyik/Desktop/projeler/GeoCamApp/GeoCam/.build/DerivedData/Build/Intermediates.noindex/GeoCam.build/Debug-iphoneos/GeoCam.build/Objects-normal/arm64/PostalAddress+CoreLocation.d",
-    "diagnostics" : "/Users/metinbiyik/Desktop/projeler/GeoCamApp/GeoCam/.build/DerivedData/Build/Intermediates.noindex/GeoCam.build/Debug-iphoneos/GeoCam.build/Objects-normal/arm64/PostalAddress+CoreLocation.dia",
-    "object" : "/Users/metinbiyik/Desktop/projeler/GeoCamApp/GeoCam/.build/DerivedData/Build/Intermediates.noindex/GeoCam.build/Debug-iphoneos/GeoCam.build/Objects-normal/arm64/PostalAddress+CoreLocation.o",
-    "swift-dependencies" : "/Users/metinbiyik/Desktop/projeler/GeoCamApp/GeoCam/.build/DerivedData/Build/Intermediates.noindex/GeoCam.build/Debug-iphoneos/GeoCam.build/Objects-normal/arm64/PostalAddress+CoreLocation.swiftdeps"
-  },
-  "/Users/metinbiyik/Desktop/projeler/GeoCamApp/GeoCam/GeoCam/Features/Location/Models/PostalAddress.swift" : {
-    "const-values" : "/Users/metinbiyik/Desktop/projeler/GeoCamApp/GeoCam/.build/DerivedData/Build/Intermediates.noindex/GeoCam.build/Debug-iphoneos/GeoCam.build/Objects-normal/arm64/PostalAddress.swiftconstvalues",
-    "dependencies" : "/Users/metinbiyik/Desktop/projeler/GeoCamApp/GeoCam/.build/DerivedData/Build/Intermediates.noindex/GeoCam.build/Debug-iphoneos/GeoCam.build/Objects-normal/arm64/PostalAddress.d",
-    "diagnostics" : "/Users/metinbiyik/Desktop/projeler/GeoCamApp/GeoCam/.build/DerivedData/Build/Intermediates.noindex/GeoCam.build/Debug-iphoneos/GeoCam.build/Objects-normal/arm64/PostalAddress.dia",
-    "object" : "/Users/metinbiyik/Desktop/projeler/GeoCamApp/GeoCam/.build/DerivedData/Build/Intermediates.noindex/GeoCam.build/Debug-iphoneos/GeoCam.build/Objects-normal/arm64/PostalAddress.o",
-    "swift-dependencies" : "/Users/metinbiyik/Desktop/projeler/GeoCamApp/GeoCam/.build/DerivedData/Build/Intermediates.noindex/GeoCam.build/Debug-iphoneos/GeoCam.build/Objects-normal/arm64/PostalAddress.swiftdeps"
-  },
-  "/Users/metinbiyik/Desktop/projeler/GeoCamApp/GeoCam/GeoCam/Features/Location/Services/AddressResolver.swift" : {
-    "const-values" : "/Users/metinbiyik/Desktop/projeler/GeoCamApp/GeoCam/.build/DerivedData/Build/Intermediates.noindex/GeoCam.build/Debug-iphoneos/GeoCam.build/Objects-normal/arm64/AddressResolver.swiftconstvalues",
-    "dependencies" : "/Users/metinbiyik/Desktop/projeler/GeoCamApp/GeoCam/.build/DerivedData/Build/Intermediates.noindex/GeoCam.build/Debug-iphoneos/GeoCam.build/Objects-normal/arm64/AddressResolver.d",
-    "diagnostics" : "/Users/metinbiyik/Desktop/projeler/GeoCamApp/GeoCam/.build/DerivedData/Build/Intermediates.noindex/GeoCam.build/Debug-iphoneos/GeoCam.build/Objects-normal/arm64/AddressResolver.dia",
-    "object" : "/Users/metinbiyik/Desktop/projeler/GeoCamApp/GeoCam/.build/DerivedData/Build/Intermediates.noindex/GeoCam.build/Debug-iphoneos/GeoCam.build/Objects-normal/arm64/AddressResolver.o",
-    "swift-dependencies" : "/Users/metinbiyik/Desktop/projeler/GeoCamApp/GeoCam/.build/DerivedData/Build/Intermediates.noindex/GeoCam.build/Debug-iphoneos/GeoCam.build/Objects-normal/arm64/AddressResolver.swiftdeps"
-  },
-  "/Users/metinbiyik/Desktop/projeler/GeoCamApp/GeoCam/GeoCam/Features/Location/Services/AddressResolving.swift" : {
-    "const-values" : "/Users/metinbiyik/Desktop/projeler/GeoCamApp/GeoCam/.build/DerivedData/Build/Intermediates.noindex/GeoCam.build/Debug-iphoneos/GeoCam.build/Objects-normal/arm64/AddressResolving.swiftconstvalues",
-    "dependencies" : "/Users/metinbiyik/Desktop/projeler/GeoCamApp/GeoCam/.build/DerivedData/Build/Intermediates.noindex/GeoCam.build/Debug-iphoneos/GeoCam.build/Objects-normal/arm64/AddressResolving.d",
-    "diagnostics" : "/Users/metinbiyik/Desktop/projeler/GeoCamApp/GeoCam/.build/DerivedData/Build/Intermediates.noindex/GeoCam.build/Debug-iphoneos/GeoCam.build/Objects-normal/arm64/AddressResolving.dia",
-    "object" : "/Users/metinbiyik/Desktop/projeler/GeoCamApp/GeoCam/.build/DerivedData/Build/Intermediates.noindex/GeoCam.build/Debug-iphoneos/GeoCam.build/Objects-normal/arm64/AddressResolving.o",
-    "swift-dependencies" : "/Users/metinbiyik/Desktop/projeler/GeoCamApp/GeoCam/.build/DerivedData/Build/Intermediates.noindex/GeoCam.build/Debug-iphoneos/GeoCam.build/Objects-normal/arm64/AddressResolving.swiftdeps"
-  },
-  "/Users/metinbiyik/Desktop/projeler/GeoCamApp/GeoCam/GeoCam/Features/Location/Services/CompassService.swift" : {
-    "const-values" : "/Users/metinbiyik/Desktop/projeler/GeoCamApp/GeoCam/.build/DerivedData/Build/Intermediates.noindex/GeoCam.build/Debug-iphoneos/GeoCam.build/Objects-normal/arm64/CompassService.swiftconstvalues",
-    "dependencies" : "/Users/metinbiyik/Desktop/projeler/GeoCamApp/GeoCam/.build/DerivedData/Build/Intermediates.noindex/GeoCam.build/Debug-iphoneos/GeoCam.build/Objects-normal/arm64/CompassService.d",
-    "diagnostics" : "/Users/metinbiyik/Desktop/projeler/GeoCamApp/GeoCam/.build/DerivedData/Build/Intermediates.noindex/GeoCam.build/Debug-iphoneos/GeoCam.build/Objects-normal/arm64/CompassService.dia",
-    "object" : "/Users/metinbiyik/Desktop/projeler/GeoCamApp/GeoCam/.build/DerivedData/Build/Intermediates.noindex/GeoCam.build/Debug-iphoneos/GeoCam.build/Objects-normal/arm64/CompassService.o",
-    "swift-dependencies" : "/Users/metinbiyik/Desktop/projeler/GeoCamApp/GeoCam/.build/DerivedData/Build/Intermediates.noindex/GeoCam.build/Debug-iphoneos/GeoCam.build/Objects-normal/arm64/CompassService.swiftdeps"
-  },
-  "/Users/metinbiyik/Desktop/projeler/GeoCamApp/GeoCam/GeoCam/Features/Location/Services/CompassServicing.swift" : {
-    "const-values" : "/Users/metinbiyik/Desktop/projeler/GeoCamApp/GeoCam/.build/DerivedData/Build/Intermediates.noindex/GeoCam.build/Debug-iphoneos/GeoCam.build/Objects-normal/arm64/CompassServicing.swiftconstvalues",
-    "dependencies" : "/Users/metinbiyik/Desktop/projeler/GeoCamApp/GeoCam/.build/DerivedData/Build/Intermediates.noindex/GeoCam.build/Debug-iphoneos/GeoCam.build/Objects-normal/arm64/CompassServicing.d",
-    "diagnostics" : "/Users/metinbiyik/Desktop/projeler/GeoCamApp/GeoCam/.build/DerivedData/Build/Intermediates.noindex/GeoCam.build/Debug-iphoneos/GeoCam.build/Objects-normal/arm64/CompassServicing.dia",
-    "object" : "/Users/metinbiyik/Desktop/projeler/GeoCamApp/GeoCam/.build/DerivedData/Build/Intermediates.noindex/GeoCam.build/Debug-iphoneos/GeoCam.build/Objects-normal/arm64/CompassServicing.o",
-    "swift-dependencies" : "/Users/metinbiyik/Desktop/projeler/GeoCamApp/GeoCam/.build/DerivedData/Build/Intermediates.noindex/GeoCam.build/Debug-iphoneos/GeoCam.build/Objects-normal/arm64/CompassServicing.swiftdeps"
-  },
-  "/Users/metinbiyik/Desktop/projeler/GeoCamApp/GeoCam/GeoCam/Features/Location/Services/GeocodingService.swift" : {
-    "const-values" : "/Users/metinbiyik/Desktop/projeler/GeoCamApp/GeoCam/.build/DerivedData/Build/Intermediates.noindex/GeoCam.build/Debug-iphoneos/GeoCam.build/Objects-normal/arm64/GeocodingService.swiftconstvalues",
-    "dependencies" : "/Users/metinbiyik/Desktop/projeler/GeoCamApp/GeoCam/.build/DerivedData/Build/Intermediates.noindex/GeoCam.build/Debug-iphoneos/GeoCam.build/Objects-normal/arm64/GeocodingService.d",
-    "diagnostics" : "/Users/metinbiyik/Desktop/projeler/GeoCamApp/GeoCam/.build/DerivedData/Build/Intermediates.noindex/GeoCam.build/Debug-iphoneos/GeoCam.build/Objects-normal/arm64/GeocodingService.dia",
-    "object" : "/Users/metinbiyik/Desktop/projeler/GeoCamApp/GeoCam/.build/DerivedData/Build/Intermediates.noindex/GeoCam.build/Debug-iphoneos/GeoCam.build/Objects-normal/arm64/GeocodingService.o",
-    "swift-dependencies" : "/Users/metinbiyik/Desktop/projeler/GeoCamApp/GeoCam/.build/DerivedData/Build/Intermediates.noindex/GeoCam.build/Debug-iphoneos/GeoCam.build/Objects-normal/arm64/GeocodingService.swiftdeps"
-  },
-  "/Users/metinbiyik/Desktop/projeler/GeoCamApp/GeoCam/GeoCam/Features/Location/Services/GeocodingServicing.swift" : {
-    "const-values" : "/Users/metinbiyik/Desktop/projeler/GeoCamApp/GeoCam/.build/DerivedData/Build/Intermediates.noindex/GeoCam.build/Debug-iphoneos/GeoCam.build/Objects-normal/arm64/GeocodingServicing.swiftconstvalues",
-    "dependencies" : "/Users/metinbiyik/Desktop/projeler/GeoCamApp/GeoCam/.build/DerivedData/Build/Intermediates.noindex/GeoCam.build/Debug-iphoneos/GeoCam.build/Objects-normal/arm64/GeocodingServicing.d",
-    "diagnostics" : "/Users/metinbiyik/Desktop/projeler/GeoCamApp/GeoCam/.build/DerivedData/Build/Intermediates.noindex/GeoCam.build/Debug-iphoneos/GeoCam.build/Objects-normal/arm64/GeocodingServicing.dia",
-    "object" : "/Users/metinbiyik/Desktop/projeler/GeoCamApp/GeoCam/.build/DerivedData/Build/Intermediates.noindex/GeoCam.build/Debug-iphoneos/GeoCam.build/Objects-normal/arm64/GeocodingServicing.o",
-    "swift-dependencies" : "/Users/metinbiyik/Desktop/projeler/GeoCamApp/GeoCam/.build/DerivedData/Build/Intermediates.noindex/GeoCam.build/Debug-iphoneos/GeoCam.build/Objects-normal/arm64/GeocodingServicing.swiftdeps"
-  },
-  "/Users/metinbiyik/Desktop/projeler/GeoCamApp/GeoCam/GeoCam/Features/Location/Services/LocationManagerProxy.swift" : {
-    "const-values" : "/Users/metinbiyik/Desktop/projeler/GeoCamApp/GeoCam/.build/DerivedData/Build/Intermediates.noindex/GeoCam.build/Debug-iphoneos/GeoCam.build/Objects-normal/arm64/LocationManagerProxy.swiftconstvalues",
-    "dependencies" : "/Users/metinbiyik/Desktop/projeler/GeoCamApp/GeoCam/.build/DerivedData/Build/Intermediates.noindex/GeoCam.build/Debug-iphoneos/GeoCam.build/Objects-normal/arm64/LocationManagerProxy.d",
-    "diagnostics" : "/Users/metinbiyik/Desktop/projeler/GeoCamApp/GeoCam/.build/DerivedData/Build/Intermediates.noindex/GeoCam.build/Debug-iphoneos/GeoCam.build/Objects-normal/arm64/LocationManagerProxy.dia",
-    "object" : "/Users/metinbiyik/Desktop/projeler/GeoCamApp/GeoCam/.build/DerivedData/Build/Intermediates.noindex/GeoCam.build/Debug-iphoneos/GeoCam.build/Objects-normal/arm64/LocationManagerProxy.o",
-    "swift-dependencies" : "/Users/metinbiyik/Desktop/projeler/GeoCamApp/GeoCam/.build/DerivedData/Build/Intermediates.noindex/GeoCam.build/Debug-iphoneos/GeoCam.build/Objects-normal/arm64/LocationManagerProxy.swiftdeps"
-  },
-  "/Users/metinbiyik/Desktop/projeler/GeoCamApp/GeoCam/GeoCam/Features/Location/Services/LocationService.swift" : {
-    "const-values" : "/Users/metinbiyik/Desktop/projeler/GeoCamApp/GeoCam/.build/DerivedData/Build/Intermediates.noindex/GeoCam.build/Debug-iphoneos/GeoCam.build/Objects-normal/arm64/LocationService.swiftconstvalues",
-    "dependencies" : "/Users/metinbiyik/Desktop/projeler/GeoCamApp/GeoCam/.build/DerivedData/Build/Intermediates.noindex/GeoCam.build/Debug-iphoneos/GeoCam.build/Objects-normal/arm64/LocationService.d",
-    "diagnostics" : "/Users/metinbiyik/Desktop/projeler/GeoCamApp/GeoCam/.build/DerivedData/Build/Intermediates.noindex/GeoCam.build/Debug-iphoneos/GeoCam.build/Objects-normal/arm64/LocationService.dia",
-    "object" : "/Users/metinbiyik/Desktop/projeler/GeoCamApp/GeoCam/.build/DerivedData/Build/Intermediates.noindex/GeoCam.build/Debug-iphoneos/GeoCam.build/Objects-normal/arm64/LocationService.o",
-    "swift-dependencies" : "/Users/metinbiyik/Desktop/projeler/GeoCamApp/GeoCam/.build/DerivedData/Build/Intermediates.noindex/GeoCam.build/Debug-iphoneos/GeoCam.build/Objects-normal/arm64/LocationService.swiftdeps"
+  "/Users/metinbiyik/Desktop/projeler/GeoCamApp/GeoCam/GeoCam/Features/Settings/Services/SettingsStoring.swift" : {
+    "const-values" : "/Users/metinbiyik/Desktop/projeler/GeoCamApp/GeoCam/.build/DerivedData/Build/Intermediates.noindex/GeoCam.build/Debug-iphoneos/GeoCam.build/Objects-normal/arm64/SettingsStoring.swiftconstvalues",
+    "dependencies" : "/Users/metinbiyik/Desktop/projeler/GeoCamApp/GeoCam/.build/DerivedData/Build/Intermediates.noindex/GeoCam.build/Debug-iphoneos/GeoCam.build/Objects-normal/arm64/SettingsStoring.d",
+    "diagnostics" : "/Users/metinbiyik/Desktop/projeler/GeoCamApp/GeoCam/.build/DerivedData/Build/Intermediates.noindex/GeoCam.build/Debug-iphoneos/GeoCam.build/Objects-normal/arm64/SettingsStoring.dia",
+    "object" : "/Users/metinbiyik/Desktop/projeler/GeoCamApp/GeoCam/.build/DerivedData/Build/Intermediates.noindex/GeoCam.build/Debug-iphoneos/GeoCam.build/Objects-normal/arm64/SettingsStoring.o",
+    "swift-dependencies" : "/Users/metinbiyik/Desktop/projeler/GeoCamApp/GeoCam/.build/DerivedData/Build/Intermediates.noindex/GeoCam.build/Debug-iphoneos/GeoCam.build/Objects-normal/arm64/SettingsStoring.swiftdeps"
   }
 }

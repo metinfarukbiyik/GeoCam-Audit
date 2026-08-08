@@ -68,13 +68,14 @@ GeoCam/
 - İsteğe bağlı **orijinali de kaydet** (aynı oran, damgasız)
 
 ### Filigran
-- Damgalı fotoğraf/videoya **zorunlu** sağ alt filigran
-- Satır 1: `GeoCam: Audit`
-- Satır 2: orijinallik metni — seçili dile göre
+- Damgalı fotoğraf/videoya **zorunlu** çift filigran (App Icon mavi + lacivert gölge)
+- Sol alt: onay ikonu + `GeoCam: Audit ile doğrulanmıştır.` (dile göre)
+- Sağ alt: `GeoCam: Audit`
+- Fotoğraf ve video aynı rozetleri kullanır
 - İlk sürümde kapatılamaz (`AppConstants.Features.allowsRemovingAppWatermark = false`)
 
 ### Konum & pusula
-- Enlem, boylam, rakım, yatay GPS doğruluğu (metre)
+- Enlem, boylam (derece-dakika-saniye), rakım, yatay GPS doğruluğu (metre)
 - Manyetik yön: derece + N / NE / E / SE / S / SW / W / NW
 - Reverse geocode: mahalle, ilçe, il, ülke (yoksa koordinat)
 - İzin kapalı / aranıyor durumları için bilgilendirme UI
@@ -84,7 +85,10 @@ GeoCam/
 - Alanlar: tarih, saat, adres, koordinat, rakım, yön, GPS hassasiyeti
 - 7 layout: kompakt, kart, şerit, sade, poster, ikili, kapsül
 - Ekran döndürme kilidi kapalıyken bile katman cihaz yönüne göre döner
-- Sürüklenebilir konum, sağa/sola yaslama, pinch ile tüm tasarımın ölçeği (%45–%100)
+- Katman yalnızca sol veya sağ kenara yaslanır; dikeyde parmakla taşınır, ortaya bırakılamaz; kenar ayarlardan da seçilir
+- Yerleşim alt filigran bandının üstünde kalır; örtüşme engellenir
+- Metin yönü seçili köşeye göre aynalanır; pinch ile tüm tasarımın ölçeği (%45–%100)
+- Köşe, ölçek ve diğer tercihler uygulama yeniden açılınca korunur
 - EXIF: kaynak capture metadata JPEG'e aktarılır
 
 ### Kurumsal
@@ -996,9 +1000,20 @@ Sürüm sayfası → **App Review Information**
 **Notes** alanına yapıştırın:
 
 ```
-GeoCam: Audit is an offline camera app for field documentation. No account or
-login is required — all features are available immediately after granting
-permissions.
+GeoCam: Audit is a completely free camera app for field documentation.
+There are no paid features, subscriptions, in-app purchases, unlocks,
+accounts or server-side services of any kind. All features are available
+immediately after granting permissions.
+
+BUSINESS MODEL (Guideline 2.1)
+- The app is free to download and free to use.
+- No In-App Purchase products are configured.
+- No subscriptions, credits, coins or premium tiers exist.
+- No content is unlocked by paying outside the app.
+- The GeoCam watermark on stamped photos is part of the product design
+  (authenticity mark). It is not a paywall and cannot be removed by purchase.
+- Monetization, if any in the future, would only be added via Apple In-App
+  Purchase and would be submitted as a new binary for review.
 
 TESTING NOTE
 The app requires a physical device. The camera preview will be black in the
@@ -1034,6 +1049,57 @@ HOW TO TEST THE MAIN FLOW
 
 Contact: metin@biyik.dev
 ```
+
+---
+
+### Guideline 2.1(b) — İş modeli sorularına cevap
+
+Apple "ücretli dijital içerik olabilir" diye bilgi istediğinde Resolution Center'a aşağıdaki İngilizce cevabı **olduğu gibi** yapıştırın. (Sebep: eski build'deki Ayarlar metninde "paid plan" ifadesi vardı; bu metin kaldırıldı.)
+
+```
+Hello App Review Team,
+
+Thank you for the questions. GeoCam: Audit has no paid digital content or
+services. Here are the answers:
+
+1. Who are the users that will use the paid services in the app?
+There are no paid services. The app is free for every user. Typical users are
+field workers, inspectors and auditors who stamp photos with GPS, address and
+time data. Nobody pays for features inside the app.
+
+2. Where can users purchase the subscriptions, features, and services that can
+be accessed in the app?
+Nowhere. There is no storefront, no In-App Purchase, no website checkout and
+no account. The app is free on the App Store and every feature works after
+granting Camera, Location and Photos permissions.
+
+3. What specific types of previously purchased subscriptions, features, and
+services can a user access in the app?
+None. The app does not restore, unlock or recognize any external purchase.
+
+4. What paid content, subscriptions, or features are unlocked within the app
+that do not use In-App Purchase?
+None. Nothing is locked behind a purchase. The GeoCam watermark that appears
+on stamped photos is a fixed authenticity mark of the product design — it is
+not a paywall and is not removed by paying.
+
+5. Can users purchase physical goods or services together with digital content
+in your app?
+No. The app does not sell physical goods or services.
+
+We have also removed an outdated Settings footer sentence that incorrectly
+mentioned a future "paid plan". The current binary contains no paid-plan
+language, no StoreKit code and no unlock UI.
+
+Please continue the review with this clarification. We are happy to answer
+any further questions.
+
+Best regards,
+Metin Faruk Bıyık
+metin@biyik.dev
+```
+
+> **Önemli:** Bu cevabı gönderdikten sonra **yeni binary** yükleyin (ücretli plan metni silinmiş sürüm). Apple eski metni içeren 1.2 (1) build'ini incelemiş olabilir; düzeltme ancak yeni build ile kesinleşir.
 
 **Attachment:** Gerekmez. (Özel donanım/hesap yok.)
 
@@ -1151,21 +1217,25 @@ Göndermeden önce hepsini işaretleyin.
 
 ## Yol haritası
 
-### v1.0'da var
+### Bu sürümde var
 Logo/marka, video + damga, zorunlu filigran, 4 dil, iş bilgisi, 4:3 / 9:16, cihaz yönüne göre dönen katman
+
+**İş modeli:** Uygulama tamamen ücretsizdir. In-App Purchase, abonelik, kilitli özellik veya uygulama dışı ödeme yoktur.
 
 ### Henüz yok
 | Modül | Not |
 |--------|-----|
 | QR / barkod | İş emri veya site okutma |
 | PDF rapor | Saha özeti |
-| Filigranı kaldırma | Pro kapısı hazır, UI yok |
+| Filigranı kapatma | Kapı kodda var, UI yok; şu an her zaman açık |
 | Bulut / şirket hesabı | Offline kuralı gereği bilinçli yok |
 | Firebase / OCR / AI | Planlı değil |
 | Mini harita | Damga eki |
 
-### Pro adayları (öncelik sırası)
-1. Filigranı kaldırma (ücretli)
+### Gelecek aday özellikler (geliştirici notu)
+Bunlar yalnızca iç planlama listesidir. App Store metninde, uygulama içinde veya inceleyici notlarında "Pro / paid / subscription" dili **kullanılmamalıdır**.
+
+1. Filigranı kapatma seçeneği
 2. PDF saha raporu
 3. İş geçmişi (son iş emri / site)
 4. QR ile iş emri / site
@@ -1176,12 +1246,7 @@ Logo/marka, video + damga, zorunlu filigran, 4 dil, iş bilgisi, 4:3 / 9:16, cih
 9. EXIF/IPTC'ye iş emri yazma
 10. Albüm adı kuralı (`SiteID_İşEmri_Tarih`)
 
-### Paketleme önerisi
-- **Free:** Damga, zorunlu filigran, 1 marka, iş bilgisi, dil, video, 4:3 & 9:16
-- **Pro:** Filigransız çıktı, PDF, geçmiş, QR, HEIF, CSV, çoklu marka
-- **Pro Ekip:** Şablon kilidi, çoklu kullanıcı, isteğe bağlı sync
-
-> IAP eklerseniz: Adım 0'daki Paid Applications Agreement, `StoreKit 2`, restore purchases butonu (Guideline 3.1.1 zorunlu) ve App Privacy güncellemesi gerekir.
+> İleride ücretli özellik eklenecekse yalnızca Apple In-App Purchase ile yapılır: Paid Applications Agreement, StoreKit 2, restore purchases (Guideline 3.1.1) ve App Privacy güncellemesi gerekir. O zamana kadar uygulama içinde ücretli plan ima eden metin olmamalıdır.
 
 ---
 

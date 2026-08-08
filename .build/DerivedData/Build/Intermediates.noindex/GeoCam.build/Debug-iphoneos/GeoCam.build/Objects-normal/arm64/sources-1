@@ -13,6 +13,7 @@
 /Users/metinbiyik/Desktop/projeler/GeoCamApp/GeoCam/GeoCam/Core/Extensions/Double+Formatting.swift
 /Users/metinbiyik/Desktop/projeler/GeoCamApp/GeoCam/GeoCam/Core/Extensions/Environment+AppLanguage.swift
 /Users/metinbiyik/Desktop/projeler/GeoCamApp/GeoCam/GeoCam/Core/Extensions/FileManager+Removal.swift
+/Users/metinbiyik/Desktop/projeler/GeoCamApp/GeoCam/GeoCam/Core/Extensions/OverlayHorizontalAlignment+SwiftUI.swift
 /Users/metinbiyik/Desktop/projeler/GeoCamApp/GeoCam/GeoCam/Core/Extensions/PermissionStatus+AVFoundation.swift
 /Users/metinbiyik/Desktop/projeler/GeoCamApp/GeoCam/GeoCam/Core/Extensions/PermissionStatus+CoreLocation.swift
 /Users/metinbiyik/Desktop/projeler/GeoCamApp/GeoCam/GeoCam/Core/Extensions/PermissionStatus+Photos.swift
@@ -105,6 +106,7 @@
 /Users/metinbiyik/Desktop/projeler/GeoCamApp/GeoCam/GeoCam/Features/Settings/Models/BrandAccentColor.swift
 /Users/metinbiyik/Desktop/projeler/GeoCamApp/GeoCam/GeoCam/Features/Settings/Models/BrandFontStyle.swift
 /Users/metinbiyik/Desktop/projeler/GeoCamApp/GeoCam/GeoCam/Features/Settings/Models/BrandIcon.swift
+/Users/metinbiyik/Desktop/projeler/GeoCamApp/GeoCam/GeoCam/Features/Settings/Models/OverlayCorner.swift
 /Users/metinbiyik/Desktop/projeler/GeoCamApp/GeoCam/GeoCam/Features/Settings/Models/OverlayField.swift
 /Users/metinbiyik/Desktop/projeler/GeoCamApp/GeoCam/GeoCam/Features/Settings/Models/OverlayFontStyle.swift
 /Users/metinbiyik/Desktop/projeler/GeoCamApp/GeoCam/GeoCam/Features/Settings/Models/OverlayHorizontalAlignment.swift
@@ -134,6 +136,7 @@
 /Users/metinbiyik/Desktop/projeler/GeoCamApp/GeoCam/GeoCam/Shared/Components/GlassCardView.swift
 /Users/metinbiyik/Desktop/projeler/GeoCamApp/GeoCam/GeoCam/Shared/Components/GravityAlignedOverlayHost.swift
 /Users/metinbiyik/Desktop/projeler/GeoCamApp/GeoCam/GeoCam/Shared/Components/InfoRowView.swift
+/Users/metinbiyik/Desktop/projeler/GeoCamApp/GeoCam/GeoCam/Shared/Components/OverlayMarkedRow.swift
 /Users/metinbiyik/Desktop/projeler/GeoCamApp/GeoCam/GeoCam/Shared/Components/PermissionRequestView.swift
 /Users/metinbiyik/Desktop/projeler/GeoCamApp/GeoCam/GeoCam/Shared/Components/ProcessingOverlayView.swift
 /Users/metinbiyik/Desktop/projeler/GeoCamApp/GeoCam/GeoCam/Shared/Components/SideMenuContainer.swift

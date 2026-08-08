@@ -20,11 +20,12 @@ struct OverlayBannerLayout: View {
     }
 
     var body: some View {
-        VStack(alignment: .leading, spacing: LayoutConstants.Spacing.small) {
+        VStack(alignment: model.alignment.stackAlignment, spacing: LayoutConstants.Spacing.small) {
             if let branding = model.branding {
                 OverlayBrandingHeaderView(
                     branding: branding,
                     textSize: model.textSize,
+                    alignment: model.alignment,
                     maxWidth: innerWidth
                 )
             }
@@ -32,10 +33,9 @@ struct OverlayBannerLayout: View {
             if let address = model.addressText {
                 Text(address)
                     .font(.system(size: model.textSize.titlePointSize, weight: .semibold))
-                    .multilineTextAlignment(.leading)
                     .lineLimit(4)
                     .fixedSize(horizontal: false, vertical: true)
-                    .frame(width: innerWidth, alignment: .leading)
+                    .frame(width: innerWidth, alignment: model.alignment.frameAlignment)
             }
 
             if !model.detailRows.isEmpty {
@@ -43,13 +43,13 @@ struct OverlayBannerLayout: View {
             }
         }
         .padding(LayoutConstants.Spacing.medium)
-        .frame(width: maxWidth, alignment: .leading)
+        .frame(width: maxWidth, alignment: model.alignment.frameAlignment)
         .overlayChrome(chromeStyle, cornerRadius: LayoutConstants.CornerRadius.small)
     }
 
     private var detailGrid: some View {
         Grid(
-            alignment: .leading,
+            alignment: model.alignment.frameAlignment,
             horizontalSpacing: LayoutConstants.Spacing.large,
             verticalSpacing: LayoutConstants.Spacing.extraSmall
         ) {
@@ -61,7 +61,7 @@ struct OverlayBannerLayout: View {
                 }
             }
         }
-        .frame(width: innerWidth, alignment: .leading)
+        .frame(width: innerWidth, alignment: model.alignment.frameAlignment)
     }
 
     private var rowPairs: [Int] {
@@ -74,19 +74,23 @@ struct OverlayBannerLayout: View {
     }
 
     private func cell(for row: OverlayDisplayModel.Row) -> some View {
-        HStack(spacing: LayoutConstants.Spacing.extraSmall) {
+        OverlayMarkedRow(
+            alignment: model.alignment,
+            verticalAlignment: .center,
+            spacing: LayoutConstants.Spacing.extraSmall
+        ) {
             Image(systemName: row.systemImage)
                 .imageScale(.small)
                 .foregroundStyle(.white.opacity(0.75))
                 .accessibilityHidden(true)
-
+        } content: {
             Text(row.displayText)
                 .fontWeight(.medium)
                 .foregroundStyle(row.tint ?? .white)
                 .lineLimit(2)
                 .minimumScaleFactor(0.75)
         }
-        .frame(maxWidth: .infinity, alignment: .leading)
+        .frame(maxWidth: .infinity, alignment: model.alignment.frameAlignment)
         .accessibilityElement(children: .combine)
         .accessibilityLabel("\(row.title) \(row.value)")
     }

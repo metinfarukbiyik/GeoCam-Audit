@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-/// Ayarlar listesinin sonunda gösterilen geliştirici künyesi.
+/// Ayarlar listesinin en altındaki geliştirici künyesi (açıklama metni).
 struct DeveloperCreditView: View {
     @Environment(\.appLanguage) private var language
 
@@ -15,7 +15,8 @@ struct DeveloperCreditView: View {
         Text(.init(creditMarkdown))
             .font(.footnote)
             .foregroundStyle(.secondary)
-            .frame(maxWidth: .infinity, alignment: .leading)
+            .multilineTextAlignment(.center)
+            .frame(maxWidth: .infinity, alignment: .center)
     }
 
     /// Ad, Markdown bağlantısı olarak verilir; böylece metin dar alanda da doğal biçimde sarılır.

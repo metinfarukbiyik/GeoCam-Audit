@@ -29,7 +29,7 @@ nonisolated enum L10n {
         case settingsFrameRatio
         case settingsSaveOriginal
         case settingsAppWatermark
-        case watermarkAuthenticity
+        case watermarkVerified
         case settingsJobInfo
         case settingsJobInfoFooter
         case settingsClearJobInfo
@@ -46,15 +46,14 @@ nonisolated enum L10n {
         case settingsChangeLogo
         case settingsRemoveLogo
         case settingsAppearance
-        case settingsAppearanceFooter
         case settingsLayout
         case settingsTheme
         case settingsFont
         case settingsTextSize
         case settingsOverlayScale
-        case settingsAlignment
-        case alignmentLeading
-        case alignmentTrailing
+        case settingsCorner
+        case cornerBottomLeading
+        case cornerBottomTrailing
         case settingsContact
         case settingsContactFooter
         case settingsSendEmail
@@ -181,6 +180,7 @@ nonisolated enum L10n {
         case errorTryAgain
         case settingsSupport
         case settingsContactLink
+        case settingsRateLink
         case errorLocationPermission
         case errorLocationPermissionHint
         case errorLocationDisabled
@@ -210,19 +210,19 @@ nonisolated enum L10n {
             .turkish: "Dil", .english: "Language", .spanish: "Idioma", .german: "Sprache"
         ],
         .settingsLanguageFooter: [
-            .turkish: "Arayüz ve bilgi katmanı metinleri seçilen dile göre güncellenir.",
-            .english: "Interface and overlay texts update to the selected language.",
-            .spanish: "La interfaz y los textos de la capa se actualizan al idioma seleccionado.",
-            .german: "Oberfläche und Overlay-Texte werden an die gewählte Sprache angepasst."
+            .turkish: "Arayüz ve damga metinlerinin dili.",
+            .english: "Language for interface and stamp text.",
+            .spanish: "Idioma de la interfaz y del sello.",
+            .german: "Sprache für Oberfläche und Stempeltext."
         ],
         .settingsCamera: [
             .turkish: "Kamera", .english: "Camera", .spanish: "Cámara", .german: "Kamera"
         ],
         .settingsCameraFooter: [
-            .turkish: "9:16 tam ekran, 4:3 çerçeveli önizleme sunar. Orijinali de kaydet aynı oranda damgasız kopya yazar. Damgalı çıktıya sağ altta zorunlu GeoCam filigranı (uygulama adı + orijinal kayıt) eklenir; ileride ücretli planda kaldırılabilir.",
-            .english: "9:16 is full-screen; 4:3 shows a framed preview. Save Original writes an unstamped copy at the same ratio. Stamped media always get a GeoCam watermark (app name + authentic record); removable later with a paid plan.",
-            .spanish: "9:16 es pantalla completa; 4:3 muestra un marco. Guardar original crea una copia sin sello. El contenido sellado lleva siempre la marca GeoCam (nombre + registro auténtico); más adelante se podrá quitar con un plan de pago.",
-            .german: "9:16 ist Vollbild; 4:3 zeigt einen Rahmen. Original speichern schreibt eine ungestempelte Kopie. Gestempelte Medien erhalten immer das GeoCam-Wasserzeichen (App-Name + authentischer Nachweis); später per bezahltem Plan entfernbar."
+            .turkish: "Çerçeve oranı ve isteğe bağlı damgasız kopya. Damgalı çıktıya GeoCam filigranı eklenir.",
+            .english: "Frame ratio and optional unstamped copy. Stamped output includes the GeoCam watermark.",
+            .spanish: "Proporción del marco y copia opcional sin sello. La salida sellada incluye la marca GeoCam.",
+            .german: "Seitenverhältnis und optionale ungestempelte Kopie. Gestempelte Ausgabe enthält das GeoCam-Wasserzeichen."
         ],
         .settingsFrameRatio: [
             .turkish: "Çerçeve Oranı", .english: "Aspect Ratio", .spanish: "Proporción", .german: "Seitenverhältnis"
@@ -233,20 +233,20 @@ nonisolated enum L10n {
         .settingsAppWatermark: [
             .turkish: "GeoCam Filigranı", .english: "GeoCam Watermark", .spanish: "Marca de agua GeoCam", .german: "GeoCam-Wasserzeichen"
         ],
-        .watermarkAuthenticity: [
-            .turkish: "Orijinal saha kaydı",
-            .english: "Authentic field record",
-            .spanish: "Registro de campo auténtico",
-            .german: "Authentischer Feldnachweis"
+        .watermarkVerified: [
+            .turkish: "GeoCam: Audit ile doğrulanmıştır.",
+            .english: "Verified by GeoCam: Audit.",
+            .spanish: "Verificado por GeoCam: Audit.",
+            .german: "Verifiziert durch GeoCam: Audit."
         ],
         .settingsJobInfo: [
             .turkish: "İş Bilgisi", .english: "Job Info", .spanish: "Info del trabajo", .german: "Auftragsinfo"
         ],
         .settingsJobInfoFooter: [
-            .turkish: "İş emri, site kimliği ve not; canlı önizlemede ve kaydedilen fotoğrafta bilgi katmanına eklenir. Aynı işte birden fazla çekim için değerler saklanır.",
-            .english: "Work order, site ID and note appear on the live overlay and stamped photos. Values persist for multiple shots on the same job.",
-            .spanish: "La orden, el ID del sitio y la nota aparecen en la capa y en las fotos. Los valores se conservan para varias tomas del mismo trabajo.",
-            .german: "Auftrag, Standort-ID und Notiz erscheinen im Overlay und auf Fotos. Werte bleiben für mehrere Aufnahmen desselben Jobs erhalten."
+            .turkish: "Damgaya yazılır; aynı iş için saklanır.",
+            .english: "Printed on the stamp; kept for the current job.",
+            .spanish: "Se imprime en el sello; se conserva para el trabajo actual.",
+            .german: "Wird auf den Stempel gedruckt; bleibt für den aktuellen Auftrag."
         ],
         .settingsClearJobInfo: [
             .turkish: "İş Bilgisini Temizle", .english: "Clear Job Info", .spanish: "Borrar info del trabajo", .german: "Auftragsinfo löschen"
@@ -276,10 +276,10 @@ nonisolated enum L10n {
             .turkish: "Marka Önizleme", .english: "Brand Preview", .spanish: "Vista previa", .german: "Markenvorschau"
         ],
         .settingsBrandFooter: [
-            .turkish: "Logo veya ikon ile marka adı, canlı önizlemede ve kaydedilen fotoğrafta bilgi katmanının en üstünde görünür. Özel logo seçildiğinde ikon yerine logo kullanılır.",
-            .english: "Logo or icon with brand name appears at the top of the live and stamped overlay. A custom logo replaces the icon.",
-            .spanish: "El logo o icono con el nombre aparece arriba en la capa. Un logo personalizado sustituye al icono.",
-            .german: "Logo oder Symbol mit Markennamen erscheint oben im Overlay. Ein eigenes Logo ersetzt das Symbol."
+            .turkish: "Şirket adı, logo veya ikon damganın üstünde görünür.",
+            .english: "Company name, logo or icon appears at the top of the stamp.",
+            .spanish: "Nombre, logo o icono aparecen arriba del sello.",
+            .german: "Firmenname, Logo oder Symbol erscheinen oben auf dem Stempel."
         ],
         .settingsChooseLogo: [
             .turkish: "Logo Seç", .english: "Choose Logo", .spanish: "Elegir logo", .german: "Logo wählen"
@@ -292,12 +292,6 @@ nonisolated enum L10n {
         ],
         .settingsAppearance: [
             .turkish: "Görünüm", .english: "Appearance", .spanish: "Apariencia", .german: "Darstellung"
-        ],
-        .settingsAppearanceFooter: [
-            .turkish: "Tasarım seçimi kamera önizlemesine anında yansır. Katmanı parmağınızla sürükleyerek yerini, çift parmakla sıkıştırıp açarak tasarımın tamamını küçültüp büyütebilirsiniz. Yaslama, katmanı seçtiğiniz kenara taşır. Bıraktığınız yer ve boyut korunur.",
-            .english: "Layout changes apply instantly on the camera preview. Drag the overlay to reposition it and pinch to scale the whole design. Alignment moves it to the chosen edge. Your position and size are remembered.",
-            .spanish: "El diseño se aplica al instante en la vista previa. Arrastra la capa para reposicionarla y pellízcala para escalar todo el diseño. La alineación la mueve al borde elegido. Se recuerdan la posición y el tamaño.",
-            .german: "Layout-Änderungen gelten sofort in der Vorschau. Ziehen Sie das Overlay zum Positionieren und skalieren Sie das gesamte Design mit der Pinch-Geste. Die Ausrichtung verschiebt es an den gewählten Rand. Position und Größe bleiben erhalten."
         ],
         .settingsLayout: [
             .turkish: "Katman Tasarımı", .english: "Overlay Layout", .spanish: "Diseño de capa", .german: "Overlay-Layout"
@@ -317,26 +311,26 @@ nonisolated enum L10n {
             .spanish: "Tamaño de la capa",
             .german: "Overlay-Größe"
         ],
-        .settingsAlignment: [
-            .turkish: "Yaslama",
-            .english: "Alignment",
-            .spanish: "Alineación",
-            .german: "Ausrichtung"
+        .settingsCorner: [
+            .turkish: "Katman Kenarı",
+            .english: "Overlay Edge",
+            .spanish: "Borde de la capa",
+            .german: "Overlay-Rand"
         ],
-        .alignmentLeading: [
+        .cornerBottomLeading: [
             .turkish: "Sol", .english: "Left", .spanish: "Izquierda", .german: "Links"
         ],
-        .alignmentTrailing: [
+        .cornerBottomTrailing: [
             .turkish: "Sağ", .english: "Right", .spanish: "Derecha", .german: "Rechts"
         ],
         .settingsContact: [
             .turkish: "İletişim", .english: "Contact", .spanish: "Contacto", .german: "Kontakt"
         ],
         .settingsContactFooter: [
-            .turkish: "Hata bildirimi ve iyileştirme önerileriniz için %@ adresine yazabilirsiniz.",
-            .english: "Write to %@ for bug reports and improvement ideas.",
-            .spanish: "Escriba a %@ para reportes y sugerencias.",
-            .german: "Schreiben Sie an %@ für Fehlerberichte und Verbesserungsvorschläge."
+            .turkish: "Destek: %@",
+            .english: "Support: %@",
+            .spanish: "Soporte: %@",
+            .german: "Support: %@"
         ],
         .settingsSendEmail: [
             .turkish: "E-posta Gönder", .english: "Send Email", .spanish: "Enviar correo", .german: "E-Mail senden"
@@ -604,6 +598,9 @@ nonisolated enum L10n {
         ],
         .settingsContactLink: [
             .turkish: "İletişime Geç", .english: "Contact Us", .spanish: "Contactar", .german: "Kontakt aufnehmen"
+        ],
+        .settingsRateLink: [
+            .turkish: "Puan Ver", .english: "Rate App", .spanish: "Valorar", .german: "Bewerten"
         ],
         .errorCameraConfig: [
             .turkish: "Kamera yapılandırılamadı.",

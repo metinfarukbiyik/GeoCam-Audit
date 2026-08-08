@@ -11,24 +11,24 @@ import SwiftUI
 struct OverlayBrandingHeaderView: View {
     let branding: OverlayBranding
     let textSize: OverlayTextSize
+    var alignment: OverlayHorizontalAlignment = .leading
     var maxWidth: CGFloat?
 
     var body: some View {
-        HStack(spacing: LayoutConstants.Spacing.small) {
+        OverlayMarkedRow(alignment: alignment, verticalAlignment: .center) {
             leadingMark
                 .foregroundStyle(branding.accentColor.color)
-
+        } content: {
             if let name = branding.name {
                 Text(name)
                     .font(brandFont)
                     .foregroundStyle(branding.accentColor.color)
-                    .multilineTextAlignment(.leading)
                     .lineLimit(2)
                     .fixedSize(horizontal: false, vertical: true)
-                    .frame(minWidth: 0, maxWidth: .infinity, alignment: .leading)
+                    .frame(minWidth: 0, maxWidth: .infinity, alignment: alignment.frameAlignment)
             }
         }
-        .frame(width: maxWidth, alignment: .leading)
+        .frame(width: maxWidth, alignment: alignment.frameAlignment)
         .accessibilityElement(children: .combine)
         .accessibilityLabel(accessibilityLabel)
     }
@@ -91,6 +91,7 @@ struct OverlayBrandingHeaderView: View {
                     accentColor: .mint
                 )!,
                 textSize: .medium,
+                alignment: .trailing,
                 maxWidth: 280
             )
         }

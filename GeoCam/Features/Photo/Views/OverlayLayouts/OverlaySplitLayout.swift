@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-/// Teknik iki sütun tasarımı: solda kısa etiket, sağda değer.
+/// Teknik iki sütun tasarımı: bir yanda kısa etiket, diğer yanda değer.
 struct OverlaySplitLayout: View {
     let model: OverlayDisplayModel
     let chromeStyle: OverlayChromeStyle
@@ -26,17 +26,18 @@ struct OverlaySplitLayout: View {
     }
 
     var body: some View {
-        VStack(alignment: .leading, spacing: LayoutConstants.Spacing.extraSmall) {
+        VStack(alignment: model.alignment.stackAlignment, spacing: LayoutConstants.Spacing.extraSmall) {
             if let branding = model.branding {
                 OverlayBrandingHeaderView(
                     branding: branding,
                     textSize: model.textSize,
+                    alignment: model.alignment,
                     maxWidth: innerWidth
                 )
             }
 
             if let address = model.addressText {
-                splitRow(title: "Konum", value: address)
+                splitRow(title: model.addressTitle, value: address)
             }
 
             ForEach(model.detailRows) { row in
@@ -44,25 +45,28 @@ struct OverlaySplitLayout: View {
             }
         }
         .padding(LayoutConstants.Spacing.medium)
-        .frame(width: maxWidth, alignment: .leading)
+        .frame(width: maxWidth, alignment: model.alignment.frameAlignment)
         .overlayChrome(chromeStyle, cornerRadius: LayoutConstants.CornerRadius.small)
     }
 
+    /// Etiket sütunu her zaman yaslanan kenarda durur; değer karşı tarafa akar.
     private func splitRow(title: String, value: String, tint: Color? = nil) -> some View {
-        HStack(alignment: .top, spacing: LayoutConstants.Spacing.medium) {
+        OverlayMarkedRow(
+            alignment: model.alignment,
+            spacing: LayoutConstants.Spacing.medium
+        ) {
             Text(title.uppercased())
                 .font(.system(size: model.textSize.pointSize * 0.85, weight: .semibold))
                 .foregroundStyle(.white.opacity(0.65))
-                .frame(width: labelWidth, alignment: .leading)
-
+                .frame(width: labelWidth, alignment: model.alignment.frameAlignment)
+        } content: {
             Text(value)
                 .fontWeight(.medium)
                 .foregroundStyle(tint ?? .white)
-                .multilineTextAlignment(.leading)
                 .lineLimit(4)
                 .fixedSize(horizontal: false, vertical: true)
-                .frame(width: valueWidth, alignment: .leading)
+                .frame(width: valueWidth, alignment: model.alignment.frameAlignment)
         }
-        .frame(width: innerWidth, alignment: .leading)
+        .frame(width: innerWidth, alignment: model.alignment.frameAlignment)
     }
 }

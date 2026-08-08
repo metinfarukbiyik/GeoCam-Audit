@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-/// Tema, yazı tipi ve metin boyutu tercihlerini sunan bölüm.
+/// Tema, yazı tipi, kenar konumu ve katman boyutu tercihlerini sunan bölüm.
 struct AppearanceSection: View {
     @Environment(\.appLanguage) private var language
 
@@ -15,7 +15,7 @@ struct AppearanceSection: View {
     @Binding var theme: AppTheme
     @Binding var fontStyle: OverlayFontStyle
     @Binding var textSize: OverlayTextSize
-    @Binding var horizontalAlignment: OverlayHorizontalAlignment
+    @Binding var corner: OverlayCorner
     @Binding var overlayScale: CGFloat
 
     var body: some View {
@@ -47,22 +47,53 @@ struct AppearanceSection: View {
             }
             .pickerStyle(.segmented)
 
-            Picker(language.t(.settingsAlignment), selection: $horizontalAlignment) {
-                ForEach(OverlayHorizontalAlignment.allCases) { alignment in
-                    Text(alignment.title(language: language)).tag(alignment)
-                }
-            }
-            .pickerStyle(.segmented)
+            cornerPicker
 
             overlayScaleRow
         } header: {
             Text(language.t(.settingsAppearance))
-        } footer: {
-            Text(language.t(.settingsAppearanceFooter))
         }
     }
 
-    /// Tasarımın tamamını küçültür; kamera ekranındaki çift parmak jestiyle aynı değeri yazar.
+    /// Yalnızca sol / sağ kenar; dikey konum kamera sürüklemesiyle ayarlanır.
+    private var cornerPicker: some View {
+        VStack(alignment: .leading, spacing: LayoutConstants.Spacing.small) {
+            Text(language.t(.settingsCorner))
+                .font(.subheadline)
+                .foregroundStyle(.secondary)
+
+            HStack(spacing: LayoutConstants.Spacing.small) {
+                ForEach(OverlayCorner.allCases) { value in
+                    cornerButton(value)
+                }
+            }
+        }
+        .accessibilityElement(children: .contain)
+    }
+
+    private func cornerButton(_ value: OverlayCorner) -> some View {
+        let isSelected = corner == value
+
+        return Button {
+            corner = value
+        } label: {
+            Text(value.title(language: language))
+                .font(.subheadline.weight(isSelected ? .semibold : .regular))
+                .frame(maxWidth: .infinity)
+                .padding(.vertical, LayoutConstants.Spacing.small)
+                .background {
+                    RoundedRectangle(cornerRadius: LayoutConstants.CornerRadius.small, style: .continuous)
+                        .fill(isSelected ? Color.accentColor.opacity(0.18) : Color.secondary.opacity(0.12))
+                }
+                .overlay {
+                    RoundedRectangle(cornerRadius: LayoutConstants.CornerRadius.small, style: .continuous)
+                        .strokeBorder(isSelected ? Color.accentColor : .clear, lineWidth: 1.5)
+                }
+        }
+        .buttonStyle(.plain)
+        .accessibilityAddTraits(isSelected ? .isSelected : [])
+    }
+
     private var overlayScaleRow: some View {
         VStack(alignment: .leading, spacing: LayoutConstants.Spacing.extraSmall) {
             HStack {
@@ -76,8 +107,9 @@ struct AppearanceSection: View {
             }
 
             Slider(
-                value: $overlayScale,
-                in: OverlayConstants.Scale.minimum...OverlayConstants.Scale.maximum
+                value: scaleBinding,
+                in: OverlayConstants.Scale.minimum...OverlayConstants.Scale.maximum,
+                step: 0.01
             ) {
                 Text(language.t(.settingsOverlayScale))
             } minimumValueLabel: {
@@ -87,6 +119,14 @@ struct AppearanceSection: View {
             }
             .accessibilityValue(Text(verbatim: "%\(percentage)"))
         }
+    }
+
+    /// Yazma sırasında aralığa sıkıştırır; Binding kopması yüzünden değerin kaybolmasını engeller.
+    private var scaleBinding: Binding<CGFloat> {
+        Binding(
+            get: { OverlayConstants.Scale.clamped(overlayScale) },
+            set: { overlayScale = OverlayConstants.Scale.clamped($0) }
+        )
     }
 
     private var percentage: Int {
@@ -99,7 +139,7 @@ struct AppearanceSection: View {
     @Previewable @State var theme = AppTheme.system
     @Previewable @State var fontStyle = OverlayFontStyle.rounded
     @Previewable @State var textSize = OverlayTextSize.medium
-    @Previewable @State var alignment = OverlayHorizontalAlignment.leading
+    @Previewable @State var corner = OverlayCorner.leading
     @Previewable @State var overlayScale: CGFloat = 1
 
     return Form {
@@ -108,7 +148,7 @@ struct AppearanceSection: View {
             theme: $theme,
             fontStyle: $fontStyle,
             textSize: $textSize,
-            horizontalAlignment: $alignment,
+            corner: $corner,
             overlayScale: $overlayScale
         )
     }

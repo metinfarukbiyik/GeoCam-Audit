@@ -11,10 +11,10 @@ import SwiftUI
 struct GravityAlignedOverlayHost<Content: View>: View {
 
     let deviceOrientation: DeviceDisplayOrientation
-    let position: OverlayPosition
-    let alignment: OverlayHorizontalAlignment
+    let corner: OverlayCorner
+    let verticalPosition: CGFloat
     let scale: CGFloat
-    let onPositionChange: (OverlayPosition) -> Void
+    let onPlacementChange: (_ corner: OverlayCorner, _ verticalPosition: CGFloat) -> Void
     let onScaleChange: (CGFloat) -> Void
     @ViewBuilder let content: (_ maxWidth: CGFloat) -> Content
 
@@ -29,10 +29,10 @@ struct GravityAlignedOverlayHost<Content: View>: View {
             let degrees = alignsToGravity ? deviceOrientation.gravityAlignmentDegrees : 0
 
             DraggableOverlayPositioner(
-                position: position,
-                alignment: alignment,
+                corner: corner,
+                verticalPosition: verticalPosition,
                 scale: scale,
-                onPositionChange: onPositionChange,
+                onPlacementChange: onPlacementChange,
                 onScaleChange: onScaleChange,
                 content: content
             )
@@ -44,21 +44,21 @@ struct GravityAlignedOverlayHost<Content: View>: View {
                 value: deviceOrientation
             )
         }
-        // GeometryReader kardeş önizlemeyi küçültmesin; verilen çerçeveyi doldursun.
         .frame(maxWidth: .infinity, maxHeight: .infinity)
     }
 }
 
 #Preview {
-    @Previewable @State var position = OverlayPosition.default
+    @Previewable @State var corner = OverlayCorner.trailing
+    @Previewable @State var vertical: CGFloat = 0.8
     @Previewable @State var scale: CGFloat = 0.7
 
     return GravityAlignedOverlayHost(
         deviceOrientation: .landscapeLeft,
-        position: position,
-        alignment: .trailing,
+        corner: corner,
+        verticalPosition: vertical,
         scale: scale,
-        onPositionChange: { position = $0 },
+        onPlacementChange: { corner = $0; vertical = $1 },
         onScaleChange: { scale = $0 }
     ) { maxWidth in
         Text("Besirli, Trabzon")

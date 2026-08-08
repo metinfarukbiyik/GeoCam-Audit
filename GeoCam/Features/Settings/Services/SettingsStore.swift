@@ -25,11 +25,8 @@ final class SettingsStore: SettingsStoring {
         self.defaults = defaults
         self.storageKey = storageKey
 
-        var loaded = Self.load(from: defaults, key: storageKey) ?? .default
-        // Konum yalnızca doğrulanır. Çerçeveye sığdırma görüntüleme anında yapılır;
-        // burada sıkıştırılırsa kullanıcının bıraktığı yer her açılışta kaybolur.
-        loaded.position = loaded.position.sanitized()
-        self.settings = loaded
+        // Köşe ve diğer tercihler olduğu gibi yüklenir; açılışta varsayılana zorlanmaz.
+        self.settings = Self.load(from: defaults, key: storageKey) ?? .default
     }
 
     func update(_ settings: OverlaySettings) {

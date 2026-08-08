@@ -6,7 +6,7 @@
 	<integer>12</integer>
 	<key>logs</key>
 	<dict>
-		<key>D342766D-5144-4F86-AC95-5CC1FDB2AA43</key>
+		<key>31F4A105-A48C-4250-98D1-F96DB8C11EEA</key>
 		<dict>
 			<key>className</key>
 			<string>IDECommandLineBuildLog</string>
@@ -15,7 +15,7 @@
 			<key>domainType</key>
 			<string>Xcode.IDEActivityLogDomainType.BuildLog</string>
 			<key>fileName</key>
-			<string>D342766D-5144-4F86-AC95-5CC1FDB2AA43.xcactivitylog</string>
+			<string>31F4A105-A48C-4250-98D1-F96DB8C11EEA.xcactivitylog</string>
 			<key>hasPrimaryLog</key>
 			<true/>
 			<key>primaryObservable</key>
@@ -38,57 +38,15 @@
 			<key>schemeIdentifier-sharedScheme</key>
 			<integer>1</integer>
 			<key>signature</key>
-			<string>Cleaning project GeoCam with scheme GeoCam</string>
+			<string>Building project GeoCam with scheme GeoCam</string>
 			<key>timeStartedRecording</key>
-			<real>807445622.55259204</real>
+			<real>807883615.68710494</real>
 			<key>timeStoppedRecording</key>
-			<real>807445622.86861598</real>
+			<real>807883635.73952401</real>
 			<key>title</key>
-			<string>Cleaning project GeoCam with scheme GeoCam</string>
+			<string>Building project GeoCam with scheme GeoCam</string>
 			<key>uniqueIdentifier</key>
-			<string>D342766D-5144-4F86-AC95-5CC1FDB2AA43</string>
-		</dict>
-		<key>ED07BB4B-AAB9-4D86-AC81-EF0A407C03A9</key>
-		<dict>
-			<key>className</key>
-			<string>IDECommandLineBuildLog</string>
-			<key>documentTypeString</key>
-			<string>&lt;nil&gt;</string>
-			<key>domainType</key>
-			<string>Xcode.IDEActivityLogDomainType.BuildLog</string>
-			<key>fileName</key>
-			<string>ED07BB4B-AAB9-4D86-AC81-EF0A407C03A9.xcactivitylog</string>
-			<key>hasPrimaryLog</key>
-			<true/>
-			<key>primaryObservable</key>
-			<dict>
-				<key>highLevelStatus</key>
-				<string>S</string>
-				<key>totalNumberOfAnalyzerIssues</key>
-				<integer>0</integer>
-				<key>totalNumberOfErrors</key>
-				<integer>0</integer>
-				<key>totalNumberOfTestFailures</key>
-				<integer>0</integer>
-				<key>totalNumberOfWarnings</key>
-				<integer>0</integer>
-			</dict>
-			<key>schemeIdentifier-containerName</key>
-			<string>GeoCam project</string>
-			<key>schemeIdentifier-schemeName</key>
-			<string>GeoCam</string>
-			<key>schemeIdentifier-sharedScheme</key>
-			<integer>1</integer>
-			<key>signature</key>
-			<string>Cleaning project GeoCam with scheme GeoCam</string>
-			<key>timeStartedRecording</key>
-			<real>807445268.59050405</real>
-			<key>timeStoppedRecording</key>
-			<real>807445268.809659</real>
-			<key>title</key>
-			<string>Cleaning project GeoCam with scheme GeoCam</string>
-			<key>uniqueIdentifier</key>
-			<string>ED07BB4B-AAB9-4D86-AC81-EF0A407C03A9</string>
+			<string>31F4A105-A48C-4250-98D1-F96DB8C11EEA</string>
 		</dict>
 	</dict>
 </dict>

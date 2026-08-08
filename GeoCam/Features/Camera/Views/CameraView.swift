@@ -24,16 +24,16 @@ struct CameraView: View {
     /// Pinch başlangıcındaki cihaz zoom değeri; jest boyunca çarpan olarak kullanılır.
     @State private var pinchBaselineZoom: CGFloat?
 
-    private let onOpenMenu: () -> Void
+    private let onOpenSettings: () -> Void
 
     init(
         viewModel: CameraViewModel,
         locationViewModel: LocationViewModel,
-        onOpenMenu: @escaping () -> Void
+        onOpenSettings: @escaping () -> Void
     ) {
         _viewModel = State(initialValue: viewModel)
         _locationViewModel = State(initialValue: locationViewModel)
-        self.onOpenMenu = onOpenMenu
+        self.onOpenSettings = onOpenSettings
     }
 
     var body: some View {
@@ -158,10 +158,10 @@ struct CameraView: View {
 
         return GravityAlignedOverlayHost(
             deviceOrientation: deviceOrientationObserver.orientation,
-            position: settings.position,
-            alignment: settings.horizontalAlignment,
+            corner: settings.corner,
+            verticalPosition: settings.resolvedVerticalPosition,
             scale: settings.resolvedScale,
-            onPositionChange: viewModel.updateOverlayPosition,
+            onPlacementChange: viewModel.updateOverlayPlacement,
             onScaleChange: viewModel.updateOverlayScale
         ) { maxWidth in
             LocationStatusView(
@@ -239,8 +239,8 @@ struct CameraView: View {
     @ToolbarContentBuilder
     private var cameraToolbar: some ToolbarContent {
         ToolbarItem(placement: .topBarLeading) {
-            Button(action: onOpenMenu) {
-                Image(systemName: "line.3.horizontal")
+            Button(action: onOpenSettings) {
+                Image(systemName: "gearshape")
             }
             .accessibilityLabel(language.t(.captureSettingsMenu))
         }
@@ -364,7 +364,7 @@ struct CameraView: View {
         CameraView(
             viewModel: dependencies.makeCameraViewModel(),
             locationViewModel: dependencies.makeLocationViewModel(),
-            onOpenMenu: {}
+            onOpenSettings: {}
         )
     }
     .environment(dependencies)

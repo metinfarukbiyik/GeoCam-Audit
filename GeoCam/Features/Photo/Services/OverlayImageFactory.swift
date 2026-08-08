@@ -50,13 +50,11 @@ enum OverlayImageFactory {
     ) -> CGRect {
         let placement = Placement.make(for: frameSize, scale: settings.resolvedScale)
         let size = placement.fittedSize(for: image.size, in: frameSize)
-        let origin = settings.position
-            .clamped(contentSize: size, in: frameSize)
-            .origin(
-                contentSize: size,
-                in: frameSize,
-                alignment: settings.horizontalAlignment
-            )
+        let origin = settings.corner.origin(
+            contentSize: size,
+            in: frameSize,
+            verticalPosition: settings.resolvedVerticalPosition
+        )
 
         return CGRect(origin: origin, size: size)
     }

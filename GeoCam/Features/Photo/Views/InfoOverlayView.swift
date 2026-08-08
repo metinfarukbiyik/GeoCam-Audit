@@ -41,7 +41,9 @@ struct InfoOverlayView: View {
         .font(.system(size: settings.textSize.pointSize))
         .fontDesign(settings.fontStyle.design)
         .foregroundStyle(.white)
-        .frame(width: maxWidth, alignment: .leading)
+        // Metin yönü tek yerden verilir; tasarımlar yalnızca gerektiğinde geçersiz kılar.
+        .multilineTextAlignment(settings.horizontalAlignment.textAlignment)
+        .frame(width: maxWidth, alignment: settings.horizontalAlignment.frameAlignment)
     }
 }
 

@@ -14,12 +14,13 @@ struct OverlayCapsuleLayout: View {
     let maxWidth: CGFloat
 
     var body: some View {
-        VStack(alignment: .leading, spacing: LayoutConstants.Spacing.small) {
+        VStack(alignment: model.alignment.stackAlignment, spacing: LayoutConstants.Spacing.small) {
             if let branding = model.branding {
                 capsule {
                     OverlayBrandingHeaderView(
                         branding: branding,
                         textSize: model.textSize,
+                        alignment: model.alignment,
                         maxWidth: max(maxWidth - LayoutConstants.Spacing.medium * 2, 0)
                     )
                 }
@@ -27,29 +28,32 @@ struct OverlayCapsuleLayout: View {
 
             if let address = model.addressText {
                 capsule {
-                    HStack(alignment: .top, spacing: LayoutConstants.Spacing.small) {
+                    OverlayMarkedRow(alignment: model.alignment) {
                         Image(systemName: "mappin.and.ellipse")
                             .accessibilityHidden(true)
-
+                    } content: {
                         Text(address)
-                            .multilineTextAlignment(.leading)
                             .lineLimit(4)
                             .fixedSize(horizontal: false, vertical: true)
-                            .frame(minWidth: 0, maxWidth: .infinity, alignment: .leading)
+                            .frame(minWidth: 0, maxWidth: .infinity, alignment: model.alignment.frameAlignment)
                     }
                 }
             }
 
-            FlowDetailCapsules(rows: model.detailRows, chromeStyle: chromeStyle)
+            FlowDetailCapsules(
+                rows: model.detailRows,
+                chromeStyle: chromeStyle,
+                alignment: model.alignment
+            )
         }
-        .frame(width: maxWidth, alignment: .leading)
+        .frame(width: maxWidth, alignment: model.alignment.frameAlignment)
     }
 
     private func capsule(@ViewBuilder content: () -> some View) -> some View {
         content()
             .padding(.horizontal, LayoutConstants.Spacing.medium)
             .padding(.vertical, LayoutConstants.Spacing.small)
-            .frame(width: maxWidth, alignment: .leading)
+            .frame(width: maxWidth, alignment: model.alignment.frameAlignment)
             .overlayChrome(chromeStyle, cornerRadius: LayoutConstants.CornerRadius.large)
     }
 }
@@ -58,6 +62,7 @@ struct OverlayCapsuleLayout: View {
 private struct FlowDetailCapsules: View {
     let rows: [OverlayDisplayModel.Row]
     let chromeStyle: OverlayChromeStyle
+    let alignment: OverlayHorizontalAlignment
 
     var body: some View {
         LazyVGrid(
@@ -65,22 +70,26 @@ private struct FlowDetailCapsules: View {
                 GridItem(.flexible(), spacing: LayoutConstants.Spacing.small),
                 GridItem(.flexible(), spacing: LayoutConstants.Spacing.small)
             ],
-            alignment: .leading,
+            alignment: alignment.stackAlignment,
             spacing: LayoutConstants.Spacing.small
         ) {
             ForEach(rows) { row in
-                HStack(spacing: LayoutConstants.Spacing.extraSmall) {
+                OverlayMarkedRow(
+                    alignment: alignment,
+                    verticalAlignment: .center,
+                    spacing: LayoutConstants.Spacing.extraSmall
+                ) {
                     Image(systemName: row.systemImage)
                         .imageScale(.small)
                         .accessibilityHidden(true)
-
+                } content: {
                     Text(row.displayText)
                         .fontWeight(.medium)
                         .lineLimit(2)
                         .foregroundStyle(row.tint ?? .white)
-                        .frame(minWidth: 0, maxWidth: .infinity, alignment: .leading)
+                        .frame(minWidth: 0, maxWidth: .infinity, alignment: alignment.frameAlignment)
                 }
-                .frame(maxWidth: .infinity, alignment: .leading)
+                .frame(maxWidth: .infinity, alignment: alignment.frameAlignment)
                 .padding(.horizontal, LayoutConstants.Spacing.small)
                 .padding(.vertical, LayoutConstants.Spacing.small)
                 .overlayChrome(chromeStyle, cornerRadius: LayoutConstants.CornerRadius.large)
