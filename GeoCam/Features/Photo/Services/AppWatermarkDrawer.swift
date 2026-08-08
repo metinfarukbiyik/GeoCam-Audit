@@ -251,14 +251,12 @@ nonisolated enum AppWatermarkDrawer {
             }
         }
 
-        /// Altlı üstlü: GeoCam (beyaz) / audit (mavi).
+        /// Altlı üstlü: GeoCam (beyaz) / Audit (mavi); sol filigranla aynı bold punto.
         private static func makeBrandWordmark(titleSize: CGFloat) -> NSAttributedString {
-            let fontSize = titleSize * OverlayConstants.Watermark.brandFontScale
-            let font = UIFont.systemFont(ofSize: fontSize, weight: .light)
+            let font = UIFont.systemFont(ofSize: titleSize, weight: .bold)
             let paragraph = NSMutableParagraphStyle()
-            paragraph.alignment = .right
-            paragraph.lineSpacing = fontSize * OverlayConstants.Watermark.brandLineSpacingRatio
-            let kern = OverlayConstants.Watermark.brandKerning
+            paragraph.alignment = .center
+            paragraph.lineSpacing = titleSize * OverlayConstants.Watermark.brandLineSpacingRatio
 
             let result = NSMutableAttributedString()
             result.append(
@@ -267,19 +265,17 @@ nonisolated enum AppWatermarkDrawer {
                     attributes: [
                         .font: font,
                         .foregroundColor: UIColor.white,
-                        .paragraphStyle: paragraph,
-                        .kern: kern
+                        .paragraphStyle: paragraph
                     ]
                 )
             )
             result.append(
                 NSAttributedString(
-                    string: "audit",
+                    string: "Audit",
                     attributes: [
                         .font: font,
                         .foregroundColor: AppWatermarkDrawer.brandBlue,
-                        .paragraphStyle: paragraph,
-                        .kern: kern
+                        .paragraphStyle: paragraph
                     ]
                 )
             )

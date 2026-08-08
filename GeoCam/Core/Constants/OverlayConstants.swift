@@ -42,9 +42,8 @@ nonisolated enum OverlayConstants {
         guard width > 0 else { return 0 }
 
         let titleSize = max(Watermark.minFontSize, width * Watermark.fontSizeRatio)
-        let brandFont = titleSize * Watermark.brandFontScale
-        let lineHeight = brandFont * 1.2
-        let lineSpacing = brandFont * Watermark.brandLineSpacingRatio
+        let lineHeight = titleSize * 1.2
+        let lineSpacing = titleSize * Watermark.brandLineSpacingRatio
         let contentHeight = lineHeight * 2 + lineSpacing
         let shadowBlur = max(Watermark.minShadowBlur, titleSize * Watermark.shadowBlurRatio)
         let shadowYOffset = titleSize * Watermark.shadowYOffsetRatio
@@ -117,11 +116,7 @@ nonisolated enum OverlayConstants {
         static let verifiedIconName = "checkmark.seal.fill"
         static let iconScale: CGFloat = 1.35
         static let iconSpacingRatio: CGFloat = 0.4
-        /// Marka adı, doğrulama satırına göre küçültülür.
-        static let brandFontScale: CGFloat = 0.78
-        /// Kurumsal marka yazısı harf aralığı.
-        static let brandKerning: CGFloat = 0.6
-        /// GeoCam / audit satırları arası boşluk oranı.
+        /// GeoCam / Audit satırları arası boşluk oranı.
         static let brandLineSpacingRatio: CGFloat = 0.05
 
         /// Audit yazısı mavi vurgusu (#2F85E9).
